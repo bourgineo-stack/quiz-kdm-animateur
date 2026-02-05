@@ -660,6 +660,26 @@
         async function startQuiz() {
             if (!state.mode) return;
 
+            // Récupérer la config depuis le Sheet (durées notamment)
+            try {
+                const configResponse = await fetch(CONFIG.sheetUrl + '?action=getConfig');
+                const configData = await configResponse.json();
+                
+                if (configData.voteDuration) {
+                    CONFIG.voteDuration = parseInt(configData.voteDuration);
+                }
+                if (configData.explainDuration) {
+                    CONFIG.explainDuration = parseInt(configData.explainDuration);
+                }
+                
+                console.log('Config chargée:', {
+                    voteDuration: CONFIG.voteDuration,
+                    explainDuration: CONFIG.explainDuration
+                });
+            } catch (error) {
+                console.error('Erreur chargement config:', error);
+            }
+
             // Définir l'heure de référence
             if (state.mode === 'session') {
                 // Mode atelier : on démarre maintenant
