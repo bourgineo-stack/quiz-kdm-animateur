@@ -18,492 +18,130 @@
             --warning: #FFA726;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, var(--divia-purple) 0%, #1a1030 100%);
             min-height: 100vh;
             color: white;
-            overflow-x: hidden;
         }
 
-        /* === ÉCRAN DE DÉMARRAGE === */
-        .start-screen {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            text-align: center;
-        }
-
+        /* Start screen */
+        .start-screen { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
         .start-screen.hidden { display: none; }
-
-        .start-logo {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-        }
-
-        .start-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 0.5rem;
-        }
-
+        .start-logo { font-size: 5rem; margin-bottom: 1rem; }
+        .start-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 0.5rem; }
         .start-title span { color: var(--divia-magenta); }
+        .start-subtitle { font-size: 1.3rem; opacity: 0.7; margin-bottom: 3rem; }
 
-        .start-subtitle {
-            font-size: 1.3rem;
-            opacity: 0.7;
-            margin-bottom: 3rem;
-        }
-
-        .mode-selector {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
+        .mode-selector { display: flex; gap: 2rem; margin-bottom: 3rem; flex-wrap: wrap; justify-content: center; }
         .mode-card {
-            background: rgba(0,0,0,0.3);
-            border: 3px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            width: 280px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.3); border: 3px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 2rem; width: 280px; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .mode-card:hover {
-            border-color: var(--divia-magenta);
-            transform: translateY(-5px);
-        }
-
-        .mode-card.selected {
-            border-color: var(--divia-magenta);
-            background: rgba(210, 0, 122, 0.2);
-        }
-
+        .mode-card:hover { border-color: var(--divia-magenta); transform: translateY(-5px); }
+        .mode-card.selected { border-color: var(--divia-magenta); background: rgba(210, 0, 122, 0.2); }
         .mode-icon { font-size: 3rem; margin-bottom: 1rem; }
         .mode-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
         .mode-desc { font-size: 0.9rem; opacity: 0.7; }
 
-        .btn {
-            padding: 1.2rem 3rem;
-            border: none;
-            border-radius: 12px;
-            font-family: inherit;
-            font-size: 1.2rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        .btn { padding: 1.2rem 3rem; border: none; border-radius: 12px; font-family: inherit; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .btn-primary { background: var(--divia-magenta); color: white; }
+        .btn-primary:hover { background: var(--divia-magenta-dark); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(210, 0, 122, 0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .btn-primary {
-            background: var(--divia-magenta);
-            color: white;
-        }
+        .loading-info { margin-top: 2rem; font-size: 0.9rem; opacity: 0.7; }
 
-        .btn-primary:hover {
-            background: var(--divia-magenta-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(210, 0, 122, 0.4);
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* === ÉCRAN PRINCIPAL === */
-        .main-screen {
-            display: none;
-            min-height: 100vh;
-        }
-
+        /* Main screen */
+        .main-screen { display: none; min-height: 100vh; }
         .main-screen.active { display: block; }
 
-        /* Header */
-        .header {
-            background: rgba(0,0,0,0.3);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-        }
-
+        .header { background: rgba(0,0,0,0.3); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+        .logo { font-size: 1.4rem; font-weight: 900; }
         .logo span { color: var(--divia-magenta); }
+        .mode-badge { background: var(--divia-magenta); padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .header-right { display: flex; align-items: center; gap: 2rem; }
+        .participants { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; }
+        .master-timer { font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; }
 
-        .mode-badge {
-            background: var(--divia-magenta);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .participants {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-        }
-
-        .master-timer {
-            font-size: 2rem;
-            font-weight: 900;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* Layout principal */
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            padding: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .main-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
 
         /* Scores */
-        .scoreboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
+        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
         .team-card {
-            background: rgba(0,0,0,0.3);
-            border-radius: 24px;
-            padding: 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
+            background: rgba(0,0,0,0.3); border-radius: 24px; padding: 2rem;
+            text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease;
         }
-
-        .team-card.blue {
-            border: 3px solid var(--team-blue);
-            box-shadow: 0 0 40px var(--team-blue-glow);
-        }
-
-        .team-card.red {
-            border: 3px solid var(--team-red);
-            box-shadow: 0 0 40px var(--team-red-glow);
-        }
-
-        .team-card.leading {
-            transform: scale(1.02);
-        }
-
+        .team-card.blue { border: 3px solid var(--team-blue); box-shadow: 0 0 40px var(--team-blue-glow); }
+        .team-card.red { border: 3px solid var(--team-red); box-shadow: 0 0 40px var(--team-red-glow); }
+        .team-card.leading { transform: scale(1.02); }
         .team-icon { font-size: 4rem; margin-bottom: 0.5rem; }
-
-        .team-label {
-            font-size: 1.1rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-
+        .team-label { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; }
         .team-label.blue { color: var(--team-blue); }
         .team-label.red { color: var(--team-red); }
-
-        .team-score {
-            font-size: 5rem;
-            font-weight: 900;
-            line-height: 1;
-        }
-
+        .team-score { font-size: 5rem; font-weight: 900; line-height: 1; }
         .team-score.blue { color: var(--team-blue); }
         .team-score.red { color: var(--team-red); }
+        .team-members { font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem; }
 
-        .team-members {
-            font-size: 0.9rem;
-            opacity: 0.7;
-            margin-top: 0.5rem;
-        }
-
-        /* Score animation */
-        .score-pop {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 6rem;
-            font-weight: 900;
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .score-pop.blue { color: var(--team-blue); }
-        .score-pop.red { color: var(--team-red); }
-
-        .score-pop.animate {
-            animation: popUp 1.5s ease-out;
-        }
-
-        @keyframes popUp {
-            0% { opacity: 0; transform: translate(-50%, 0) scale(0.5); }
-            30% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
-            70% { opacity: 1; }
-            100% { opacity: 0; transform: translate(-50%, -150%) scale(0.8); }
-        }
-
-        /* Question display */
-        .question-section {
-            background: rgba(0,0,0,0.3);
-            border-radius: 24px;
-            padding: 2rem;
-        }
-
-        .question-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .question-badge {
-            background: var(--divia-magenta);
-            padding: 0.5rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 700;
-        }
-
-        .phase-indicator {
-            padding: 0.5rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 700;
-        }
-
-        .phase-indicator.vote {
-            background: var(--warning);
-            color: #333;
-        }
-
-        .phase-indicator.explain {
-            background: var(--success);
-        }
-
-        .question-timer {
-            font-size: 3rem;
-            font-weight: 900;
-            font-variant-numeric: tabular-nums;
-        }
-
+        /* Question */
+        .question-section { background: rgba(0,0,0,0.3); border-radius: 24px; padding: 2rem; }
+        .question-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+        .question-badge { background: var(--divia-magenta); padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
+        .phase-indicator { padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
+        .phase-indicator.vote { background: var(--warning); color: #333; }
+        .phase-indicator.explain { background: var(--success); }
+        .question-timer { font-size: 3rem; font-weight: 900; font-variant-numeric: tabular-nums; }
         .question-timer.warning { color: var(--warning); }
         .question-timer.danger { color: var(--team-red); animation: pulse 0.5s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
+        .question-text { font-size: 2.2rem; font-weight: 700; line-height: 1.4; text-align: center; margin-bottom: 2rem; }
 
-        .question-text {
-            font-size: 2.2rem;
-            font-weight: 700;
-            line-height: 1.4;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .option-card {
-            background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 16px;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s ease;
         }
+        .option-letter { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; flex-shrink: 0; }
+        .option-text { font-size: 1.3rem; font-weight: 600; }
+        .option-card.correct { background: var(--success); border-color: var(--success); transform: scale(1.02); }
+        .option-card.wrong { opacity: 0.4; }
 
-        .option-letter {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 800;
-            flex-shrink: 0;
-        }
+        /* Responses */
+        .responses-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .response-card { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; }
+        .response-letter { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .response-count { font-size: 2rem; font-weight: 900; }
+        .response-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
+        .response-bar-fill { height: 100%; background: var(--divia-magenta); transition: width 0.3s ease; }
 
-        .option-text {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-
-        .option-card.correct {
-            background: var(--success);
-            border-color: var(--success);
-            transform: scale(1.02);
-        }
-
-        .option-card.wrong {
-            opacity: 0.4;
-        }
-
-        /* Info panel */
-        .info-section {
-            display: none;
-            background: rgba(0,0,0,0.3);
-            border-radius: 24px;
-            overflow: hidden;
-            margin-top: 2rem;
-        }
-
+        /* Info */
+        .info-section { display: none; background: rgba(0,0,0,0.3); border-radius: 24px; overflow: hidden; margin-top: 2rem; }
         .info-section.active { display: block; }
+        .info-header { background: var(--success); padding: 1rem 2rem; font-size: 1.3rem; font-weight: 700; }
+        .info-body { padding: 2rem; font-size: 1.2rem; line-height: 1.7; }
+        .info-body .highlight { background: var(--divia-magenta); padding: 0.2rem 0.6rem; border-radius: 6px; }
+        .info-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+        .info-body th, .info-body td { padding: 0.8rem 1rem; border: 1px solid rgba(255,255,255,0.2); text-align: left; }
+        .info-body th { background: rgba(255,255,255,0.1); }
 
-        .info-header {
-            background: var(--success);
-            padding: 1rem 2rem;
-            font-size: 1.3rem;
-            font-weight: 700;
-        }
+        /* Progress */
+        .progress-section { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; }
+        .progress-label { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-weight: 600; }
+        .progress-bar { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--divia-magenta) 0%, #FF6B9D 100%); transition: width 0.5s ease; }
 
-        .info-body {
-            padding: 2rem;
-            font-size: 1.2rem;
-            line-height: 1.7;
-        }
-
-        .info-body .highlight {
-            background: var(--divia-magenta);
-            padding: 0.2rem 0.6rem;
-            border-radius: 6px;
-        }
-
-        .info-body table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.5rem 0;
-        }
-
-        .info-body th, .info-body td {
-            padding: 0.8rem 1rem;
-            border: 1px solid rgba(255,255,255,0.2);
-            text-align: left;
-        }
-
-        .info-body th {
-            background: rgba(255,255,255,0.1);
-        }
-
-        /* Progress bar */
-        .progress-section {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-weight: 600;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--divia-magenta) 0%, #FF6B9D 100%);
-            transition: width 0.5s ease;
-        }
-
-        /* Responses stats */
-        .responses-section {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .response-card {
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .response-letter {
-            font-weight: 800;
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .response-count {
-            font-size: 2rem;
-            font-weight: 900;
-        }
-
-        .response-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-
-        .response-bar-fill {
-            height: 100%;
-            background: var(--divia-magenta);
-            transition: width 0.3s ease;
-        }
-
-        /* Responsive */
         @media (max-width: 900px) {
-            .scoreboard { grid-template-columns: 1fr; }
-            .options-grid { grid-template-columns: 1fr; }
+            .scoreboard, .options-grid { grid-template-columns: 1fr; }
             .question-text { font-size: 1.5rem; }
-            .mode-selector { flex-direction: column; }
         }
     </style>
 </head>
 <body>
-    <!-- Écran de démarrage -->
+    <!-- Start -->
     <div class="start-screen" id="start-screen">
         <div class="start-logo">🌱</div>
         <h1 class="start-title">Éco-<span>Quiz</span></h1>
@@ -513,27 +151,20 @@
             <div class="mode-card" id="mode-session" onclick="selectMode('session')">
                 <div class="mode-icon">🎯</div>
                 <div class="mode-title">Mode Atelier</div>
-                <div class="mode-desc">
-                    Session de 30 min avec début fixe.<br>
-                    Idéal pour un groupe qui commence ensemble.
-                </div>
+                <div class="mode-desc">Session avec début fixe.<br>Tout le monde commence ensemble.</div>
             </div>
             <div class="mode-card" id="mode-loop" onclick="selectMode('loop')">
                 <div class="mode-icon">🔄</div>
                 <div class="mode-title">Mode Va-et-vient</div>
-                <div class="mode-desc">
-                    Boucle continue, les participants<br>
-                    arrivent et repartent quand ils veulent.
-                </div>
+                <div class="mode-desc">Boucle continue.<br>Arrivées/départs libres.</div>
             </div>
         </div>
 
-        <button class="btn btn-primary" id="btn-start" onclick="startQuiz()" disabled>
-            🚀 Démarrer le quiz
-        </button>
+        <button class="btn btn-primary" id="btn-start" onclick="startQuiz()" disabled>🚀 Démarrer le quiz</button>
+        <div class="loading-info" id="loading-info">Chargement de la configuration...</div>
     </div>
 
-    <!-- Écran principal -->
+    <!-- Main -->
     <div class="main-screen" id="main-screen">
         <header class="header">
             <div class="header-left">
@@ -541,26 +172,20 @@
                 <div class="mode-badge" id="mode-badge">Mode Atelier</div>
             </div>
             <div class="header-right">
-                <div class="participants">
-                    <span>👥</span>
-                    <span id="total-participants">0</span> participants
-                </div>
+                <div class="participants">👥 <span id="total-participants">0</span> participants</div>
                 <div class="master-timer" id="master-timer">00:00</div>
             </div>
         </header>
 
         <main class="main-layout">
-            <!-- Scores -->
             <section class="scoreboard">
                 <div class="team-card blue" id="card-blue">
-                    <div class="score-pop blue" id="pop-blue">+1</div>
                     <div class="team-icon">🚌</div>
                     <div class="team-label blue">Équipe Bleue</div>
                     <div class="team-score blue" id="score-blue">0</div>
                     <div class="team-members"><span id="members-blue">0</span> joueurs</div>
                 </div>
                 <div class="team-card red" id="card-red">
-                    <div class="score-pop red" id="pop-red">+1</div>
                     <div class="team-icon">🚋</div>
                     <div class="team-label red">Équipe Rouge</div>
                     <div class="team-score red" id="score-red">0</div>
@@ -568,172 +193,104 @@
                 </div>
             </section>
 
-            <!-- Question -->
             <section class="question-section">
                 <div class="question-top">
                     <div>
-                        <span class="question-badge">Question <span id="q-num">1</span>/10</span>
+                        <span class="question-badge">Question <span id="q-num">1</span>/<span id="q-total">10</span></span>
                         <span class="phase-indicator vote" id="phase-badge">⏱️ Vote</span>
                     </div>
                     <div class="question-timer" id="question-timer">2:00</div>
                 </div>
-
-                <div class="question-text" id="question-text">
-                    Chargement de la question...
-                </div>
-
-                <div class="options-grid" id="options-grid">
-                    <!-- Options générées dynamiquement -->
-                </div>
-
-                <!-- Stats des réponses -->
+                <div class="question-text" id="question-text">Chargement...</div>
+                <div class="options-grid" id="options-grid"></div>
                 <div class="responses-section" id="responses-section">
-                    <div class="response-card">
-                        <div class="response-letter">A</div>
-                        <div class="response-count" id="resp-a">0</div>
-                        <div class="response-bar"><div class="response-bar-fill" id="bar-a" style="width: 0%"></div></div>
-                    </div>
-                    <div class="response-card">
-                        <div class="response-letter">B</div>
-                        <div class="response-count" id="resp-b">0</div>
-                        <div class="response-bar"><div class="response-bar-fill" id="bar-b" style="width: 0%"></div></div>
-                    </div>
-                    <div class="response-card">
-                        <div class="response-letter">C</div>
-                        <div class="response-count" id="resp-c">0</div>
-                        <div class="response-bar"><div class="response-bar-fill" id="bar-c" style="width: 0%"></div></div>
-                    </div>
-                    <div class="response-card">
-                        <div class="response-letter">D</div>
-                        <div class="response-count" id="resp-d">0</div>
-                        <div class="response-bar"><div class="response-bar-fill" id="bar-d" style="width: 0%"></div></div>
-                    </div>
+                    <div class="response-card"><div class="response-letter">A</div><div class="response-count" id="resp-a">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-a" style="width:0%"></div></div></div>
+                    <div class="response-card"><div class="response-letter">B</div><div class="response-count" id="resp-b">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-b" style="width:0%"></div></div></div>
+                    <div class="response-card"><div class="response-letter">C</div><div class="response-count" id="resp-c">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-c" style="width:0%"></div></div></div>
+                    <div class="response-card"><div class="response-letter">D</div><div class="response-count" id="resp-d">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-d" style="width:0%"></div></div></div>
                 </div>
             </section>
 
-            <!-- Info (phase explain) -->
             <section class="info-section" id="info-section">
                 <div class="info-header">💡 Le saviez-vous ?</div>
-                <div class="info-body" id="info-body">
-                    <!-- Contenu chargé dynamiquement -->
-                </div>
+                <div class="info-body" id="info-body"></div>
             </section>
 
-            <!-- Progression -->
             <section class="progress-section">
-                <div class="progress-label">
-                    <span>Progression</span>
-                    <span><span id="progress-num">1</span> / 10 questions</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 10%"></div>
-                </div>
+                <div class="progress-label"><span>Progression</span><span><span id="progress-num">1</span> / <span id="progress-total">10</span></span></div>
+                <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 10%"></div></div>
             </section>
         </main>
     </div>
 
     <script src="config.js"></script>
     <script>
-        // === ÉTAT ===
-        const state = {
-            mode: null,           // 'session' ou 'loop'
-            referenceTime: null,  // Timestamp de référence
-            lastQuestionIndex: -1,
-            scores: { blue: 0, red: 0 },
-            responses: { 0: 0, 1: 0, 2: 0, 3: 0 }
-        };
-
+        const state = { mode: null, referenceTime: null, lastQuestionIndex: -1 };
         const $ = id => document.getElementById(id);
 
-        // === MODE SELECTION ===
+        // Init
+        document.addEventListener('DOMContentLoaded', async () => {
+            const loaded = await loadConfigFromSheet();
+            if (loaded && QUESTIONS.length > 0) {
+                $('loading-info').textContent = `✓ ${QUESTIONS.length} questions chargées`;
+                $('q-total').textContent = QUESTIONS.length;
+                $('progress-total').textContent = QUESTIONS.length;
+            } else {
+                $('loading-info').textContent = '❌ Erreur de chargement';
+            }
+        });
+
         function selectMode(mode) {
             state.mode = mode;
-            
-            document.querySelectorAll('.mode-card').forEach(card => {
-                card.classList.remove('selected');
-            });
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
             $(`mode-${mode}`).classList.add('selected');
             $('btn-start').disabled = false;
         }
 
-        // === DÉMARRAGE ===
         async function startQuiz() {
             if (!state.mode) return;
 
-            // Récupérer la config depuis le Sheet (durées notamment)
-            try {
-                const configResponse = await fetch(CONFIG.sheetUrl + '?action=getConfig');
-                const configData = await configResponse.json();
-                
-                if (configData.voteDuration) {
-                    CONFIG.voteDuration = parseInt(configData.voteDuration);
-                }
-                if (configData.explainDuration) {
-                    CONFIG.explainDuration = parseInt(configData.explainDuration);
-                }
-                
-                console.log('Config chargée:', {
-                    voteDuration: CONFIG.voteDuration,
-                    explainDuration: CONFIG.explainDuration
-                });
-            } catch (error) {
-                console.error('Erreur chargement config:', error);
-            }
+            $('btn-start').disabled = true;
+            $('btn-start').textContent = '⏳ Démarrage...';
 
-            // Définir l'heure de référence
-            if (state.mode === 'session') {
-                // Mode atelier : on démarre maintenant
+            try {
+                // Envoyer au Sheet pour démarrer la session
+                await fetch(CONFIG.sheetUrl, {
+                    method: 'POST', mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'startSession', mode: state.mode })
+                });
+
+                // Attendre un peu puis recharger la config
+                await new Promise(r => setTimeout(r, 1500));
+                await loadConfigFromSheet();
+
+                state.referenceTime = SETTINGS.startTime || Date.now();
+                console.log('Session démarrée:', { mode: state.mode, referenceTime: state.referenceTime });
+
+            } catch (e) {
+                console.error('Erreur démarrage:', e);
                 state.referenceTime = Date.now();
-                // Envoyer au Google Sheet
-                try {
-                    await fetch(CONFIG.sheetUrl, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            action: 'setStartTime', 
-                            timestamp: state.referenceTime 
-                        })
-                    });
-                    console.log('StartTime envoyé:', state.referenceTime);
-                } catch (error) {
-                    console.error('Erreur setStartTime:', error);
-                }
-            } else {
-                // Mode loop : on se cale sur un cycle existant (ou on en crée un)
-                state.referenceTime = Date.now() - (Date.now() % (getCycleLength() * 1000));
             }
 
             $('mode-badge').textContent = state.mode === 'session' ? 'Mode Atelier' : 'Mode Va-et-vient';
-            
-            // Afficher l'écran principal
             $('start-screen').classList.add('hidden');
             $('main-screen').classList.add('active');
 
-            // Démarrer la boucle
             startLoop();
         }
 
-        function getCycleLength() {
-            return CONFIG.voteDuration + CONFIG.explainDuration;
-        }
-
-        // === BOUCLE PRINCIPALE ===
         function startLoop() {
             update();
             setInterval(update, 500);
-            
-            // Polling des réponses (à connecter au Sheet)
-            setInterval(fetchResponses, 3000);
+            setInterval(fetchData, 3000);
         }
 
         function update() {
             const quizState = getQuizState(state.referenceTime);
-            
-            // Changement de question ?
+
             if (quizState.questionIndex !== state.lastQuestionIndex) {
                 state.lastQuestionIndex = quizState.questionIndex;
-                state.responses = { 0: 0, 1: 0, 2: 0, 3: 0 };
                 onQuestionChange(quizState);
             }
 
@@ -743,28 +300,26 @@
 
         function onQuestionChange(quizState) {
             const q = quizState.currentQuestion;
-            
+            if (!q) return;
+
             $('q-num').textContent = quizState.questionIndex + 1;
             $('question-text').textContent = q.text;
             $('progress-num').textContent = quizState.questionIndex + 1;
             $('progress-fill').style.width = `${((quizState.questionIndex + 1) / QUESTIONS.length) * 100}%`;
-            
-            renderOptions(q);
-            $('info-section').classList.remove('active');
-        }
 
-        function renderOptions(question) {
             const letters = ['A', 'B', 'C', 'D'];
-            $('options-grid').innerHTML = question.options.map((opt, i) => `
+            $('options-grid').innerHTML = q.options.map((opt, i) => `
                 <div class="option-card" data-index="${i}">
                     <div class="option-letter">${letters[i]}</div>
                     <div class="option-text">${opt}</div>
                 </div>
             `).join('');
+
+            $('info-section').classList.remove('active');
+            ['a','b','c','d'].forEach(l => { $(`resp-${l}`).textContent = '0'; $(`bar-${l}`).style.width = '0%'; });
         }
 
         function updateTimers(quizState) {
-            // Timer question
             const timer = $('question-timer');
             timer.textContent = formatTime(quizState.timeRemaining);
             timer.className = 'question-timer';
@@ -773,124 +328,67 @@
                 else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
             }
 
-            // Timer global
             const elapsed = quizState.totalElapsed;
-            const mins = Math.floor(elapsed / 60);
-            const secs = elapsed % 60;
-            $('master-timer').textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
         }
 
         function updatePhase(quizState) {
-            const phaseBadge = $('phase-badge');
             const q = quizState.currentQuestion;
-            
-            if (quizState.phase === 'vote') {
-                phaseBadge.className = 'phase-indicator vote';
-                phaseBadge.textContent = '⏱️ Vote en cours';
-                $('info-section').classList.remove('active');
-                
-                // Reset options
-                document.querySelectorAll('.option-card').forEach(card => {
-                    card.classList.remove('correct', 'wrong');
-                });
-            } else {
-                phaseBadge.className = 'phase-indicator explain';
-                phaseBadge.textContent = '💡 Explication';
-                
-                // Révéler la bonne réponse
+            if (!q) return;
+
+            const badge = $('phase-badge');
+            badge.className = `phase-indicator ${quizState.phase}`;
+            badge.textContent = quizState.phase === 'vote' ? '⏱️ Vote en cours' : '💡 Explication';
+
+            if (quizState.phase === 'explain') {
                 revealAnswer(q.correct);
-                showInfo(q);
+                $('info-section').classList.add('active');
+                $('info-body').innerHTML = q.info || '<p>Information non disponible.</p>';
+            } else {
+                document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
+                $('info-section').classList.remove('active');
             }
         }
 
         function revealAnswer(correctIndex) {
             document.querySelectorAll('.option-card').forEach((card, i) => {
-                if (i === correctIndex) {
-                    card.classList.add('correct');
-                } else {
-                    card.classList.add('wrong');
-                }
+                card.classList.toggle('correct', i === correctIndex);
+                card.classList.toggle('wrong', i !== correctIndex);
             });
         }
 
-        async function showInfo(question) {
-            $('info-section').classList.add('active');
-            
-            // Afficher le contenu directement depuis config.js
-            $('info-body').innerHTML = question.info || '<p>Information non disponible.</p>';
-        }
-
-        // === DONNÉES (à connecter au Google Sheet) ===
-        async function fetchResponses() {
+        async function fetchData() {
             try {
-                // Récupérer les stats pour la question en cours
-                const statsResponse = await fetch(
-                    CONFIG.sheetUrl + '?action=getStats&questionId=' + (state.lastQuestionIndex + 1)
-                );
-                const stats = await statsResponse.json();
-                
-                // Récupérer le nombre de participants
-                const participantsResponse = await fetch(CONFIG.sheetUrl + '?action=getParticipants');
-                const participants = await participantsResponse.json();
-                
-                // Récupérer les scores
-                const scoresResponse = await fetch(CONFIG.sheetUrl + '?action=getScores');
-                const scores = await scoresResponse.json();
-                
-                // Mettre à jour l'affichage
-                updateResponsesDisplay(stats.counts, stats.total);
-                
-                // Mettre à jour les compteurs
+                const [statsRes, participantsRes, scoresRes] = await Promise.all([
+                    fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${state.lastQuestionIndex + 1}`),
+                    fetch(`${CONFIG.sheetUrl}?action=getParticipants`),
+                    fetch(`${CONFIG.sheetUrl}?action=getScores`)
+                ]);
+
+                const stats = await statsRes.json();
+                const participants = await participantsRes.json();
+                const scores = await scoresRes.json();
+
+                // Stats
+                const total = stats.total || 1;
+                ['a','b','c','d'].forEach((l, i) => {
+                    const count = stats.counts[i] || 0;
+                    $(`resp-${l}`).textContent = count;
+                    $(`bar-${l}`).style.width = `${(count/total)*100}%`;
+                });
+
+                // Participants
                 $('total-participants').textContent = participants.counts.total;
                 $('members-blue').textContent = participants.counts.blue;
                 $('members-red').textContent = participants.counts.red;
-                
-                // Mettre à jour les scores (sans animation pour le polling)
+
+                // Scores
                 $('score-blue').textContent = scores.blue;
                 $('score-red').textContent = scores.red;
-                
-                // Highlight leader
-                const blueCard = $('card-blue');
-                const redCard = $('card-red');
-                blueCard.classList.toggle('leading', scores.blue > scores.red);
-                redCard.classList.toggle('leading', scores.red > scores.blue);
-                
-            } catch (error) {
-                console.error('Erreur fetch responses:', error);
-            }
-        }
+                $('card-blue').classList.toggle('leading', scores.blue > scores.red);
+                $('card-red').classList.toggle('leading', scores.red > scores.blue);
 
-        function updateResponsesDisplay(responses, total) {
-            const letters = ['a', 'b', 'c', 'd'];
-            letters.forEach((letter, i) => {
-                const count = responses[i] || 0;
-                const percent = total > 0 ? (count / total) * 100 : 0;
-                $(`resp-${letter}`).textContent = count;
-                $(`bar-${letter}`).style.width = `${percent}%`;
-            });
-            
-            $('total-participants').textContent = total;
-        }
-
-        // Animation de score
-        function animateScore(team, points) {
-            state.scores[team] += points;
-            
-            const pop = $(`pop-${team}`);
-            pop.textContent = `+${points}`;
-            pop.classList.remove('animate');
-            void pop.offsetWidth;
-            pop.classList.add('animate');
-            
-            setTimeout(() => {
-                $(`score-${team}`).textContent = state.scores[team];
-                
-                // Highlight leader
-                const blueCard = $('card-blue');
-                const redCard = $('card-red');
-                blueCard.classList.toggle('leading', state.scores.blue > state.scores.red);
-                redCard.classList.toggle('leading', state.scores.red > state.scores.blue);
-            }, 500);
+            } catch (e) { console.error('Erreur fetch data:', e); }
         }
     </script>
 </body>
