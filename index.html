@@ -424,7 +424,9 @@
 
                 // Scores
                 $('score-blue').textContent = scores.blue;
-                // Animation si score change
+$('score-red').textContent = scores.red;
+
+// Animation si score change
 if (parseInt($('score-blue').dataset.prev || 0) < scores.blue) {
     $('card-blue').classList.add('scoring');
     setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
@@ -435,9 +437,9 @@ if (parseInt($('score-red').dataset.prev || 0) < scores.red) {
 }
 $('score-blue').dataset.prev = scores.blue;
 $('score-red').dataset.prev = scores.red;
-                $('score-red').textContent = scores.red;
-                $('card-blue').classList.toggle('leading', scores.blue > scores.red);
-                $('card-red').classList.toggle('leading', scores.red > scores.blue);
+
+$('card-blue').classList.toggle('leading', scores.blue > scores.red);
+$('card-red').classList.toggle('leading', scores.red > scores.blue);
 
             } catch (e) { console.error('Erreur fetch data:', e); }
         }
