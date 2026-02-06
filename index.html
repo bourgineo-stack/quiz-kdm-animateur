@@ -66,28 +66,38 @@
         .participants { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; }
         .master-timer { font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; }
 
-        .main-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 2rem; max-width: 1400px; margin: 0 auto; }
+        .main-layout { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
 
         /* Scores */
         .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
         .team-card {
-            background: rgba(0,0,0,0.3); border-radius: 24px; padding: 2rem;
-            text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease;
-        }
-        .team-card.blue { border: 3px solid var(--team-blue); box-shadow: 0 0 40px var(--team-blue-glow); }
-        .team-card.red { border: 3px solid var(--team-red); box-shadow: 0 0 40px var(--team-red-glow); }
-        .team-card.leading { transform: scale(1.02); }
-        .team-icon { font-size: 4rem; margin-bottom: 0.5rem; }
-        .team-label { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0.5rem; }
-        .team-label.blue { color: var(--team-blue); }
-        .team-label.red { color: var(--team-red); }
-        .team-score { font-size: 5rem; font-weight: 900; line-height: 1; }
-        .team-score.blue { color: var(--team-blue); }
-        .team-score.red { color: var(--team-red); }
-        .team-members { font-size: 0.9rem; opacity: 0.7; margin-top: 0.5rem; }
+    background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem 1.5rem;
+    text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease;
+    display: flex; align-items: center; gap: 1rem;
+}
+.team-card.blue { border: 2px solid var(--team-blue); box-shadow: 0 0 30px var(--team-blue-glow); }
+.team-card.red { border: 2px solid var(--team-red); box-shadow: 0 0 30px var(--team-red-glow); }
+.team-card.leading { transform: scale(1.03); }
+.team-card.scoring { animation: scoreFlash 0.8s ease-out; }
+@keyframes scoreFlash {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.1); box-shadow: 0 0 60px currentColor; }
+    100% { transform: scale(1); }
+}
+.team-card.blue.scoring { box-shadow: 0 0 80px var(--team-blue); }
+.team-card.red.scoring { box-shadow: 0 0 80px var(--team-red); }
+.team-icon { font-size: 2.5rem; }
+.team-info { text-align: left; flex: 1; }
+.team-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+.team-label.blue { color: var(--team-blue); }
+.team-label.red { color: var(--team-red); }
+.team-score { font-size: 3rem; font-weight: 900; line-height: 1; }
+.team-score.blue { color: var(--team-blue); }
+.team-score.red { color: var(--team-red); }
+.team-members { font-size: 0.75rem; opacity: 0.6; }
 
         /* Question */
-        .question-section { background: rgba(0,0,0,0.3); border-radius: 24px; padding: 2rem; }
+        .question-section { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem 1.5rem; }
         .question-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
         .question-badge { background: var(--divia-magenta); padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
         .phase-indicator { padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
@@ -98,15 +108,14 @@
         .question-timer.danger { color: var(--team-red); animation: pulse 0.5s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        .question-text { font-size: 2.2rem; font-weight: 700; line-height: 1.4; text-align: center; margin-bottom: 2rem; }
-
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .option-card {
-            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 16px; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; transition: all 0.3s ease;
-        }
-        .option-letter { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; flex-shrink: 0; }
-        .option-text { font-size: 1.3rem; font-weight: 600; }
+        .question-text { font-size: 1.6rem; font-weight: 700; line-height: 1.3; text-align: center; margin-bottom: 1rem; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.option-card {
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; transition: all 0.3s ease;
+}
+.option-letter { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
+.option-text { font-size: 1rem; font-weight: 600; }
         .option-card.correct { background: var(--success); border-color: var(--success); transform: scale(1.02); }
         .option-card.wrong { opacity: 0.4; }
 
@@ -129,10 +138,11 @@
         .info-body th { background: rgba(255,255,255,0.1); }
 
         /* Progress */
-        .progress-section { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; }
-        .progress-label { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-weight: 600; }
-        .progress-bar { height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px; overflow: hidden; }
-        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--divia-magenta) 0%, #FF6B9D 100%); transition: width 0.5s ease; }
+        .timer-bar-section { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 0.8rem 1.2rem; margin-top: 1rem; }
+.timer-bar-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+.timer-bar { height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; display: flex; }
+.timer-bar-vote { background: var(--warning); height: 100%; transition: width 0.3s ease; }
+.timer-bar-explain { background: var(--success); height: 100%; transition: width 0.3s ease; }
 
         @media (max-width: 900px) {
             .scoreboard, .options-grid { grid-template-columns: 1fr; }
@@ -179,19 +189,23 @@
 
         <main class="main-layout">
             <section class="scoreboard">
-                <div class="team-card blue" id="card-blue">
-                    <div class="team-icon">🚌</div>
-                    <div class="team-label blue">Équipe Bleue</div>
-                    <div class="team-score blue" id="score-blue">0</div>
-                    <div class="team-members"><span id="members-blue">0</span> joueurs</div>
-                </div>
-                <div class="team-card red" id="card-red">
-                    <div class="team-icon">🚋</div>
-                    <div class="team-label red">Équipe Rouge</div>
-                    <div class="team-score red" id="score-red">0</div>
-                    <div class="team-members"><span id="members-red">0</span> joueurs</div>
-                </div>
-            </section>
+    <div class="team-card blue" id="card-blue">
+        <div class="team-icon">🚌</div>
+        <div class="team-info">
+            <div class="team-label blue">Équipe Bleue</div>
+            <div class="team-score blue" id="score-blue">0</div>
+        </div>
+        <div class="team-members"><span id="members-blue">0</span> joueurs</div>
+    </div>
+    <div class="team-card red" id="card-red">
+        <div class="team-icon">🚋</div>
+        <div class="team-info">
+            <div class="team-label red">Équipe Rouge</div>
+            <div class="team-score red" id="score-red">0</div>
+        </div>
+        <div class="team-members"><span id="members-red">0</span> joueurs</div>
+    </div>
+</section>
 
             <section class="question-section">
                 <div class="question-top">
@@ -216,10 +230,16 @@
                 <div class="info-body" id="info-body"></div>
             </section>
 
-            <section class="progress-section">
-                <div class="progress-label"><span>Progression</span><span><span id="progress-num">1</span> / <span id="progress-total">10</span></span></div>
-                <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width: 10%"></div></div>
-            </section>
+            <section class="timer-bar-section">
+    <div class="timer-bar-label">
+        <span id="timer-phase-label">⏱️ Vote</span>
+        <span id="timer-countdown">2:00</span>
+    </div>
+    <div class="timer-bar">
+        <div class="timer-bar-vote" id="timer-bar-vote" style="width: 66.6%"></div>
+        <div class="timer-bar-explain" id="timer-bar-explain" style="width: 33.3%"></div>
+    </div>
+</section>
         </main>
     </div>
 
@@ -320,17 +340,37 @@
         }
 
         function updateTimers(quizState) {
-            const timer = $('question-timer');
-            timer.textContent = formatTime(quizState.timeRemaining);
-            timer.className = 'question-timer';
-            if (quizState.phase === 'vote') {
-                if (quizState.timeRemaining <= 10) timer.classList.add('danger');
-                else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
-            }
+    const timer = $('question-timer');
+    timer.textContent = formatTime(quizState.timeRemaining);
+    timer.className = 'question-timer';
+    if (quizState.phase === 'vote') {
+        if (quizState.timeRemaining <= 10) timer.classList.add('danger');
+        else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
+    }
 
-            const elapsed = quizState.totalElapsed;
-            $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
-        }
+    const elapsed = quizState.totalElapsed;
+    $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+    
+    // Barre de temps
+    const totalCycle = SETTINGS.voteDuration + SETTINGS.explainDuration;
+    const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
+    const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
+    
+    $('timer-phase-label').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
+    $('timer-countdown').textContent = formatTime(quizState.timeRemaining);
+    
+    if (quizState.phase === 'vote') {
+        const elapsed = SETTINGS.voteDuration - quizState.timeRemaining;
+        const filledPercent = (elapsed / SETTINGS.voteDuration) * votePercent;
+        $('timer-bar-vote').style.width = `${votePercent - filledPercent}%`;
+        $('timer-bar-explain').style.width = `${explainPercent}%`;
+    } else {
+        const elapsed = SETTINGS.explainDuration - quizState.timeRemaining;
+        const filledPercent = (elapsed / SETTINGS.explainDuration) * explainPercent;
+        $('timer-bar-vote').style.width = '0%';
+        $('timer-bar-explain').style.width = `${explainPercent - filledPercent}%`;
+    }
+}
 
         function updatePhase(quizState) {
             const q = quizState.currentQuestion;
@@ -384,6 +424,17 @@
 
                 // Scores
                 $('score-blue').textContent = scores.blue;
+                // Animation si score change
+if (parseInt($('score-blue').dataset.prev || 0) < scores.blue) {
+    $('card-blue').classList.add('scoring');
+    setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
+}
+if (parseInt($('score-red').dataset.prev || 0) < scores.red) {
+    $('card-red').classList.add('scoring');
+    setTimeout(() => $('card-red').classList.remove('scoring'), 800);
+}
+$('score-blue').dataset.prev = scores.blue;
+$('score-red').dataset.prev = scores.red;
                 $('score-red').textContent = scores.red;
                 $('card-blue').classList.toggle('leading', scores.blue > scores.red);
                 $('card-red').classList.toggle('leading', scores.red > scores.blue);
