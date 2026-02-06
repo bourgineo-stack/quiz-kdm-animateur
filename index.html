@@ -254,7 +254,7 @@
             if (loaded && QUESTIONS.length > 0) {
                 $('loading-info').textContent = `✓ ${QUESTIONS.length} questions chargées`;
                 $('q-total').textContent = QUESTIONS.length;
-                $('progress-total').textContent = QUESTIONS.length;
+                
             } else {
                 $('loading-info').textContent = '❌ Erreur de chargement';
             }
@@ -324,8 +324,7 @@
 
             $('q-num').textContent = quizState.questionIndex + 1;
             $('question-text').textContent = q.text;
-            $('progress-num').textContent = quizState.questionIndex + 1;
-            $('progress-fill').style.width = `${((quizState.questionIndex + 1) / QUESTIONS.length) * 100}%`;
+            
 
             const letters = ['A', 'B', 'C', 'D'];
             $('options-grid').innerHTML = q.options.map((opt, i) => `
