@@ -56,15 +56,25 @@ function getQuizState(referenceTime) {
     const cycleLength = SETTINGS.voteDuration + SETTINGS.explainDuration;
     const totalCycleLength = cycleLength * QUESTIONS.length;
 
+    // Protection : si elapsed est négatif ou si QUESTIONS est vide
+    if (QUESTIONS.length === 0 || totalCycleLength === 0) {
+        return {
+            questionIndex: 0, phase: 'vote', timeRemaining: 0,
+            totalElapsed: 0, currentQuestion: null, finished: false, explainProgress: 0
+        };
+    }
+
     // Détection fin de quiz (mode session uniquement)
-    if (SETTINGS.mode === 'session' && elapsed >= totalCycleLength) {
+    // Ne s'applique que si elapsed est positif et raisonnable (pas un ancien startTime)
+    if (SETTINGS.mode === 'session' && elapsed > 0 && elapsed >= totalCycleLength) {
         return {
             questionIndex: QUESTIONS.length - 1,
             phase: 'finished',
             timeRemaining: 0,
             totalElapsed: Math.floor(elapsed),
             currentQuestion: QUESTIONS[QUESTIONS.length - 1] || null,
-            finished: true
+            finished: true,
+            explainProgress: 1
         };
     }
 
