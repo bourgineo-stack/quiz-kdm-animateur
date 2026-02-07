@@ -363,62 +363,71 @@
         }
 
         function update() {
-            const quizState = getQuizState(state.referenceTime);
+    const quizState = getQuizState(state.referenceTime);
 
-            // Fin du quiz
-            if (quizState.finished) {
-                showEndScreen();
-                return;
-            }
+    // Fin du quiz
+    if (quizState.finished) {
+        showEndScreen();
+        return;
+    }
 
-            if (quizState.questionIndex !== state.lastQuestionIndex) {
-                state.lastQuestionIndex = quizState.questionIndex;
-                state.lastPhase = null;
-                onQuestionChange(quizState);
-            }
+    if (quizState.questionIndex !== state.lastQuestionIndex) {
+        state.lastQuestionIndex = quizState.questionIndex;
+        state.lastPhase = null;
+        onQuestionChange(quizState);
+    }
 
-            updateTimers(quizState);
-            updatePhase(quizState);
+    updateTimers(quizState);
+    updatePhase(quizState);
 
-            // Trigger calcul des scores à mi-phase explication
-            if (quizState.phase === 'explain' && quizState.explainProgress >= 0.5) {
-                const scoreKey = `${quizState.questionIndex}-${getCurrentTour(state.referenceTime)}`;
-                if (!state.scoreTriggered[scoreKey]) {
-                    state.scoreTriggered[scoreKey] = true;
-                    triggerScoreCalculation(quizState);
-                }
-            }
+    // DÉCLENCHEMENT SIMPLE: 3 secondes après le début de l'explication
+    if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
+        // Juste passé de vote à explain
+        const scoreKey = `${quizState.questionIndex}-${getCurrentTour(state.referenceTime)}`;
+        if (!state.scoreTriggered[scoreKey]) {
+            state.scoreTriggered[scoreKey] = true;
+            
+            // Attendre 3 secondes pour laisser le temps aux votes de s'envoyer
+            setTimeout(() => {
+                console.log('⏱️ 3 secondes écoulées, calcul des scores...');
+                triggerScoreCalculation(quizState);
+            }, 3000);
         }
+    }
+    
+    // Garder en mémoire la phase précédente
+    state.lastPhase = quizState.phase;
+}
 
         async function triggerScoreCalculation(quizState) {
-            const q = quizState.currentQuestion;
-            if (!q) return;
-            const tour = getCurrentTour(state.referenceTime);
-            
-            // DEBUG : afficher exactement ce qu'on envoie
-            const payload = { action: 'calculateTurnScore', questionId: q.id, tour: tour };
-            console.log('=== TRIGGER SCORE ===');
-            console.log('Payload:', JSON.stringify(payload));
-            console.log('q.id type:', typeof q.id, 'value:', q.id);
-            console.log('tour type:', typeof tour, 'value:', tour);
+    const q = quizState.currentQuestion;
+    if (!q) return;
+    const tour = getCurrentTour(state.referenceTime);
+    
+    // DEBUG : afficher exactement ce qu'on envoie
+    const payload = { action: 'calculateTurnScore', questionId: q.id, tour: tour };
+    console.log('=== TRIGGER SCORE ===');
+    console.log('Payload:', JSON.stringify(payload));
+    console.log('q.id type:', typeof q.id, 'value:', q.id);
+    console.log('tour type:', typeof tour, 'value:', tour);
 
-            try {
-                await fetch(CONFIG.sheetUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                console.log('Calcul scores envoyé, vérification dans 2s et 5s...');
-                
-                // Double vérification avec délai
-                setTimeout(() => fetchData(), 2000);
-                setTimeout(() => fetchData(), 5000);
-            } catch (e) {
-                console.error('Erreur calcul score:', e);
-            }
-        }
+    try {
+        await fetch(CONFIG.sheetUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        console.log('Calcul scores envoyé, vérification dans 2s et 5s...');
+        
+        // Double vérification avec délai
+        setTimeout(() => fetchData(), 2000);
+        setTimeout(() => fetchData(), 5000);
+    } catch (e) {
+        console.error('Erreur calcul score:', e);
+    }
+}
         
 
         function onQuestionChange(quizState) {
