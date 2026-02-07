@@ -504,19 +504,14 @@
             });
         }
 
-        async function fetchData() {
+       async function fetchData() {
     try {
         const tour = getCurrentTour(state.referenceTime);
         const currentQ = QUESTIONS[state.lastQuestionIndex];
         if (!currentQ) return;
         const questionId = currentQ.id;
 
-        console.log('🔍 Fetch data pour:', { 
-            questionId, 
-            tour, 
-            lastQuestionIndex: state.lastQuestionIndex,
-            questionText: currentQ.text.substring(0, 50) + '...'
-        });
+        console.log('🔍 Fetch data pour question:', questionId, 'TOUR:', tour);
 
         const [statsRes, participantsRes, scoresRes] = await Promise.all([
             fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
@@ -528,12 +523,12 @@
         const participants = await participantsRes.json();
         const scores = await scoresRes.json();
 
-        console.log('📊 Données reçues:', {
-            statsTotal: stats.total || 0,
-            participants: participants.counts,
-            scores: scores,
-            scoresCount: scores.details ? scores.details.length : 0
-        });
+        console.log('📊 Stats pour tour', tour, ':', {
+            totalVotes: stats.total,
+            blueVotes: stats.byTeam.blue.total,
+            redVotes: stats.byTeam.red.total
+        });      
+ 
 
         // Stats intégrées aux options
         const total = stats.total || 1;
