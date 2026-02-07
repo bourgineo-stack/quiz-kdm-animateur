@@ -505,60 +505,36 @@
         }
 
         async function fetchData() {
-            try {
-                const tour = getCurrentTour(state.referenceTime);
-                const currentQ = QUESTIONS[state.lastQuestionIndex];
-                if (!currentQ) return;
-                const questionId = currentQ.id;
+    try {
+        const tour = getCurrentTour(state.referenceTime);
+        const currentQ = QUESTIONS[state.lastQuestionIndex];
+        if (!currentQ) return;
+        const questionId = currentQ.id;
 
-                const [statsRes, participantsRes, scoresRes] = await Promise.all([
-                    fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
-                    fetch(`${CONFIG.sheetUrl}?action=getParticipants`),
-                    fetch(`${CONFIG.sheetUrl}?action=getScores`)
-                ]);
+        console.log('Fetch data pour:', { questionId, tour, lastQuestionIndex: state.lastQuestionIndex });
 
-                const stats = await statsRes.json();
-                const participants = await participantsRes.json();
-                const scores = await scoresRes.json();
+        const [statsRes, participantsRes, scoresRes] = await Promise.all([
+            fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
+            fetch(`${CONFIG.sheetUrl}?action=getParticipants`),
+            fetch(`${CONFIG.sheetUrl}?action=getScores`)
+        ]);
 
-                // Stats intégrées aux options
-                const total = stats.total || 1;
-                for (let i = 0; i < 4; i++) {
-                    const count = stats.counts[i] || 0;
-                    const countEl = $(`count-${i}`);
-                    const barEl = $(`bar-${i}`);
-                    if (countEl) countEl.textContent = count;
-                    if (barEl) barEl.style.width = `${(count/total)*100}%`;
-                }
+        const stats = await statsRes.json();
+        const participants = await participantsRes.json();
+        const scores = await scoresRes.json();
 
-                // Participants
-                $('total-participants').textContent = participants.counts.total;
-                $('members-blue').textContent = participants.counts.blue;
-                $('members-red').textContent = participants.counts.red;
+        console.log('Données reçues:', {
+            stats: stats,
+            participants: participants.counts,
+            scores: scores
+        });
 
-                // Scores
-                const prevBlue = parseInt($('score-blue').dataset.prev || 0);
-                const prevRed = parseInt($('score-red').dataset.prev || 0);
-
-                $('score-blue').textContent = scores.blue;
-                $('score-red').textContent = scores.red;
-
-                if (prevBlue < scores.blue) {
-                    $('card-blue').classList.add('scoring');
-                    setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
-                }
-                if (prevRed < scores.red) {
-                    $('card-red').classList.add('scoring');
-                    setTimeout(() => $('card-red').classList.remove('scoring'), 800);
-                }
-                $('score-blue').dataset.prev = scores.blue;
-                $('score-red').dataset.prev = scores.red;
-
-                $('card-blue').classList.toggle('leading', scores.blue > scores.red);
-                $('card-red').classList.toggle('leading', scores.red > scores.blue);
-
-            } catch (e) { console.error('Erreur fetch data:', e); }
-        }
+        // ... reste du code ...
+        
+    } catch (e) { 
+        console.error('Erreur fetch data:', e); 
+    }
+}
 
         function showEndScreen() {
             $('main-screen').classList.remove('active');
