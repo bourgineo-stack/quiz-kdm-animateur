@@ -367,16 +367,19 @@
             console.log(`Calcul scores: question=${q.id}, tour=${tour}`);
 
             try {
-                const response = await fetch(CONFIG.sheetUrl, {
+                // Apps Script ne gère pas les preflight CORS sur POST
+                // On utilise no-cors pour envoyer, puis on vérifie via GET
+                await fetch(CONFIG.sheetUrl, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'calculateTurnScore', questionId: q.id, tour: tour })
                 });
-                const result = await response.json();
-                console.log('Score calculé:', result);
-
-                // Forcer un refresh des scores immédiat
-                fetchData();
+                
+                console.log('Calcul scores envoyé, vérification dans 2s...');
+                
+                // Attendre que le calcul soit fait, puis refresh
+                setTimeout(() => fetchData(), 2000);
             } catch (e) {
                 console.error('Erreur calcul score:', e);
             }
@@ -468,7 +471,9 @@
         async function fetchData() {
             try {
                 const tour = getCurrentTour(state.referenceTime);
-                const questionId = state.lastQuestionIndex + 1;
+                const currentQ = QUESTIONS[state.lastQuestionIndex];
+                if (!currentQ) return;
+                const questionId = currentQ.id;
 
                 const [statsRes, participantsRes, scoresRes] = await Promise.all([
                     fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
