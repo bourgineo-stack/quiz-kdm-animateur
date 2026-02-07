@@ -296,46 +296,65 @@
         }
 
         async function startQuiz() {
-            if (!state.mode) return;
+    if (!state.mode) return;
 
-            $('btn-start').disabled = true;
-            $('btn-start').textContent = '⏳ Démarrage...';
+    $('btn-start').disabled = true;
+    $('btn-start').textContent = '⏳ Démarrage...';
 
-            const startedAt = Date.now();
+    const startedAt = Date.now();
 
-            try {
-                await fetch(CONFIG.sheetUrl, {
-                    method: 'POST', mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'startSession', mode: state.mode })
-                });
+    try {
+        // Envoyer la commande startSession
+        await fetch(CONFIG.sheetUrl, {
+            method: 'POST', 
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'startSession', mode: state.mode })
+        });
 
-                // Attendre que le Sheet ait bien enregistré
-                await new Promise(r => setTimeout(r, 2000));
-                await loadConfigFromSheet();
+        console.log('Commande startSession envoyée');
+        
+        // Attendre pour être sûr que le Sheet a écrit
+        await new Promise(r => setTimeout(r, 2000));
+        
+        // Recharger la config
+        await loadConfigFromSheet();
+        
+        console.log('Config rechargée:', {
+            mode: SETTINGS.mode,
+            startTime: SETTINGS.startTime,
+            voteDuration: SETTINGS.voteDuration,
+            explainDuration: SETTINGS.explainDuration
+        });
 
-                // Vérifier que le startTime est récent (moins de 30s)
-                // Sinon c'est un ancien startTime résiduel
-                if (SETTINGS.startTime && Math.abs(startedAt - SETTINGS.startTime) < 30000) {
-                    state.referenceTime = SETTINGS.startTime;
-                } else {
-                    console.warn('startTime du Sheet semble ancien, utilisation de Date.now()');
-                    state.referenceTime = startedAt;
-                }
-                
-                console.log('Session démarrée:', { mode: state.mode, referenceTime: state.referenceTime, sheetStartTime: SETTINGS.startTime });
-
-            } catch (e) {
-                console.error('Erreur démarrage:', e);
-                state.referenceTime = startedAt;
-            }
-
-            $('mode-badge').textContent = state.mode === 'session' ? 'Mode Atelier' : 'Mode Va-et-vient';
-            $('start-screen').classList.add('hidden');
-            $('main-screen').classList.add('active');
-
-            startLoop();
+        // IMPORTANT: Utiliser TOUJOURS le startTime du Sheet pour les deux modes
+        if (SETTINGS.startTime) {
+            state.referenceTime = SETTINGS.startTime;
+            console.log('Utilisation du startTime du Sheet:', state.referenceTime);
+        } else {
+            console.warn('Pas de startTime dans le Sheet, utilisation de Date.now()');
+            state.referenceTime = startedAt;
         }
+
+    } catch (e) {
+        console.error('Erreur démarrage:', e);
+        state.referenceTime = startedAt;
+    }
+
+    console.log('Session démarrée:', {
+        mode: state.mode,
+        referenceTime: state.referenceTime,
+        currentTime: Date.now(),
+        diff: Date.now() - state.referenceTime,
+        startTimeDate: new Date(state.referenceTime).toISOString()
+    });
+
+    $('mode-badge').textContent = state.mode === 'session' ? 'Mode Atelier' : 'Mode Va-et-vient';
+    $('start-screen').classList.add('hidden');
+    $('main-screen').classList.add('active');
+
+    startLoop();
+}
 
         function startLoop() {
             update();
