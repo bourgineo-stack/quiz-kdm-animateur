@@ -511,7 +511,12 @@
         if (!currentQ) return;
         const questionId = currentQ.id;
 
-        console.log('Fetch data pour:', { questionId, tour, lastQuestionIndex: state.lastQuestionIndex });
+        console.log('🔍 Fetch data pour:', { 
+            questionId, 
+            tour, 
+            lastQuestionIndex: state.lastQuestionIndex,
+            questionText: currentQ.text.substring(0, 50) + '...'
+        });
 
         const [statsRes, participantsRes, scoresRes] = await Promise.all([
             fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
@@ -523,16 +528,53 @@
         const participants = await participantsRes.json();
         const scores = await scoresRes.json();
 
-        console.log('Données reçues:', {
-            stats: stats,
+        console.log('📊 Données reçues:', {
+            statsTotal: stats.total || 0,
             participants: participants.counts,
-            scores: scores
+            scores: scores,
+            scoresCount: scores.details ? scores.details.length : 0
         });
 
-        // ... reste du code ...
-        
+        // Stats intégrées aux options
+        const total = stats.total || 1;
+        for (let i = 0; i < 4; i++) {
+            const count = stats.counts[i] || 0;
+            const countEl = $(`count-${i}`);
+            const barEl = $(`bar-${i}`);
+            if (countEl) countEl.textContent = count;
+            if (barEl) barEl.style.width = `${(count/total)*100}%`;
+        }
+
+        // Participants - CORRECTION: utiliser totalActive au lieu de total
+        $('total-participants').textContent = participants.counts.total || 0;
+        $('members-blue').textContent = participants.counts.blue || 0;
+        $('members-red').textContent = participants.counts.red || 0;
+
+        // Scores
+        const prevBlue = parseInt($('score-blue').dataset.prev || 0);
+        const prevRed = parseInt($('score-red').dataset.prev || 0);
+
+        $('score-blue').textContent = scores.blue || 0;
+        $('score-red').textContent = scores.red || 0;
+
+        if (prevBlue < (scores.blue || 0)) {
+            $('card-blue').classList.add('scoring');
+            setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
+            console.log('🎯 Score bleu augmenté:', prevBlue, '→', scores.blue);
+        }
+        if (prevRed < (scores.red || 0)) {
+            $('card-red').classList.add('scoring');
+            setTimeout(() => $('card-red').classList.remove('scoring'), 800);
+            console.log('🎯 Score rouge augmenté:', prevRed, '→', scores.red);
+        }
+        $('score-blue').dataset.prev = scores.blue || 0;
+        $('score-red').dataset.prev = scores.red || 0;
+
+        $('card-blue').classList.toggle('leading', (scores.blue || 0) > (scores.red || 0));
+        $('card-red').classList.toggle('leading', (scores.red || 0) > (scores.blue || 0));
+
     } catch (e) { 
-        console.error('Erreur fetch data:', e); 
+        console.error('❌ Erreur fetch data:', e); 
     }
 }
 
