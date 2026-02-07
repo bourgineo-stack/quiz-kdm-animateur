@@ -57,7 +57,7 @@
         .main-screen { display: none; min-height: 100vh; }
         .main-screen.active { display: block; }
 
-        .header { background: rgba(0,0,0,0.3); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .header { background: rgba(0,0,0,0.3); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; }
         .header-left { display: flex; align-items: center; gap: 1.5rem; }
         .logo { font-size: 1.4rem; font-weight: 900; }
         .logo span { color: var(--divia-magenta); }
@@ -66,87 +66,104 @@
         .participants { display: flex; align-items: center; gap: 0.5rem; background: rgba(255,255,255,0.1); padding: 0.5rem 1rem; border-radius: 20px; }
         .master-timer { font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; }
 
-        .main-layout { display: grid; grid-template-columns: 1fr; gap: 1rem; padding: 1rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .main-layout { display: grid; grid-template-columns: 1fr; gap: 0.8rem; padding: 0.8rem 2rem; max-width: 1400px; margin: 0 auto; }
 
         /* Scores */
-        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .scoreboard { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
         .team-card {
-    background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem 1.5rem;
-    text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease;
-    display: flex; align-items: center; gap: 1rem;
-}
-.team-card.blue { border: 2px solid var(--team-blue); box-shadow: 0 0 30px var(--team-blue-glow); }
-.team-card.red { border: 2px solid var(--team-red); box-shadow: 0 0 30px var(--team-red-glow); }
-.team-card.leading { transform: scale(1.03); }
-.team-card.scoring { animation: scoreFlash 0.8s ease-out; }
-@keyframes scoreFlash {
-    0% { transform: scale(1); }
-    30% { transform: scale(1.1); box-shadow: 0 0 60px currentColor; }
-    100% { transform: scale(1); }
-}
-.team-card.blue.scoring { box-shadow: 0 0 80px var(--team-blue); }
-.team-card.red.scoring { box-shadow: 0 0 80px var(--team-red); }
-.team-icon { font-size: 2.5rem; }
-.team-info { text-align: left; flex: 1; }
-.team-label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
-.team-label.blue { color: var(--team-blue); }
-.team-label.red { color: var(--team-red); }
-.team-score { font-size: 3rem; font-weight: 900; line-height: 1; }
-.team-score.blue { color: var(--team-blue); }
-.team-score.red { color: var(--team-red); }
-.team-members { font-size: 0.75rem; opacity: 0.6; }
+            background: rgba(0,0,0,0.3); border-radius: 16px; padding: 0.8rem 1.2rem;
+            text-align: center; position: relative; overflow: hidden; transition: all 0.5s ease;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .team-card.blue { border: 2px solid var(--team-blue); box-shadow: 0 0 30px var(--team-blue-glow); }
+        .team-card.red { border: 2px solid var(--team-red); box-shadow: 0 0 30px var(--team-red-glow); }
+        .team-card.leading { transform: scale(1.03); }
+        .team-card.scoring { animation: scoreFlash 0.8s ease-out; }
+        @keyframes scoreFlash {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.1); box-shadow: 0 0 60px currentColor; }
+            100% { transform: scale(1); }
+        }
+        .team-card.blue.scoring { box-shadow: 0 0 80px var(--team-blue); }
+        .team-card.red.scoring { box-shadow: 0 0 80px var(--team-red); }
+        .team-icon { font-size: 2rem; }
+        .team-info { text-align: left; flex: 1; }
+        .team-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .team-label.blue { color: var(--team-blue); }
+        .team-label.red { color: var(--team-red); }
+        .team-score { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+        .team-score.blue { color: var(--team-blue); }
+        .team-score.red { color: var(--team-red); }
+        .team-members { font-size: 0.75rem; opacity: 0.6; }
 
         /* Question */
         .question-section { background: rgba(0,0,0,0.3); border-radius: 16px; padding: 1rem 1.5rem; }
-        .question-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-        .question-badge { background: var(--divia-magenta); padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
-        .phase-indicator { padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 700; }
+        .question-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.8rem; }
+        .question-badge { background: var(--divia-magenta); padding: 0.4rem 1.2rem; border-radius: 30px; font-weight: 700; font-size: 0.9rem; }
+        .phase-indicator { padding: 0.4rem 1.2rem; border-radius: 30px; font-weight: 700; font-size: 0.9rem; }
         .phase-indicator.vote { background: var(--warning); color: #333; }
         .phase-indicator.explain { background: var(--success); }
-        .question-timer { font-size: 3rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+        .question-timer { font-size: 2.5rem; font-weight: 900; font-variant-numeric: tabular-nums; }
         .question-timer.warning { color: var(--warning); }
         .question-timer.danger { color: var(--team-red); animation: pulse 0.5s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
-        .question-text { font-size: 1.6rem; font-weight: 700; line-height: 1.3; text-align: center; margin-bottom: 1rem; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-.option-card {
-    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
-    border-radius: 12px; padding: 0.8rem 1rem; display: flex; align-items: center; gap: 0.8rem; transition: all 0.3s ease;
-}
-.option-letter { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
-.option-text { font-size: 1rem; font-weight: 600; }
+        .question-text { font-size: 1.5rem; font-weight: 700; line-height: 1.3; text-align: center; margin-bottom: 1rem; }
+
+        /* Options + répartition intégrée */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+        .option-card {
+            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 12px; padding: 0.6rem 0.8rem; display: flex; align-items: center; gap: 0.6rem; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+        }
+        .option-letter { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
+        .option-text { font-size: 0.95rem; font-weight: 600; flex: 1; }
+        .option-count { font-size: 0.85rem; font-weight: 800; opacity: 0.8; min-width: 30px; text-align: right; }
+        .option-bar-bg { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.1); }
+        .option-bar-fill { height: 100%; background: var(--divia-magenta); transition: width 0.4s ease; border-radius: 0 0 0 3px; }
         .option-card.correct { background: var(--success); border-color: var(--success); transform: scale(1.02); }
+        .option-card.correct .option-bar-fill { background: rgba(255,255,255,0.4); }
         .option-card.wrong { opacity: 0.4; }
 
-        /* Responses */
-        .responses-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
-        .response-card { background: rgba(255,255,255,0.1); border-radius: 12px; padding: 1rem; text-align: center; }
-        .response-letter { font-weight: 800; font-size: 1.1rem; margin-bottom: 0.3rem; }
-        .response-count { font-size: 2rem; font-weight: 900; }
-        .response-bar { height: 6px; background: rgba(255,255,255,0.2); border-radius: 3px; margin-top: 0.5rem; overflow: hidden; }
-        .response-bar-fill { height: 100%; background: var(--divia-magenta); transition: width 0.3s ease; }
-
         /* Info */
-        .info-section { display: none; background: rgba(0,0,0,0.3); border-radius: 24px; overflow: hidden; margin-top: 2rem; }
+        .info-section { display: none; background: rgba(0,0,0,0.3); border-radius: 16px; overflow: hidden; }
         .info-section.active { display: block; }
-        .info-header { background: var(--success); padding: 1rem 2rem; font-size: 1.3rem; font-weight: 700; }
-        .info-body { padding: 2rem; font-size: 1.2rem; line-height: 1.7; }
+        .info-header { background: var(--success); padding: 0.8rem 1.5rem; font-size: 1.1rem; font-weight: 700; }
+        .info-body { padding: 1.2rem 1.5rem; font-size: 1.1rem; line-height: 1.6; }
         .info-body .highlight { background: var(--divia-magenta); padding: 0.2rem 0.6rem; border-radius: 6px; }
-        .info-body table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
-        .info-body th, .info-body td { padding: 0.8rem 1rem; border: 1px solid rgba(255,255,255,0.2); text-align: left; }
+        .info-body table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .info-body th, .info-body td { padding: 0.6rem 0.8rem; border: 1px solid rgba(255,255,255,0.2); text-align: left; }
         .info-body th { background: rgba(255,255,255,0.1); }
 
-        /* Progress */
-        .timer-bar-section { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 0.8rem 1.2rem; margin-top: 1rem; }
-.timer-bar-label { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-.timer-bar { height: 20px; background: rgba(255,255,255,0.1); border-radius: 10px; overflow: hidden; display: flex; }
-.timer-bar-vote { background: var(--warning); height: 100%; transition: width 0.3s ease; }
-.timer-bar-explain { background: var(--success); height: 100%; transition: width 0.3s ease; }
+        /* Timer bar */
+        .timer-bar-section { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 0.6rem 1rem; }
+        .timer-bar-label { display: flex; justify-content: space-between; margin-bottom: 0.4rem; font-weight: 600; font-size: 0.85rem; }
+        .timer-bar { height: 16px; background: rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; display: flex; }
+        .timer-bar-vote { background: var(--warning); height: 100%; transition: width 0.3s ease; }
+        .timer-bar-explain { background: var(--success); height: 100%; transition: width 0.3s ease; }
+
+        /* Écran de fin */
+        .end-screen { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+        .end-screen.active { display: flex; }
+        .end-icon { font-size: 5rem; margin-bottom: 1rem; }
+        .end-title { font-size: 3rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .end-title span { color: var(--divia-magenta); }
+        .end-scores { display: flex; gap: 3rem; margin: 2rem 0; }
+        .end-team { text-align: center; }
+        .end-team-score { font-size: 5rem; font-weight: 900; line-height: 1; }
+        .end-team-score.blue { color: var(--team-blue); }
+        .end-team-score.red { color: var(--team-red); }
+        .end-team-label { font-size: 1.2rem; font-weight: 700; opacity: 0.8; }
+        .end-winner { font-size: 1.5rem; font-weight: 800; margin-top: 1rem; padding: 1rem 2rem; border-radius: 20px; }
+        .end-winner.blue { background: rgba(30, 136, 229, 0.3); color: var(--team-blue); }
+        .end-winner.red { background: rgba(229, 57, 53, 0.3); color: var(--team-red); }
+        .end-winner.tie { background: rgba(255,255,255,0.1); }
+        .btn-restart { margin-top: 2rem; }
 
         @media (max-width: 900px) {
             .scoreboard, .options-grid { grid-template-columns: 1fr; }
-            .question-text { font-size: 1.5rem; }
+            .question-text { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -189,23 +206,23 @@
 
         <main class="main-layout">
             <section class="scoreboard">
-    <div class="team-card blue" id="card-blue">
-        <div class="team-icon">🚌</div>
-        <div class="team-info">
-            <div class="team-label blue">Équipe Bleue</div>
-            <div class="team-score blue" id="score-blue">0</div>
-        </div>
-        <div class="team-members"><span id="members-blue">0</span> joueurs</div>
-    </div>
-    <div class="team-card red" id="card-red">
-        <div class="team-icon">🚋</div>
-        <div class="team-info">
-            <div class="team-label red">Équipe Rouge</div>
-            <div class="team-score red" id="score-red">0</div>
-        </div>
-        <div class="team-members"><span id="members-red">0</span> joueurs</div>
-    </div>
-</section>
+                <div class="team-card blue" id="card-blue">
+                    <div class="team-icon">🚌</div>
+                    <div class="team-info">
+                        <div class="team-label blue">Équipe Bleue</div>
+                        <div class="team-score blue" id="score-blue">0</div>
+                    </div>
+                    <div class="team-members"><span id="members-blue">0</span> joueurs</div>
+                </div>
+                <div class="team-card red" id="card-red">
+                    <div class="team-icon">🚋</div>
+                    <div class="team-info">
+                        <div class="team-label red">Équipe Rouge</div>
+                        <div class="team-score red" id="score-red">0</div>
+                    </div>
+                    <div class="team-members"><span id="members-red">0</span> joueurs</div>
+                </div>
+            </section>
 
             <section class="question-section">
                 <div class="question-top">
@@ -217,12 +234,6 @@
                 </div>
                 <div class="question-text" id="question-text">Chargement...</div>
                 <div class="options-grid" id="options-grid"></div>
-                <div class="responses-section" id="responses-section">
-                    <div class="response-card"><div class="response-letter">A</div><div class="response-count" id="resp-a">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-a" style="width:0%"></div></div></div>
-                    <div class="response-card"><div class="response-letter">B</div><div class="response-count" id="resp-b">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-b" style="width:0%"></div></div></div>
-                    <div class="response-card"><div class="response-letter">C</div><div class="response-count" id="resp-c">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-c" style="width:0%"></div></div></div>
-                    <div class="response-card"><div class="response-letter">D</div><div class="response-count" id="resp-d">0</div><div class="response-bar"><div class="response-bar-fill" id="bar-d" style="width:0%"></div></div></div>
-                </div>
             </section>
 
             <section class="info-section" id="info-section">
@@ -231,21 +242,39 @@
             </section>
 
             <section class="timer-bar-section">
-    <div class="timer-bar-label">
-        <span id="timer-phase-label">⏱️ Vote</span>
-        <span id="timer-countdown">2:00</span>
-    </div>
-    <div class="timer-bar">
-        <div class="timer-bar-vote" id="timer-bar-vote" style="width: 66.6%"></div>
-        <div class="timer-bar-explain" id="timer-bar-explain" style="width: 33.3%"></div>
-    </div>
-</section>
+                <div class="timer-bar-label">
+                    <span id="timer-phase-label">⏱️ Vote</span>
+                    <span id="timer-countdown">2:00</span>
+                </div>
+                <div class="timer-bar">
+                    <div class="timer-bar-vote" id="timer-bar-vote" style="width: 66.6%"></div>
+                    <div class="timer-bar-explain" id="timer-bar-explain" style="width: 33.3%"></div>
+                </div>
+            </section>
         </main>
+    </div>
+
+    <!-- Écran de fin -->
+    <div class="end-screen" id="end-screen">
+        <div class="end-icon">🏆</div>
+        <h1 class="end-title">Éco-<span>Quiz</span> terminé !</h1>
+        <div class="end-scores">
+            <div class="end-team">
+                <div class="end-team-score blue" id="end-score-blue">0</div>
+                <div class="end-team-label">🚌 Équipe Bleue</div>
+            </div>
+            <div class="end-team">
+                <div class="end-team-score red" id="end-score-red">0</div>
+                <div class="end-team-label">🚋 Équipe Rouge</div>
+            </div>
+        </div>
+        <div class="end-winner" id="end-winner"></div>
+        <button class="btn btn-primary btn-restart" onclick="location.reload()">🔄 Nouvelle session</button>
     </div>
 
     <script src="config.js"></script>
     <script>
-        const state = { mode: null, referenceTime: null, lastQuestionIndex: -1 };
+        const state = { mode: null, referenceTime: null, lastQuestionIndex: -1, lastPhase: null, scoreTriggered: {} };
         const $ = id => document.getElementById(id);
 
         // Init
@@ -254,7 +283,6 @@
             if (loaded && QUESTIONS.length > 0) {
                 $('loading-info').textContent = `✓ ${QUESTIONS.length} questions chargées`;
                 $('q-total').textContent = QUESTIONS.length;
-                
             } else {
                 $('loading-info').textContent = '❌ Erreur de chargement';
             }
@@ -274,14 +302,12 @@
             $('btn-start').textContent = '⏳ Démarrage...';
 
             try {
-                // Envoyer au Sheet pour démarrer la session
                 await fetch(CONFIG.sheetUrl, {
                     method: 'POST', mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action: 'startSession', mode: state.mode })
                 });
 
-                // Attendre un peu puis recharger la config
                 await new Promise(r => setTimeout(r, 1500));
                 await loadConfigFromSheet();
 
@@ -309,13 +335,51 @@
         function update() {
             const quizState = getQuizState(state.referenceTime);
 
+            // Fin du quiz
+            if (quizState.finished) {
+                showEndScreen();
+                return;
+            }
+
             if (quizState.questionIndex !== state.lastQuestionIndex) {
                 state.lastQuestionIndex = quizState.questionIndex;
+                state.lastPhase = null;
                 onQuestionChange(quizState);
             }
 
             updateTimers(quizState);
             updatePhase(quizState);
+
+            // Trigger calcul des scores à mi-phase explication
+            if (quizState.phase === 'explain' && quizState.explainProgress >= 0.5) {
+                const scoreKey = `${quizState.questionIndex}-${getCurrentTour(state.referenceTime)}`;
+                if (!state.scoreTriggered[scoreKey]) {
+                    state.scoreTriggered[scoreKey] = true;
+                    triggerScoreCalculation(quizState);
+                }
+            }
+        }
+
+        async function triggerScoreCalculation(quizState) {
+            const q = quizState.currentQuestion;
+            if (!q) return;
+            const tour = getCurrentTour(state.referenceTime);
+            console.log(`Calcul scores: question=${q.id}, tour=${tour}`);
+
+            try {
+                const response = await fetch(CONFIG.sheetUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'calculateTurnScore', questionId: q.id, tour: tour })
+                });
+                const result = await response.json();
+                console.log('Score calculé:', result);
+
+                // Forcer un refresh des scores immédiat
+                fetchData();
+            } catch (e) {
+                console.error('Erreur calcul score:', e);
+            }
         }
 
         function onQuestionChange(quizState) {
@@ -324,56 +388,61 @@
 
             $('q-num').textContent = quizState.questionIndex + 1;
             $('question-text').textContent = q.text;
-            
 
             const letters = ['A', 'B', 'C', 'D'];
             $('options-grid').innerHTML = q.options.map((opt, i) => `
                 <div class="option-card" data-index="${i}">
                     <div class="option-letter">${letters[i]}</div>
                     <div class="option-text">${opt}</div>
+                    <div class="option-count" id="count-${i}">0</div>
+                    <div class="option-bar-bg"><div class="option-bar-fill" id="bar-${i}" style="width:0%"></div></div>
                 </div>
             `).join('');
 
             $('info-section').classList.remove('active');
-            ['a','b','c','d'].forEach(l => { $(`resp-${l}`).textContent = '0'; $(`bar-${l}`).style.width = '0%'; });
         }
 
         function updateTimers(quizState) {
-    const timer = $('question-timer');
-    timer.textContent = formatTime(quizState.timeRemaining);
-    timer.className = 'question-timer';
-    if (quizState.phase === 'vote') {
-        if (quizState.timeRemaining <= 10) timer.classList.add('danger');
-        else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
-    }
+            const timer = $('question-timer');
+            timer.textContent = formatTime(quizState.timeRemaining);
+            timer.className = 'question-timer';
+            if (quizState.phase === 'vote') {
+                if (quizState.timeRemaining <= 10) timer.classList.add('danger');
+                else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
+            }
 
-    const elapsed = quizState.totalElapsed;
-    $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
-    
-    // Barre de temps
-    const totalCycle = SETTINGS.voteDuration + SETTINGS.explainDuration;
-    const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
-    const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
-    
-    $('timer-phase-label').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
-    $('timer-countdown').textContent = formatTime(quizState.timeRemaining);
-    
-    if (quizState.phase === 'vote') {
-        const elapsed = SETTINGS.voteDuration - quizState.timeRemaining;
-        const filledPercent = (elapsed / SETTINGS.voteDuration) * votePercent;
-        $('timer-bar-vote').style.width = `${votePercent - filledPercent}%`;
-        $('timer-bar-explain').style.width = `${explainPercent}%`;
-    } else {
-        const elapsed = SETTINGS.explainDuration - quizState.timeRemaining;
-        const filledPercent = (elapsed / SETTINGS.explainDuration) * explainPercent;
-        $('timer-bar-vote').style.width = '0%';
-        $('timer-bar-explain').style.width = `${explainPercent - filledPercent}%`;
-    }
-}
+            const elapsed = quizState.totalElapsed;
+            $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+
+            // Barre de temps
+            const totalCycle = SETTINGS.voteDuration + SETTINGS.explainDuration;
+            const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
+            const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
+
+            $('timer-phase-label').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
+            $('timer-countdown').textContent = formatTime(quizState.timeRemaining);
+
+            if (quizState.phase === 'vote') {
+                const el = SETTINGS.voteDuration - quizState.timeRemaining;
+                const filledPercent = (el / SETTINGS.voteDuration) * votePercent;
+                $('timer-bar-vote').style.width = `${votePercent - filledPercent}%`;
+                $('timer-bar-explain').style.width = `${explainPercent}%`;
+            } else {
+                const el = SETTINGS.explainDuration - quizState.timeRemaining;
+                const filledPercent = (el / SETTINGS.explainDuration) * explainPercent;
+                $('timer-bar-vote').style.width = '0%';
+                $('timer-bar-explain').style.width = `${explainPercent - filledPercent}%`;
+            }
+        }
 
         function updatePhase(quizState) {
             const q = quizState.currentQuestion;
             if (!q) return;
+
+            // Détecter transition de phase
+            if (quizState.phase !== state.lastPhase) {
+                state.lastPhase = quizState.phase;
+            }
 
             const badge = $('phase-badge');
             badge.className = `phase-indicator ${quizState.phase}`;
@@ -398,8 +467,11 @@
 
         async function fetchData() {
             try {
+                const tour = getCurrentTour(state.referenceTime);
+                const questionId = state.lastQuestionIndex + 1;
+
                 const [statsRes, participantsRes, scoresRes] = await Promise.all([
-                    fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${state.lastQuestionIndex + 1}`),
+                    fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
                     fetch(`${CONFIG.sheetUrl}?action=getParticipants`),
                     fetch(`${CONFIG.sheetUrl}?action=getScores`)
                 ]);
@@ -408,13 +480,15 @@
                 const participants = await participantsRes.json();
                 const scores = await scoresRes.json();
 
-                // Stats
+                // Stats intégrées aux options
                 const total = stats.total || 1;
-                ['a','b','c','d'].forEach((l, i) => {
+                for (let i = 0; i < 4; i++) {
                     const count = stats.counts[i] || 0;
-                    $(`resp-${l}`).textContent = count;
-                    $(`bar-${l}`).style.width = `${(count/total)*100}%`;
-                });
+                    const countEl = $(`count-${i}`);
+                    const barEl = $(`bar-${i}`);
+                    if (countEl) countEl.textContent = count;
+                    if (barEl) barEl.style.width = `${(count/total)*100}%`;
+                }
 
                 // Participants
                 $('total-participants').textContent = participants.counts.total;
@@ -422,25 +496,50 @@
                 $('members-red').textContent = participants.counts.red;
 
                 // Scores
+                const prevBlue = parseInt($('score-blue').dataset.prev || 0);
+                const prevRed = parseInt($('score-red').dataset.prev || 0);
+
                 $('score-blue').textContent = scores.blue;
-$('score-red').textContent = scores.red;
+                $('score-red').textContent = scores.red;
 
-// Animation si score change
-if (parseInt($('score-blue').dataset.prev || 0) < scores.blue) {
-    $('card-blue').classList.add('scoring');
-    setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
-}
-if (parseInt($('score-red').dataset.prev || 0) < scores.red) {
-    $('card-red').classList.add('scoring');
-    setTimeout(() => $('card-red').classList.remove('scoring'), 800);
-}
-$('score-blue').dataset.prev = scores.blue;
-$('score-red').dataset.prev = scores.red;
+                if (prevBlue < scores.blue) {
+                    $('card-blue').classList.add('scoring');
+                    setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
+                }
+                if (prevRed < scores.red) {
+                    $('card-red').classList.add('scoring');
+                    setTimeout(() => $('card-red').classList.remove('scoring'), 800);
+                }
+                $('score-blue').dataset.prev = scores.blue;
+                $('score-red').dataset.prev = scores.red;
 
-$('card-blue').classList.toggle('leading', scores.blue > scores.red);
-$('card-red').classList.toggle('leading', scores.red > scores.blue);
+                $('card-blue').classList.toggle('leading', scores.blue > scores.red);
+                $('card-red').classList.toggle('leading', scores.red > scores.blue);
 
             } catch (e) { console.error('Erreur fetch data:', e); }
+        }
+
+        function showEndScreen() {
+            $('main-screen').classList.remove('active');
+            $('end-screen').classList.add('active');
+
+            const blueScore = parseInt($('score-blue').textContent) || 0;
+            const redScore = parseInt($('score-red').textContent) || 0;
+
+            $('end-score-blue').textContent = blueScore;
+            $('end-score-red').textContent = redScore;
+
+            const winner = $('end-winner');
+            if (blueScore > redScore) {
+                winner.className = 'end-winner blue';
+                winner.textContent = '🚌 Victoire Équipe Bleue !';
+            } else if (redScore > blueScore) {
+                winner.className = 'end-winner red';
+                winner.textContent = '🚋 Victoire Équipe Rouge !';
+            } else {
+                winner.className = 'end-winner tie';
+                winner.textContent = '🤝 Égalité parfaite !';
+            }
         }
     </script>
 </body>
