@@ -365,50 +365,52 @@
         function update() {
     const quizState = getQuizState(state.referenceTime);
 
+    // Fin du quiz
     if (quizState.finished) {
         showEndScreen();
         return;
     }
 
+    // Nouvelle question
     if (quizState.questionIndex !== state.lastQuestionIndex) {
         state.lastQuestionIndex = quizState.questionIndex;
-        state.lastPhase = null;  // RESET à chaque nouvelle question
+        state.lastPhase = null;  // RESET important
         onQuestionChange(quizState);
     }
 
     updateTimers(quizState);
     updatePhase(quizState);
 
-    // DÉCLENCHEMENT SIMPLE: détection transition vote → explain
-    console.log('🔍 Check phase:', { 
-        current: quizState.phase, 
-        last: state.lastPhase,
-        questionIndex: quizState.questionIndex,
-        tour: getCurrentTour(state.referenceTime)
-    });
-    
+    // LOG DE DEBUG - TRÈS IMPORTANT
+    if (quizState.questionIndex === state.lastQuestionIndex) {  // Seulement si on est sur la même question
+        console.log('🔍 Phase check:', { 
+            current: quizState.phase, 
+            last: state.lastPhase,
+            Q: quizState.questionIndex + 1,
+            tour: getCurrentTour(state.referenceTime)
+        });
+    }
+
+    // DÉTECTION TRANSITION vote → explain
     if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
-        const scoreKey = `${quizState.questionIndex}-${getCurrentTour(state.referenceTime)}`;
+        const tour = getCurrentTour(state.referenceTime);
+        const scoreKey = `Q${quizState.questionIndex}-T${tour}`;
         
-        console.log('🎯 Transition VOTE → EXPLAIN détectée!', scoreKey);
+        console.log('🎯 🎯 🎯 TRANSITION VOTE → EXPLAIN détectée!', scoreKey);
         
         if (!state.scoreTriggered[scoreKey]) {
             state.scoreTriggered[scoreKey] = true;
             
-            console.log('⏰ Déclenchement calcul dans 3 secondes...');
+            console.log(`⏰ Lancement calcul scores dans 3s pour Question ${quizState.questionIndex + 1}, Tour ${tour}`);
             
             setTimeout(() => {
-                console.log('⏱️ 3 secondes écoulées, calcul des scores NOW!');
+                console.log('⏱️ GO! Calcul des scores maintenant...');
                 triggerScoreCalculation(quizState);
             }, 3000);
         } else {
-            console.log('⚠️ Score déjà déclenché pour', scoreKey);
+            console.log('⚠️ Score déjà calculé pour', scoreKey);
         }
     }
-    
-    // IMPORTANT : Mettre à jour lastPhase À LA FIN
-    state.lastPhase = quizState.phase;
-}
 
         async function triggerScoreCalculation(quizState) {
     const q = quizState.currentQuestion;
