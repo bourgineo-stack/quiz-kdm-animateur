@@ -411,6 +411,10 @@
             console.log('⚠️ Score déjà calculé pour', scoreKey);
         }
     }
+        
+    // MISE À JOUR lastPhase - TOUJOURS À LA FIN
+    state.lastPhase = quizState.phase;
+}
 
         async function triggerScoreCalculation(quizState) {
     const q = quizState.currentQuestion;
