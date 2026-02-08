@@ -407,12 +407,13 @@
     if (!q) return;
     const tour = getCurrentTour(state.referenceTime);
     
-    // DEBUG : afficher exactement ce qu'on envoie
-    const payload = { action: 'calculateTurnScore', questionId: q.id, tour: tour };
-    console.log('=== TRIGGER SCORE ===');
-    console.log('Payload:', JSON.stringify(payload));
-    console.log('q.id type:', typeof q.id, 'value:', q.id);
-    console.log('tour type:', typeof tour, 'value:', tour);
+    const payload = { 
+        action: 'calculateTurnScore', 
+        questionId: parseInt(q.id), 
+        tour: parseInt(tour) 
+    };
+    
+    console.log('🎯 TRIGGER SCORE:', payload);
 
     try {
         await fetch(CONFIG.sheetUrl, {
@@ -422,13 +423,22 @@
             body: JSON.stringify(payload)
         });
         
-        console.log('Calcul scores envoyé, vérification dans 2s et 5s...');
+        console.log('✅ Calcul envoyé, attente 3s puis fetch...');
         
-        // Double vérification avec délai
-        setTimeout(() => fetchData(), 2000);
-        setTimeout(() => fetchData(), 5000);
+        // Attendre que le serveur traite puis récupérer
+        setTimeout(() => {
+            console.log('⏱️ 3s écoulées, fetch data...');
+            fetchData();
+        }, 3000);
+        
+        // Double check après 6s
+        setTimeout(() => {
+            console.log('⏱️ 6s écoulées, re-fetch data...');
+            fetchData();
+        }, 6000);
+        
     } catch (e) {
-        console.error('Erreur calcul score:', e);
+        console.error('❌ Erreur calcul score:', e);
     }
 }
         
@@ -560,7 +570,15 @@
         // Scores
         const prevBlue = parseInt($('score-blue').dataset.prev || 0);
         const prevRed = parseInt($('score-red').dataset.prev || 0);
+const scores = await scoresRes.json();
 
+        // DEBUG SCORES - AJOUTER CES LIGNES
+        console.log('📊 Scores bruts reçus:', scores);
+        console.log('📊 Détails scores:', scores.details);
+        console.log('📊 Previous:', { 
+            prevBlue: parseInt($('score-blue').dataset.prev || 0), 
+            prevRed: parseInt($('score-red').dataset.prev || 0) 
+        });
         $('score-blue').textContent = scores.blue || 0;
         $('score-red').textContent = scores.red || 0;
 
