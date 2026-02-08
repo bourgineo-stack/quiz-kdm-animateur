@@ -390,7 +390,16 @@
             tour: getCurrentTour(state.referenceTime)
         });
     }
+// LOG DEBUG CONDITION
+    console.log('🧪 TEST:', {
+        'phase': quizState.phase,
+        'lastPhase': state.lastPhase,
+        'test explain': quizState.phase === 'explain',
+        'test vote': state.lastPhase === 'vote',
+        'CONDITION': (quizState.phase === 'explain' && state.lastPhase === 'vote')
+    });
 
+ 
     // DÉTECTION TRANSITION vote → explain
     if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
         const tour = getCurrentTour(state.referenceTime);
@@ -513,11 +522,6 @@
         function updatePhase(quizState) {
             const q = quizState.currentQuestion;
             if (!q) return;
-
-            // Détecter transition de phase
-            if (quizState.phase !== state.lastPhase) {
-                state.lastPhase = quizState.phase;
-            }
 
             const badge = $('phase-badge');
             badge.className = `phase-indicator ${quizState.phase}`;
