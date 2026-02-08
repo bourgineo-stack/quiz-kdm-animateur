@@ -365,7 +365,6 @@
         function update() {
     const quizState = getQuizState(state.referenceTime);
 
-    // Fin du quiz
     if (quizState.finished) {
         showEndScreen();
         return;
@@ -373,32 +372,41 @@
 
     if (quizState.questionIndex !== state.lastQuestionIndex) {
         state.lastQuestionIndex = quizState.questionIndex;
-        state.lastPhase = null;
+        state.lastPhase = null;  // RESET à chaque nouvelle question
         onQuestionChange(quizState);
     }
 
     updateTimers(quizState);
     updatePhase(quizState);
 
-    // DÉCLENCHEMENT SIMPLE: 3 secondes après le début de l'explication
+    // DÉCLENCHEMENT SIMPLE: détection transition vote → explain
+    console.log('🔍 Check phase:', { 
+        current: quizState.phase, 
+        last: state.lastPhase,
+        questionIndex: quizState.questionIndex,
+        tour: getCurrentTour(state.referenceTime)
+    });
+    
     if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
-        // Juste passé de vote à explain
         const scoreKey = `${quizState.questionIndex}-${getCurrentTour(state.referenceTime)}`;
+        
+        console.log('🎯 Transition VOTE → EXPLAIN détectée!', scoreKey);
+        
         if (!state.scoreTriggered[scoreKey]) {
             state.scoreTriggered[scoreKey] = true;
             
-            console.log('🎯 Transition VOTE → EXPLAIN détectée');
-            console.log(`Question ${quizState.questionIndex + 1}, Tour ${getCurrentTour(state.referenceTime)}`);
+            console.log('⏰ Déclenchement calcul dans 3 secondes...');
             
-            // Attendre 3 secondes pour laisser le temps aux votes de s'envoyer
             setTimeout(() => {
-                console.log('⏱️ 3 secondes écoulées, calcul des scores...');
+                console.log('⏱️ 3 secondes écoulées, calcul des scores NOW!');
                 triggerScoreCalculation(quizState);
             }, 3000);
+        } else {
+            console.log('⚠️ Score déjà déclenché pour', scoreKey);
         }
     }
     
-    // Garder en mémoire la phase précédente
+    // IMPORTANT : Mettre à jour lastPhase À LA FIN
     state.lastPhase = quizState.phase;
 }
 
