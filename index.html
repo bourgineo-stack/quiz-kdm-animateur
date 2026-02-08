@@ -387,6 +387,9 @@
         if (!state.scoreTriggered[scoreKey]) {
             state.scoreTriggered[scoreKey] = true;
             
+            console.log('🎯 Transition VOTE → EXPLAIN détectée');
+            console.log(`Question ${quizState.questionIndex + 1}, Tour ${getCurrentTour(state.referenceTime)}`);
+            
             // Attendre 3 secondes pour laisser le temps aux votes de s'envoyer
             setTimeout(() => {
                 console.log('⏱️ 3 secondes écoulées, calcul des scores...');
