@@ -113,12 +113,29 @@
         /* Options + répartition intégrée */
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
         .option-card {
-            background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 12px; padding: 0.6rem 0.8rem; display: flex; align-items: center; gap: 0.6rem; transition: all 0.3s ease;
-            position: relative; overflow: hidden;
-        }
-        .option-letter { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 800; flex-shrink: 0; }
-        .option-text { font-size: 0.95rem; font-weight: 600; flex: 1; }
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 12px; 
+    padding: 1rem 1.2rem;  /* ← Augmenté de 0.6rem à 1rem */
+    display: flex; align-items: center; gap: 0.8rem;  /* ← Augmenté de 0.6rem à 0.8rem */
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+    min-height: 60px;  /* ← Hauteur minimum pour plus de confort */
+}
+.option-letter { 
+    width: 40px; height: 40px;  /* ← Augmenté de 32px à 40px */
+    border-radius: 50%; background: rgba(255,255,255,0.2); 
+    display: flex; align-items: center; justify-content: center; 
+    font-size: 1.2rem;  /* ← Augmenté de 1rem à 1.2rem */
+    font-weight: 800; flex-shrink: 0; 
+}
+.option-text { 
+    font-size: 1.1rem;  /* ← Augmenté de 0.95rem à 1.1rem */
+    font-weight: 600; flex: 1; line-height: 1.4;  /* ← Meilleure lisibilité */
+}
+.option-count { 
+    font-size: 1rem;  /* ← Augmenté de 0.85rem à 1rem */
+    font-weight: 800; opacity: 0.8; min-width: 35px; text-align: right; 
+}
         .option-count { font-size: 0.85rem; font-weight: 800; opacity: 0.8; min-width: 30px; text-align: right; }
         .option-bar-bg { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.1); }
         .option-bar-fill { height: 100%; background: var(--divia-magenta); transition: width 0.4s ease; border-radius: 0 0 0 3px; }
@@ -172,7 +189,7 @@
 .info-overlay {
     display: none;
     position: fixed;
-    top: 0;
+    top: 80px;  /* ← Commence SOUS le header (au lieu de top: 0) */
     left: 0;
     right: 0;
     bottom: 0;
@@ -202,13 +219,17 @@
     border-bottom: 2px solid rgba(255,255,255,0.1);
 }
 
-.info-overlay-title {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--divia-magenta);
+.info-overlay-header {
     display: flex;
+    justify-content: flex-end;  /* ← Bouton à droite seulement */
     align-items: center;
-    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.info-overlay-title {
+    display: none;  /* ← Cache complètement le titre */
 }
 
 .info-overlay-close {
