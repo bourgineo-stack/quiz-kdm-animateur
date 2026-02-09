@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Éco-Quiz KDM - Animation</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
         :root {
             --divia-magenta: #D2007A;
@@ -427,6 +428,49 @@
         order: 3;
     }
 }
+        /* QR code dans l'écran de démarrage */
+.start-qr {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+#qr-code-start {
+    display: inline-block;
+    padding: 1rem;
+    background: white;
+    border: 4px solid var(--divia-magenta);
+    border-radius: 16px;
+    margin-bottom: 1rem;
+}
+
+#qr-code-start canvas {
+    display: block;
+}
+
+.start-qr-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.start-qr-url {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    word-break: break-all;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* QR dans le popup header */
+#qr-code-header {
+    display: inline-block;
+}
+
+#qr-code-header canvas {
+    display: block;
+    border: 3px solid var(--divia-magenta);
+    border-radius: 8px;
+}
     </style>
 </head>
 <body>
@@ -454,7 +498,7 @@
     <!-- Écran d'attente avec QR code -->
     <div id="ready-screen" style="display: none;">
         <div class="start-qr">
-            <img id="qr-code-start" alt="QR Code" />
+            <div id="qr-code-start"></div>
             <div class="start-qr-text">📱 Scannez pour rejoindre</div>
             <div class="start-qr-url">https://bourgineo-stack.github.io/quiz-kdm-participant/</div>
         </div>
@@ -504,7 +548,7 @@
             📱 QR Code
         </button>
         <div class="qr-code-popup" id="qr-popup">
-            <img id="qr-code-header" alt="QR Code" />
+            <div id="qr-code-header"></div>
             <div class="qr-code-url">bourgineo-stack.github.io/quiz-kdm-participant/</div>
         </div>
     </div>
@@ -595,22 +639,39 @@ const state = {
     scoreTriggered: {}, 
     preloadedContent: {},
     isFirstQuestion: true,  // ← NOUVEAU
+    isCountdown: false,
     configured: false        // ← NOUVEAU
 };
 
 // Génération QR code
-function generateQRCode() {
+function generateQRCodes() {
     const url = 'https://bourgineo-stack.github.io/quiz-kdm-participant/';
-    const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(url)}`;
     
     // QR dans l'écran de démarrage
-    if ($('qr-code-start')) {
-        $('qr-code-start').src = qrApiUrl;
+    const qrStart = $('qr-code-start');
+    if (qrStart) {
+        qrStart.innerHTML = ''; // Clear
+        new QRCode(qrStart, {
+            text: url,
+            width: 250,
+            height: 250,
+            colorDark: "#D2007A",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
     }
     
-    // QR dans le header
-    if ($('qr-code-header')) {
-        $('qr-code-header').src = qrApiUrl;
+    // QR dans le header (sera généré au premier affichage)
+    const qrHeader = $('qr-code-header');
+    if (qrHeader && qrHeader.innerHTML === '') {
+        new QRCode(qrHeader, {
+            text: url,
+            width: 200,
+            height: 200,
+            colorDark: "#D2007A",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
     }
 }
 
@@ -787,65 +848,62 @@ async function startQuizLoop() {
         }
 
         function update() {
+    const now = Date.now();
+    
+    // COUNTDOWN 5 secondes
+    if (state.isCountdown) {
+        const remaining = Math.ceil((state.referenceTime - now) / 1000);
+        
+        if (remaining > 0) {
+            // Afficher le countdown
+            $('question-text').textContent = `Le quiz commence dans ${remaining} seconde${remaining > 1 ? 's' : ''}...`;
+            $('question-timer').textContent = remaining;
+            $('question-timer').className = 'question-timer warning';
+            $('phase-badge').textContent = '⏱️ Préparation';
+            $('phase-badge').className = 'phase-indicator vote';
+            $('q-num').textContent = '1';
+            $('options-grid').innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; font-size: 1.2rem; opacity: 0.7;">
+                    📋 Préparez-vous à voter !<br>
+                    <small style="font-size: 0.9rem; opacity: 0.6;">10 questions • Vote par équipe • Durée ${SETTINGS.voteDuration}s par question</small>
+                </div>
+            `;
+            return;
+        } else {
+            // Fin du countdown
+            state.isCountdown = false;
+            console.log('🎬 Fin du countdown, début du quiz');
+        }
+    }
+    
+    // QUIZ NORMAL
     const quizState = getQuizState(state.referenceTime);
 
-    // Fin du quiz
     if (quizState.finished) {
         showEndScreen();
         return;
     }
 
-    // Nouvelle question
     if (quizState.questionIndex !== state.lastQuestionIndex) {
         state.lastQuestionIndex = quizState.questionIndex;
-        state.lastPhase = null;  // RESET important
+        state.lastPhase = null;
         onQuestionChange(quizState);
     }
 
     updateTimers(quizState);
     updatePhase(quizState);
 
-    // LOG DE DEBUG - TRÈS IMPORTANT
-    if (quizState.questionIndex === state.lastQuestionIndex) {  // Seulement si on est sur la même question
-        console.log('🔍 Phase check:', { 
-            current: quizState.phase, 
-            last: state.lastPhase,
-            Q: quizState.questionIndex + 1,
-            tour: getCurrentTour(state.referenceTime)
-        });
-    }
-// LOG DEBUG CONDITION
-    console.log('🧪 TEST:', {
-        'phase': quizState.phase,
-        'lastPhase': state.lastPhase,
-        'test explain': quizState.phase === 'explain',
-        'test vote': state.lastPhase === 'vote',
-        'CONDITION': (quizState.phase === 'explain' && state.lastPhase === 'vote')
-    });
-
- 
-    // DÉTECTION TRANSITION vote → explain
+    // Détection transition vote → explain
     if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
         const tour = getCurrentTour(state.referenceTime);
         const scoreKey = `Q${quizState.questionIndex}-T${tour}`;
         
-        console.log('🎯 🎯 🎯 TRANSITION VOTE → EXPLAIN détectée!', scoreKey);
-        
         if (!state.scoreTriggered[scoreKey]) {
             state.scoreTriggered[scoreKey] = true;
-            
-            console.log(`⏰ Lancement calcul scores dans 3s pour Question ${quizState.questionIndex + 1}, Tour ${tour}`);
-            
-            setTimeout(() => {
-                console.log('⏱️ GO! Calcul des scores maintenant...');
-                triggerScoreCalculation(quizState);
-            }, 3000);
-        } else {
-            console.log('⚠️ Score déjà calculé pour', scoreKey);
+            setTimeout(() => triggerScoreCalculation(quizState), 3000);
         }
     }
-        
-    // MISE À JOUR lastPhase - TOUJOURS À LA FIN
+    
     state.lastPhase = quizState.phase;
 }
 
