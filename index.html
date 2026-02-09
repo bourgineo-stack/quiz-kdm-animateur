@@ -165,6 +165,9 @@
             .scoreboard, .options-grid { grid-template-columns: 1fr; }
             .question-text { font-size: 1.3rem; }
         }
+        @keyframes spin {
+    to { transform: rotate(360deg); }
+}
     </style>
 </head>
 <body>
@@ -274,7 +277,7 @@
 
     <script src="config.js"></script>
     <script>
-        const state = { mode: null, referenceTime: null, lastQuestionIndex: -1, lastPhase: null, scoreTriggered: {} };
+        const state = { mode: null, referenceTime: null, lastQuestionIndex: -1, lastPhase: null, scoreTriggered: {}, preloadedContent: {} };
         const $ = id => document.getElementById(id);
 
         // Init
@@ -467,24 +470,30 @@
         
 
         function onQuestionChange(quizState) {
-            const q = quizState.currentQuestion;
-            if (!q) return;
+    const q = quizState.currentQuestion;
+    if (!q) return;
 
-            $('q-num').textContent = quizState.questionIndex + 1;
-            $('question-text').textContent = q.text;
+    console.log(`📌 Nouvelle question: Q${quizState.questionIndex + 1}`);
 
-            const letters = ['A', 'B', 'C', 'D'];
-            $('options-grid').innerHTML = q.options.map((opt, i) => `
-                <div class="option-card" data-index="${i}">
-                    <div class="option-letter">${letters[i]}</div>
-                    <div class="option-text">${opt}</div>
-                    <div class="option-count" id="count-${i}">0</div>
-                    <div class="option-bar-bg"><div class="option-bar-fill" id="bar-${i}" style="width:0%"></div></div>
-                </div>
-            `).join('');
+    $('q-num').textContent = quizState.questionIndex + 1;
+    $('question-text').textContent = q.text;
 
-            $('info-section').classList.remove('active');
-        }
+    const letters = ['A', 'B', 'C', 'D'];
+    $('options-grid').innerHTML = q.options.map((opt, i) => `
+        <div class="option-card" data-index="${i}">
+            <div class="option-letter">${letters[i]}</div>
+            <div class="option-text">${opt}</div>
+            <div class="option-count" id="count-${i}">0</div>
+            <div class="option-bar-bg"><div class="option-bar-fill" id="bar-${i}" style="width:0%"></div></div>
+        </div>
+    `).join('');
+
+    // Masquer l'info au changement de question
+    $('info-section').classList.remove('active');
+    
+    // 🚀 PRÉCHARGER LE CONTENU pendant la phase de vote
+    preloadQuestionInfo(q);
+}
 
         function updateTimers(quizState) {
             const timer = $('question-timer');
@@ -520,22 +529,30 @@
         }
 
         function updatePhase(quizState) {
-            const q = quizState.currentQuestion;
-            if (!q) return;
+    const q = quizState.currentQuestion;
+    if (!q) return;
 
-            const badge = $('phase-badge');
-            badge.className = `phase-indicator ${quizState.phase}`;
-            badge.textContent = quizState.phase === 'vote' ? '⏱️ Vote en cours' : '💡 Explication';
+    const badge = $('phase-badge');
+    badge.className = `phase-indicator ${quizState.phase}`;
+    badge.textContent = quizState.phase === 'vote' ? '⏱️ Vote en cours' : '💡 Explication';
 
-            if (quizState.phase === 'explain') {
-                revealAnswer(q.correct);
-                $('info-section').classList.add('active');
-                $('info-body').innerHTML = q.info || '<p>Information non disponible.</p>';
-            } else {
-                document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-                $('info-section').classList.remove('active');
-            }
+    if (quizState.phase === 'explain') {
+        revealAnswer(q.correct);
+        displayQuestionInfo(q);
+        $('info-section').classList.add('active');
+        
+        // 🚀 BONUS: Précharger la prochaine question pendant l'explication
+        const nextIndex = quizState.questionIndex + 1;
+        if (nextIndex < QUESTIONS.length) {
+            const nextQuestion = QUESTIONS[nextIndex];
+            preloadQuestionInfo(nextQuestion);
+            console.log(`🔮 Préchargement anticipé de Q${nextIndex + 1}`);
         }
+    } else {
+        document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
+        $('info-section').classList.remove('active');
+    }
+}
 
         function revealAnswer(correctIndex) {
             document.querySelectorAll('.option-card').forEach((card, i) => {
@@ -635,6 +652,76 @@
                 winner.textContent = '🤝 Égalité parfaite !';
             }
         }
+        /**
+ * Précharge le contenu HTML d'une question depuis GitHub
+ * Appelé pendant la phase de vote pour éviter toute latence
+ */
+async function preloadQuestionInfo(question) {
+    if (!question || !question.infoUrl) {
+        console.log('⚠️ Pas d\'URL info pour cette question');
+        return null;
+    }
+
+    // Si déjà en cache, ne pas recharger
+    if (state.preloadedContent[question.id]) {
+        console.log(`✅ Contenu Q${question.id} déjà en cache`);
+        return state.preloadedContent[question.id];
+    }
+
+    try {
+        console.log(`🔄 Préchargement contenu Q${question.id}...`);
+        
+        const response = await fetch(question.infoUrl);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        
+        const html = await response.text();
+        
+        // Stocker en cache
+        state.preloadedContent[question.id] = html;
+        
+        console.log(`✅ Contenu Q${question.id} préchargé et mis en cache`);
+        return html;
+        
+    } catch (error) {
+        console.error(`❌ Erreur préchargement Q${question.id}:`, error);
+        
+        // Fallback sur le champ info si disponible
+        if (question.info) {
+            console.log(`↩️ Fallback sur le champ info pour Q${question.id}`);
+            state.preloadedContent[question.id] = question.info;
+            return question.info;
+        }
+        
+        return `<p style="color:#E53935; text-align:center;">⚠️ Impossible de charger le contenu pédagogique.<br><small style="opacity:0.7;">${error.message}</small></p>`;
+    }
+}
+
+/**
+ * Affiche le contenu préchargé (ou charge si pas encore fait)
+ */
+function displayQuestionInfo(question) {
+    const content = state.preloadedContent[question.id];
+    
+    if (content) {
+        // Contenu déjà en cache
+        $('info-body').innerHTML = content;
+        console.log(`📺 Affichage contenu Q${question.id} depuis le cache`);
+    } else {
+        // Pas encore préchargé (normalement ne devrait pas arriver)
+        console.warn(`⚠️ Contenu Q${question.id} pas préchargé, chargement à la volée...`);
+        $('info-body').innerHTML = `
+            <div style="text-align:center; padding:2rem;">
+                <div style="font-size:2rem; animation: spin 1s linear infinite;">⏳</div>
+                <div style="margin-top:0.5rem;">Chargement...</div>
+            </div>
+        `;
+        
+        // Charger à la volée
+        preloadQuestionInfo(question).then(html => {
+            if (html) $('info-body').innerHTML = html;
+        });
+    }
+}
     </script>
 </body>
 </html>
