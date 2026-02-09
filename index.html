@@ -155,7 +155,7 @@
         .end-team-score.blue { color: var(--team-blue); }
         .end-team-score.red { color: var(--team-red); }
         .end-team-label { font-size: 1.2rem; font-weight: 700; opacity: 0.8; }
-        .end-winner { font-size: 1.5rem; font-weight: 800; margin-top: 1rem; padding: 1rem 2rem; border-radius: 20px; }
+        .end-winner { font-size: 1.5rem; font-weight: 800; margin-top: 1rem; padding: 1rem 2rem; border-radius: 20px; }</body>
         .end-winner.blue { background: rgba(30, 136, 229, 0.3); color: var(--team-blue); }
         .end-winner.red { background: rgba(229, 57, 53, 0.3); color: var(--team-red); }
         .end-winner.tie { background: rgba(255,255,255,0.1); }
@@ -167,6 +167,134 @@
         }
         @keyframes spin {
     to { transform: rotate(360deg); }
+}
+        /* Overlay modal pour les infos pédagogiques */
+.info-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 16, 48, 0.95);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.info-overlay.active {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.info-overlay-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255,255,255,0.1);
+}
+
+.info-overlay-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--divia-magenta);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-overlay-close {
+    background: rgba(255,255,255,0.1);
+    border: 2px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.info-overlay-close:hover {
+    background: var(--team-red);
+    border-color: white;
+}
+
+.info-overlay-content {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Modifier l'ancienne section info pour la cacher */
+.info-section {
+    display: none !important;
+}
+        .header-center {
+    flex: 1;
+    max-width: 400px;
+    margin: 0 1rem;
+}
+
+.timer-bar-compact {
+    background: rgba(0,0,0,0.3);
+    border-radius: 12px;
+    padding: 0.5rem 0.8rem;
+}
+
+.timer-bar-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.timer-bar-track {
+    height: 12px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+}
+
+.timer-bar-vote-top {
+    background: var(--warning);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.timer-bar-explain-top {
+    background: var(--success);
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Responsive : ajuster pour petits écrans */
+@media (max-width: 900px) {
+    .header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .header-center {
+        width: 100%;
+        max-width: none;
+        order: 3;
+    }
 }
     </style>
 </head>
@@ -197,15 +325,30 @@
     <!-- Main -->
     <div class="main-screen" id="main-screen">
         <header class="header">
-            <div class="header-left">
-                <div class="logo">🌱 Éco-<span>Quiz</span></div>
-                <div class="mode-badge" id="mode-badge">Mode Atelier</div>
+    <div class="header-left">
+        <div class="logo">🌱 Éco-<span>Quiz</span></div>
+        <div class="mode-badge" id="mode-badge">Mode Atelier</div>
+    </div>
+    
+    <!-- NOUVEAU : Barre de progression au centre -->
+    <div class="header-center">
+        <div class="timer-bar-compact">
+            <div class="timer-bar-labels">
+                <span id="timer-phase-label-top">⏱️ Vote</span>
+                <span id="timer-countdown-top">2:00</span>
             </div>
-            <div class="header-right">
-                <div class="participants">👥 <span id="total-participants">0</span> participants</div>
-                <div class="master-timer" id="master-timer">00:00</div>
+            <div class="timer-bar-track">
+                <div class="timer-bar-vote-top" id="timer-bar-vote-top" style="width: 66.6%"></div>
+                <div class="timer-bar-explain-top" id="timer-bar-explain-top" style="width: 33.3%"></div>
             </div>
-        </header>
+        </div>
+    </div>
+    
+    <div class="header-right">
+        <div class="participants">👥 <span id="total-participants">0</span> participants</div>
+        <div class="master-timer" id="master-timer">00:00</div>
+    </div>
+</header>
 
         <main class="main-layout">
             <section class="scoreboard">
@@ -242,17 +385,6 @@
             <section class="info-section" id="info-section">
                 <div class="info-header">💡 Le saviez-vous ?</div>
                 <div class="info-body" id="info-body"></div>
-            </section>
-
-            <section class="timer-bar-section">
-                <div class="timer-bar-label">
-                    <span id="timer-phase-label">⏱️ Vote</span>
-                    <span id="timer-countdown">2:00</span>
-                </div>
-                <div class="timer-bar">
-                    <div class="timer-bar-vote" id="timer-bar-vote" style="width: 66.6%"></div>
-                    <div class="timer-bar-explain" id="timer-bar-explain" style="width: 33.3%"></div>
-                </div>
             </section>
         </main>
     </div>
@@ -496,37 +628,37 @@
 }
 
         function updateTimers(quizState) {
-            const timer = $('question-timer');
-            timer.textContent = formatTime(quizState.timeRemaining);
-            timer.className = 'question-timer';
-            if (quizState.phase === 'vote') {
-                if (quizState.timeRemaining <= 10) timer.classList.add('danger');
-                else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
-            }
+    const timer = $('question-timer');
+    timer.textContent = formatTime(quizState.timeRemaining);
+    timer.className = 'question-timer';
+    if (quizState.phase === 'vote') {
+        if (quizState.timeRemaining <= 10) timer.classList.add('danger');
+        else if (quizState.timeRemaining <= 30) timer.classList.add('warning');
+    }
 
-            const elapsed = quizState.totalElapsed;
-            $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+    const elapsed = quizState.totalElapsed;
+    $('master-timer').textContent = `${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
 
-            // Barre de temps
-            const totalCycle = SETTINGS.voteDuration + SETTINGS.explainDuration;
-            const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
-            const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
+    // Mise à jour de la barre de progression dans le header
+    const totalCycle = SETTINGS.voteDuration + SETTINGS.explainDuration;
+    const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
+    const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
 
-            $('timer-phase-label').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
-            $('timer-countdown').textContent = formatTime(quizState.timeRemaining);
+    $('timer-phase-label-top').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
+    $('timer-countdown-top').textContent = formatTime(quizState.timeRemaining);
 
-            if (quizState.phase === 'vote') {
-                const el = SETTINGS.voteDuration - quizState.timeRemaining;
-                const filledPercent = (el / SETTINGS.voteDuration) * votePercent;
-                $('timer-bar-vote').style.width = `${votePercent - filledPercent}%`;
-                $('timer-bar-explain').style.width = `${explainPercent}%`;
-            } else {
-                const el = SETTINGS.explainDuration - quizState.timeRemaining;
-                const filledPercent = (el / SETTINGS.explainDuration) * explainPercent;
-                $('timer-bar-vote').style.width = '0%';
-                $('timer-bar-explain').style.width = `${explainPercent - filledPercent}%`;
-            }
-        }
+    if (quizState.phase === 'vote') {
+        const el = SETTINGS.voteDuration - quizState.timeRemaining;
+        const filledPercent = (el / SETTINGS.voteDuration) * votePercent;
+        $('timer-bar-vote-top').style.width = `${votePercent - filledPercent}%`;
+        $('timer-bar-explain-top').style.width = `${explainPercent}%`;
+    } else {
+        const el = SETTINGS.explainDuration - quizState.timeRemaining;
+        const filledPercent = (el / SETTINGS.explainDuration) * explainPercent;
+        $('timer-bar-vote-top').style.width = '0%';
+        $('timer-bar-explain-top').style.width = `${explainPercent - filledPercent}%`;
+    }
+}
 
         function updatePhase(quizState) {
     const q = quizState.currentQuestion;
@@ -538,10 +670,12 @@
 
     if (quizState.phase === 'explain') {
         revealAnswer(q.correct);
-        displayQuestionInfo(q);
-        $('info-section').classList.add('active');
         
-        // 🚀 BONUS: Précharger la prochaine question pendant l'explication
+        // Afficher le contenu en overlay
+        displayQuestionInfo(q);
+        $('info-overlay').classList.add('active');
+        
+        // Précharger la prochaine question
         const nextIndex = quizState.questionIndex + 1;
         if (nextIndex < QUESTIONS.length) {
             const nextQuestion = QUESTIONS[nextIndex];
@@ -550,7 +684,7 @@
         }
     } else {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        $('info-section').classList.remove('active');
+        $('info-overlay').classList.remove('active');
     }
 }
 
@@ -704,12 +838,12 @@ function displayQuestionInfo(question) {
     
     if (content) {
         // Contenu déjà en cache
-        $('info-body').innerHTML = content;
+        $('info-body-overlay').innerHTML = content;
         console.log(`📺 Affichage contenu Q${question.id} depuis le cache`);
     } else {
-        // Pas encore préchargé (normalement ne devrait pas arriver)
+        // Pas encore préchargé
         console.warn(`⚠️ Contenu Q${question.id} pas préchargé, chargement à la volée...`);
-        $('info-body').innerHTML = `
+        $('info-body-overlay').innerHTML = `
             <div style="text-align:center; padding:2rem;">
                 <div style="font-size:2rem; animation: spin 1s linear infinite;">⏳</div>
                 <div style="margin-top:0.5rem;">Chargement...</div>
@@ -718,10 +852,50 @@ function displayQuestionInfo(question) {
         
         // Charger à la volée
         preloadQuestionInfo(question).then(html => {
-            if (html) $('info-body').innerHTML = html;
+            if (html) $('info-body-overlay').innerHTML = html;
         });
     }
 }
+        // Fermeture de l'overlay info
+document.addEventListener('DOMContentLoaded', () => {
+    // Fermeture au clic sur le bouton ✕
+    $('info-overlay-close').addEventListener('click', () => {
+        $('info-overlay').classList.remove('active');
+    });
+    
+    // Fermeture au clic sur le fond noir (optionnel)
+    $('info-overlay').addEventListener('click', (e) => {
+        if (e.target.id === 'info-overlay') {
+            $('info-overlay').classList.remove('active');
+        }
+    });
+    
+    // Fermeture avec la touche Échap (optionnel)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) {
+            $('info-overlay').classList.remove('active');
+        }
+    });
+});
     </script>
-</body>
+  <!-- Overlay info pédagogique -->
+    <div class="info-overlay" id="info-overlay">
+        <div class="info-overlay-header">
+            <div class="info-overlay-title">
+                💡 Le saviez-vous ?
+            </div>
+            <button class="info-overlay-close" id="info-overlay-close">
+                ✕ Fermer
+            </button>
+        </div>
+        <div class="info-overlay-content">
+            <div class="info-body" id="info-body-overlay">
+                <div style="text-align:center; padding:2rem;">
+                    <div style="font-size:2rem;">⏳</div>
+                    <div>Chargement du contenu...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>  
 </html>
