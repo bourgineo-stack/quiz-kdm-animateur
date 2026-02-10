@@ -720,7 +720,7 @@ async function configureQuiz() {
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-                action: 'resetStartTime'  // ← NOUVELLE ACTION
+                action: 'resetStartTime'
             })
         });
 
@@ -729,15 +729,18 @@ async function configureQuiz() {
         // Attendre que le Sheet soit à jour
         await new Promise(r => setTimeout(r, 1000));
 
-        // Ensuite configurer le mode session
+        // ✅ SEULEMENT ÉCRIRE LE MODE (sans startTime)
         await fetch(CONFIG.sheetUrl, {
             method: 'POST', 
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'startSession', mode: 'session' })
+            body: JSON.stringify({ 
+                action: 'setMode',  // ← NOUVELLE ACTION
+                mode: 'session' 
+            })
         });
 
-        console.log('✅ Session configurée en mode attente (sans startTime)');
+        console.log('✅ Mode session configuré (sans startTime)');
         
         // Afficher l'écran d'attente
         $('mode-selector').style.display = 'none';
