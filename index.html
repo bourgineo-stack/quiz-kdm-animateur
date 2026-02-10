@@ -708,13 +708,28 @@ async function configureQuiz() {
     $('btn-configure').textContent = '⏳ Configuration...';
 
     try {
-        // Pour le mode loop, démarrer immédiatement comme avant
+        // Pour le mode loop, démarrer immédiatement
         if (state.mode === 'loop') {
             await startQuizLoop();
             return;
         }
 
-        // Pour le mode session, préparer sans démarrer
+        // ✅ MODE SESSION : EFFACER le startTime pour réinitialiser
+        await fetch(CONFIG.sheetUrl, {
+            method: 'POST', 
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                action: 'resetStartTime'  // ← NOUVELLE ACTION
+            })
+        });
+
+        console.log('🗑️ StartTime effacé');
+        
+        // Attendre que le Sheet soit à jour
+        await new Promise(r => setTimeout(r, 1000));
+
+        // Ensuite configurer le mode session
         await fetch(CONFIG.sheetUrl, {
             method: 'POST', 
             mode: 'no-cors',
@@ -722,17 +737,17 @@ async function configureQuiz() {
             body: JSON.stringify({ action: 'startSession', mode: 'session' })
         });
 
-        console.log('✅ Session configurée en mode attente');
+        console.log('✅ Session configurée en mode attente (sans startTime)');
         
         // Afficher l'écran d'attente
         $('mode-selector').style.display = 'none';
         $('btn-configure').style.display = 'none';
+        $('loading-info').style.display = 'none';
         $('ready-screen').style.display = 'block';
-        $('loading-info').textContent = '✓ En attente du démarrage...';
         
         state.configured = true;
         
-        // Rafraîchir le compteur de participants toutes les 2s
+        // Rafraîchir le compteur
         setInterval(updateReadyCount, 2000);
         updateReadyCount();
         
