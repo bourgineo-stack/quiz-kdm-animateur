@@ -801,7 +801,13 @@ async function updateReadyCount() {
     try {
         const response = await fetch(`${CONFIG.sheetUrl}?action=getParticipants`);
         const data = await response.json();
-        $('ready-count').textContent = data.counts.total || 0;
+        
+        // ✅ En phase d'attente, compter TOUS les participants (actifs + inactifs)
+        const totalWaiting = data.counts.grandTotal || data.counts.total || 0;
+        
+        console.log('📊 Participants en attente:', totalWaiting, 'détails:', data.counts);
+        
+        $('ready-count').textContent = totalWaiting;
     } catch (e) {
         console.error('Erreur comptage participants:', e);
     }
