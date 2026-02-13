@@ -934,7 +934,7 @@ async function startQuizLoop() {
         function startLoop() {
             update();
             setInterval(update, 500);
-            setInterval(fetchData, 3000);
+            setInterval(fetchData, 2000);
         }
 
         function update() {
@@ -983,16 +983,17 @@ async function startQuizLoop() {
     updateTimers(quizState);
     updatePhase(quizState);
 
-    // Détection transition vote → explain
-    if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
-        const tour = getCurrentTour(state.referenceTime);
-        const scoreKey = `Q${quizState.questionIndex}-T${tour}`;
-        
-        if (!state.scoreTriggered[scoreKey]) {
-            state.scoreTriggered[scoreKey] = true;
-            setTimeout(() => triggerScoreCalculation(quizState), 3000);
-        }
+   // Détection transition vote → explain
+if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
+    const tour = getCurrentTour(state.referenceTime);
+    const scoreKey = `Q${quizState.questionIndex}-T${tour}`;
+    
+    if (!state.scoreTriggered[scoreKey]) {
+        state.scoreTriggered[scoreKey] = true;
+        // ✅ IMMÉDIAT au lieu de setTimeout 3s
+        triggerScoreCalculation(quizState);
     }
+}
     
     state.lastPhase = quizState.phase;
 }
@@ -1018,19 +1019,13 @@ async function startQuizLoop() {
             body: JSON.stringify(payload)
         });
         
-        console.log('✅ Calcul envoyé, attente 3s puis fetch...');
+        console.log('✅ Calcul envoyé');
         
-        // Attendre que le serveur traite puis récupérer
-        setTimeout(() => {
-            console.log('⏱️ 3s écoulées, fetch data...');
-            fetchData();
-        }, 3000);
-        
-        // Double check après 6s
-        setTimeout(() => {
-            console.log('⏱️ 6s écoulées, re-fetch data...');
-            fetchData();
-        }, 6000);
+        // ✅ NOUVEAU : Fetch immédiat + répété
+        fetchData();  // Immédiat
+        setTimeout(() => fetchData(), 1000);  // +1s
+        setTimeout(() => fetchData(), 2000);  // +2s
+        setTimeout(() => fetchData(), 3000);  // +3s
         
     } catch (e) {
         console.error('❌ Erreur calcul score:', e);
