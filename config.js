@@ -11,7 +11,7 @@ let SETTINGS = {
     voteDuration: 120,
     explainDuration: 60,
     mode: 'session',
-    startTime: null
+    startTime: null,
     firstQuestionDelay: 120  // ← NOUVEAU : 2 minutes pour les consignes
 };
 
