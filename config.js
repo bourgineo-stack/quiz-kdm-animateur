@@ -12,6 +12,7 @@ let SETTINGS = {
     explainDuration: 60,
     mode: 'session',
     startTime: null
+    firstQuestionDelay: 120  // ← NOUVEAU : 2 minutes pour les consignes
 };
 
 /**
@@ -31,6 +32,7 @@ async function loadConfigFromSheet() {
         SETTINGS.explainDuration = parseInt(data.settings.explainDuration) || 60;
         SETTINGS.mode = data.settings.mode || 'session';
         SETTINGS.startTime = data.settings.startTime ? parseInt(data.settings.startTime) : null;
+        SETTINGS.firstQuestionDelay = parseInt(data.settings.firstQuestionDelay) || 0;  // ← NOUVEAU
 
         QUESTIONS = data.questions || [];
 
