@@ -253,6 +253,10 @@
         .option-card.wrong { opacity: 0.4; }
 
         /* Info */
+
+        .info-section {
+    display: none !important;  /* ← Masquer définitivement l'ancienne */
+}
         .info-section { display: none; background: rgba(0,0,0,0.3); border-radius: 16px; overflow: hidden; }
         .info-section.active { display: block; }
         .info-header { background: var(--success); padding: 0.8rem 1.5rem; font-size: 1.1rem; font-weight: 700; }
@@ -1100,17 +1104,23 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
         // ✅ Révéler la réponse immédiatement
         revealAnswer(q.correct);
         
-        // ✅ Afficher l'info après 3 secondes
-        setTimeout(() => {
-            const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
-            $('info-body').innerHTML = content;
-            $('info-section').classList.add('active');
-        }, 3000);
+        // ✅ Vérifier si overlay déjà affiché pour cette question
+        const overlayActive = $('info-overlay').classList.contains('active');
+        
+        if (!overlayActive) {
+            // Attendre 3 secondes avant d'afficher l'overlay
+            setTimeout(() => {
+                const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
+                $('info-body-overlay').innerHTML = content;
+                $('info-overlay').classList.add('active');
+                console.log('✅ Overlay affiché');
+            }, 3000);
+        }
         
     } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        $('info-section').classList.remove('active');
+        $('info-overlay').classList.remove('active');
     }
 }
 
