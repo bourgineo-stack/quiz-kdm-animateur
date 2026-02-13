@@ -247,9 +247,7 @@
     font-size: 1rem;  /* ← Augmenté de 0.85rem à 1rem */
     font-weight: 800; opacity: 0.8; min-width: 35px; text-align: right; 
 }
-        .option-count { font-size: 0.85rem; font-weight: 800; opacity: 0.8; min-width: 30px; text-align: right; }
-        .option-bar-bg { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: rgba(255,255,255,0.1); }
-        .option-bar-fill { height: 100%; background: var(--divia-magenta); transition: width 0.4s ease; border-radius: 0 0 0 3px; }
+       
         .option-card.correct { background: var(--success); border-color: var(--success); transform: scale(1.02); }
         .option-card.correct .option-bar-fill { background: rgba(255,255,255,0.4); }
         .option-card.wrong { opacity: 0.4; }
@@ -1051,13 +1049,12 @@ async function startQuizLoop() {
 
     const letters = ['A', 'B', 'C', 'D'];
     $('options-grid').innerHTML = q.options.map((opt, i) => `
-        <div class="option-card" data-index="${i}">
-            <div class="option-letter">${letters[i]}</div>
-            <div class="option-text">${opt}</div>
-            <div class="option-count" id="count-${i}">0</div>
-            <div class="option-bar-bg"><div class="option-bar-fill" id="bar-${i}" style="width:0%"></div></div>
-        </div>
-    `).join('');
+    <div class="option-card" data-index="${i}">
+        <div class="option-letter">${letters[i]}</div>
+        <div class="option-text">${opt}</div>
+        <!-- Compteurs et barres supprimés -->
+    </div>
+`).join('');
 
     // Masquer l'info au changement de question
     $('info-section').classList.remove('active');
@@ -1158,15 +1155,7 @@ async function startQuizLoop() {
 
         console.log('📊 Stats reçues:', stats);
 
-        // Mise à jour des barres de statistiques
-        const total = stats.total || 1;
-        for (let i = 0; i < 4; i++) {
-            const count = stats.counts ? stats.counts[i] : 0;
-            const countEl = $(`count-${i}`);
-            const barEl = $(`bar-${i}`);
-            if (countEl) countEl.textContent = count;
-            if (barEl) barEl.style.width = `${(count / total) * 100}%`;
-        }
+       
 
         // Mise à jour des participants
         $('total-participants').textContent = participants.counts.total || 0;
