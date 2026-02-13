@@ -1108,11 +1108,14 @@ async function startQuizLoop() {
     badge.textContent = quizState.phase === 'vote' ? '⏱️ Vote en cours' : '💡 Explication';
 
     if (quizState.phase === 'explain') {
+        // ✅ Révéler la réponse immédiatement
         revealAnswer(q.correct);
         
-        // Afficher le contenu en overlay
-        displayQuestionInfo(q);
-        $('info-overlay').classList.add('active');
+        // ✅ NOUVEAU : Attendre 5 secondes avant d'afficher l'overlay
+        setTimeout(() => {
+            displayQuestionInfo(q);
+            $('info-overlay').classList.add('active');
+        }, 5000);  // ← 5 secondes de délai
         
         // Précharger la prochaine question
         const nextIndex = quizState.questionIndex + 1;
