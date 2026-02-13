@@ -471,11 +471,44 @@
     border: 3px solid var(--divia-magenta);
     border-radius: 8px;
 }
+
+.btn-reset-corner {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(229, 57, 53, 0.15);
+    border: 2px solid rgba(229, 57, 53, 0.3);
+    color: var(--team-red);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.btn-reset-corner:hover {
+    background: rgba(229, 57, 53, 0.25);
+    border-color: var(--team-red);
+    transform: translateY(-2px);
+}
+
+.btn-reset-corner:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+        
     </style>
 </head>
 <body>
     <!-- Start -->
     <div class="start-screen" id="start-screen">
+         <button class="btn-reset-corner" id="btn-reset" onclick="resetQuiz()">
+        🗑️ Reset
+    </button>
     <div class="start-logo">🌱</div>
     <h1 class="start-title">Éco-<span>Quiz</span></h1>
     <p class="start-subtitle">Keolis Dijon Métropole — Interface Animateur</p>
@@ -493,10 +526,6 @@
         </div>
     </div>
    
-<button class="btn btn-secondary" id="btn-reset" onclick="resetQuiz()" 
-        style="background: var(--team-red); margin-top: 1rem;">
-    🗑️ Réinitialiser l'atelier
-</button>
 
     <button class="btn btn-primary" id="btn-configure" onclick="configureQuiz()" disabled>⚙️ Configurer</button>
     
