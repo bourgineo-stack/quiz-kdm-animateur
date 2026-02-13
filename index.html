@@ -1100,26 +1100,20 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     badge.textContent = quizState.phase === 'vote' ? '⏱️ Vote en cours' : '💡 Explication';
 
     if (quizState.phase === 'explain') {
+        // ✅ Révéler la réponse immédiatement
         revealAnswer(q.correct);
         
-        // ✅ NOUVEAU : Vérifier si on a déjà affiché l'overlay pour cette question
-        const infoKey = `Q${quizState.questionIndex}-info-shown`;
-        if (!state[infoKey]) {
-            state[infoKey] = true;
-            
-            // Attendre 5 secondes avant d'afficher l'overlay
-            setTimeout(() => {
-                $('info-section').classList.add('active');
-                $('info-body').innerHTML = q.info || '<p>Information non disponible.</p>';
-            }, 5000);
-        }
+        // ✅ Afficher l'info après 3 secondes
+        setTimeout(() => {
+            const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
+            $('info-body').innerHTML = content;
+            $('info-section').classList.add('active');
+        }, 3000);
+        
     } else {
+        // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
         $('info-section').classList.remove('active');
-        
-        // ✅ Reset le flag quand on revient en phase vote
-        const infoKey = `Q${quizState.questionIndex}-info-shown`;
-        state[infoKey] = false;
     }
 }
 
