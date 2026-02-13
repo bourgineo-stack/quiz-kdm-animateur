@@ -492,6 +492,11 @@
             <div class="mode-desc">Boucle continue.<br>Arrivées/départs libres.</div>
         </div>
     </div>
+   
+<button class="btn btn-secondary" id="btn-reset" onclick="resetQuiz()" 
+        style="background: var(--team-red); margin-top: 1rem;">
+    🗑️ Réinitialiser l'atelier
+</button>
 
     <button class="btn btn-primary" id="btn-configure" onclick="configureQuiz()" disabled>⚙️ Configurer</button>
     
@@ -822,7 +827,33 @@ async function startQuizNow() {
 
     startLoop();
 }
+async function resetQuiz() {
+    if (!confirm('⚠️ Voulez-vous vraiment effacer toutes les données de l\'atelier précédent ?\n\nCeci supprimera :\n- Tous les participants\n- Toutes les réponses\n- Tous les scores\n\nCette action est irréversible.')) {
+        return;
+    }
 
+    $('btn-reset').disabled = true;
+    $('btn-reset').textContent = '⏳ Réinitialisation...';
+
+    try {
+        await fetch(CONFIG.sheetUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'resetSession' })
+        });
+
+        await new Promise(r => setTimeout(r, 2000));
+        
+        alert('✅ Atelier réinitialisé avec succès !');
+        location.reload();
+    } catch (e) {
+        console.error('Erreur reset:', e);
+        alert('❌ Erreur lors de la réinitialisation');
+        $('btn-reset').disabled = false;
+        $('btn-reset').textContent = '🗑️ Réinitialiser l\'atelier';
+    }
+}
 async function startQuizLoop() {
     // Mode loop = démarrage immédiat comme avant
     const startedAt = Date.now();
