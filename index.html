@@ -828,26 +828,37 @@ async function startQuizNow() {
             body: JSON.stringify({ action: 'startSession', mode: 'session' })
         });
 
-        console.log('Commande startSession envoyée avec nouveau startTime');
+        console.log('Commande startSession envoyée');
         
         await new Promise(r => setTimeout(r, 2000));
         await loadConfigFromSheet();
         
         if (SETTINGS.startTime) {
             state.referenceTime = SETTINGS.startTime;
-            console.log('Utilisation du startTime du Sheet:', state.referenceTime);
+            
+            // ✅ NOUVEAU : Marquer tous les participants en attente
+            await fetch(CONFIG.sheetUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    action: 'markSessionParticipants', 
+                    startTime: SETTINGS.startTime 
+                })
+            });
+            
+            console.log('✅ Participants marqués avec session:', SETTINGS.startTime);
         } else {
             state.referenceTime = startedAt;
         }
 
-        state.isFirstQuestion = true;  // ← Flag pour première question
+        state.isFirstQuestion = true;
 
     } catch (e) {
         console.error('Erreur démarrage:', e);
         state.referenceTime = startedAt;
         state.isFirstQuestion = true;
     }
-
     console.log('Session démarrée:', {
         mode: state.mode,
         referenceTime: state.referenceTime,
