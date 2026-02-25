@@ -668,6 +668,7 @@ const state = {
     lastPhase: null, 
     scoreTriggered: {}, 
     preloadedContent: {},
+    pendingScores: null,
     isFirstQuestion: true,  // ← NOUVEAU
     isCountdown: false,
     configured: false        // ← NOUVEAU
@@ -998,34 +999,36 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     state.lastPhase = quizState.phase;
 }
 
-        async function triggerScoreCalculation(quizState) {
+async function triggerScoreCalculation(quizState) {
     const q = quizState.currentQuestion;
     if (!q) return;
     const tour = getCurrentTour(state.referenceTime);
     
-    const payload = { 
-        action: 'calculateTurnScore', 
-        questionId: parseInt(q.id), 
-        tour: parseInt(tour) 
-    };
-    
-    console.log('🎯 TRIGGER SCORE:', payload);
+    console.log('🎯 Calcul score Q', q.id, 'tour', tour);
 
     try {
+        // Calculer
         await fetch(CONFIG.sheetUrl, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ 
+                action: 'calculateTurnScore', 
+                questionId: parseInt(q.id), 
+                tour: parseInt(tour) 
+            })
         });
         
-        console.log('✅ Calcul envoyé');
+        // Attendre que GAS ait écrit
+        await new Promise(r => setTimeout(r, 3000));
         
-        // ✅ NOUVEAU : Fetch immédiat + répété
-        fetchData();  // Immédiat
-        setTimeout(() => fetchData(), 1000);  // +1s
-        setTimeout(() => fetchData(), 2000);  // +2s
-        setTimeout(() => fetchData(), 3000);  // +3s
+        // Récupérer les nouveaux scores
+        const res = await fetch(`${CONFIG.sheetUrl}?action=getScores`);
+        const data = await res.json();
+        
+        // Stocker en attente (pas encore affiché)
+        state.pendingScores = data;
+        console.log('✅ Scores prêts:', data.blue, '-', data.red);
         
     } catch (e) {
         console.error('❌ Erreur calcul score:', e);
@@ -1120,10 +1123,16 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
             }, 3000);
         }
         
-    } else {
+   } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        $('info-overlay').classList.remove('active');
+        if ($('info-overlay').classList.contains('active')) {
+            $('info-overlay').classList.remove('active');
+            if (state.pendingScores) {
+                applyScores(state.pendingScores);
+                state.pendingScores = null;
+            }
+        }
     }
 }
 
@@ -1299,6 +1308,29 @@ function calculate(km, btn) {
     void result.offsetWidth;
     result.classList.add('visible');
 }
+        function applyScores(scoresData) {
+    const newBlue = scoresData.blue || 0;
+    const newRed = scoresData.red || 0;
+    const prevBlue = parseInt($('score-blue').dataset.prev || 0);
+    const prevRed = parseInt($('score-red').dataset.prev || 0);
+
+    $('score-blue').textContent = newBlue;
+    $('score-red').textContent = newRed;
+    $('score-blue').dataset.prev = newBlue;
+    $('score-red').dataset.prev = newRed;
+
+    if (newBlue > prevBlue) {
+        $('card-blue').classList.add('scoring');
+        setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
+    }
+    if (newRed > prevRed) {
+        $('card-red').classList.add('scoring');
+        setTimeout(() => $('card-red').classList.remove('scoring'), 800);
+    }
+
+    $('card-blue').classList.toggle('leading', newBlue > newRed);
+    $('card-red').classList.toggle('leading', newRed > newBlue);
+}
 /**
  * Affiche le contenu préchargé (ou charge si pas encore fait)
  */
@@ -1325,26 +1357,34 @@ function displayQuestionInfo(question) {
         });
     }
 }
-        // Fermeture de l'overlay info
-document.addEventListener('DOMContentLoaded', () => {
-    // Fermeture au clic sur le bouton ✕
-    $('info-overlay-close').addEventListener('click', () => {
-        $('info-overlay').classList.remove('active');
-    });
+$('info-overlay-close').addEventListener('click', () => {
+    $('info-overlay').classList.remove('active');
+    if (state.pendingScores) {
+        applyScores(state.pendingScores);
+        state.pendingScores = null;
+    }
+});
     
     // Fermeture au clic sur le fond noir (optionnel)
-    $('info-overlay').addEventListener('click', (e) => {
-        if (e.target.id === 'info-overlay') {
-            $('info-overlay').classList.remove('active');
+   $('info-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'info-overlay') {
+        $('info-overlay').classList.remove('active');
+        if (state.pendingScores) {
+            applyScores(state.pendingScores);
+            state.pendingScores = null;
         }
-    });
+    }
+});
     
     // Fermeture avec la touche Échap (optionnel)
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) {
-            $('info-overlay').classList.remove('active');
+    if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) {
+        $('info-overlay').classList.remove('active');
+        if (state.pendingScores) {
+            applyScores(state.pendingScores);
+            state.pendingScores = null;
         }
-    });
+    }
 });
     </script>
   <!-- Overlay info pédagogique -->
