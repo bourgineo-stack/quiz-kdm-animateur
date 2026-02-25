@@ -1,53 +1,491 @@
-<div class="info-block">
-<h3>Le facteur 10 (Bœuf vs Poulet)</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q5 — Le facteur 10</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">🌡️ L'échelle du CO₂ par kg de viande</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="max-width:550px; margin:0 auto 1.2rem;">
-  <!-- Bœuf -->
-  <div style="margin-bottom:0.5rem;">
-    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.2rem;">
-      <span>🐄 Bœuf</span><span style="color:#E53935;">27 kg CO₂</span>
-    </div>
-    <div style="background:rgba(255,255,255,0.1); border-radius:8px; height:32px; overflow:hidden;">
-      <div style="width:100%; height:100%; background:linear-gradient(90deg, #E53935, #C62828); border-radius:8px;"></div>
-    </div>
-  </div>
-  <!-- Porc -->
-  <div style="margin-bottom:0.5rem;">
-    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.2rem;">
-      <span>🐖 Porc</span><span style="color:#FFA726;">9 kg CO₂</span>
-    </div>
-    <div style="background:rgba(255,255,255,0.1); border-radius:8px; height:32px; overflow:hidden;">
-      <div style="width:33%; height:100%; background:linear-gradient(90deg, #FFA726, #FF7043); border-radius:8px;"></div>
-    </div>
-  </div>
-  <!-- Poulet -->
-  <div style="margin-bottom:0.5rem;">
-    <div style="display:flex; justify-content:space-between; font-weight:700; margin-bottom:0.2rem;">
-      <span>🐔 Poulet</span><span style="color:#43A047;">2,7 kg CO₂</span>
-    </div>
-    <div style="background:rgba(255,255,255,0.1); border-radius:8px; height:32px; overflow:hidden;">
-      <div style="width:10%; height:100%; background:linear-gradient(90deg, #66BB6A, #43A047); border-radius:8px;"></div>
-    </div>
-  </div>
-</div>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
 
-<div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;">
-  <div style="background:rgba(67,160,71,0.15); border:2px solid #43A047; border-radius:12px; padding:0.8rem 1.2rem; text-align:center;">
-    <div style="font-size:1.5rem; font-weight:900; color:#43A047;">~15€/mois</div>
-    <div style="font-size:0.85rem;">d'économie en remplaçant<br>1 repas bœuf/sem. par du poulet</div>
-  </div>
-  <div style="background:rgba(30,136,229,0.15); border:2px solid #1E88E5; border-radius:12px; padding:0.8rem 1.2rem; text-align:center;">
-    <div style="font-size:1.5rem; font-weight:900; color:#1E88E5;">×10</div>
-    <div style="font-size:0.85rem;">Différence d'impact climatique<br>entre bœuf et poulet</div>
-  </div>
-</div>
+  /* Barres CO2 */
+  .co2-block { margin-bottom: 1.2rem; }
+  .co2-row { margin-bottom: 0.6rem; }
+  .co2-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 0.92rem;
+    margin-bottom: 0.25rem;
+  }
+  .bar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    height: 28px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: 800;
+    font-size: 0.82rem;
+  }
+  .co2-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-top: 0.3rem;
+  }
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+  }
+  .tag.money  { background: rgba(255,193,7,0.15); color: #FFD54F; border: 1px solid rgba(255,193,7,0.25); }
+  .tag.co2    { background: rgba(229,57,53,0.15); color: #EF9A9A; border: 1px solid rgba(229,57,53,0.25); }
+  .tag.good   { background: rgba(67,160,71,0.15); color: #81C784; border: 1px solid rgba(67,160,71,0.25); }
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Le message :</strong> Pas besoin de devenir végétarien — juste choisir malin. Remplacer du bœuf par du poulet, c'est déjà un geste énorme.
+  /* Pourquoi le bœuf */
+  .why-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .why-title { font-weight: 800; margin-bottom: 0.5rem; font-size: 0.95rem; }
+
+  /* Les 3 niveaux */
+  .niveaux { margin-bottom: 1.2rem; }
+  .niveau-card {
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .niveau-card.n1 {
+    background: rgba(67,160,71,0.1);
+    border: 1px solid rgba(67,160,71,0.3);
+  }
+  .niveau-card.n2 {
+    background: rgba(255,167,38,0.08);
+    border: 1px solid rgba(255,167,38,0.25);
+  }
+  .niveau-card.n3 {
+    background: rgba(210,0,122,0.08);
+    border: 1px solid rgba(210,0,122,0.25);
+  }
+  .niveau-card .nv-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .niveau-card.n1 .nv-title { color: #81C784; }
+  .niveau-card.n2 .nv-title { color: #FFD54F; }
+  .niveau-card.n3 .nv-title { color: #D2007A; }
+
+  .proteines-grid {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .prot-item {
+    flex: 1;
+    min-width: 110px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.55rem 0.4rem;
+  }
+  .prot-item .pi-icon { font-size: 1.4rem; }
+  .prot-item .pi-name { font-size: 0.8rem; font-weight: 800; margin: 0.2rem 0 0.1rem; }
+  .prot-item .pi-co2  { font-size: 0.72rem; color: #EF9A9A; }
+  .prot-item .pi-prix { font-size: 0.72rem; color: #FFD54F; }
+
+  /* Plateau repas vs fête */
+  .moment-block {
+    margin-bottom: 1.2rem;
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .moment-card {
+    flex: 1;
+    min-width: 180px;
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+  }
+  .moment-card.non {
+    background: rgba(229,57,53,0.08);
+    border: 1px solid rgba(229,57,53,0.25);
+  }
+  .moment-card.oui {
+    background: rgba(67,160,71,0.08);
+    border: 1px solid rgba(67,160,71,0.25);
+  }
+  .moment-card .mc-title {
+    font-weight: 800;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .moment-card.non .mc-title { color: #EF9A9A; }
+  .moment-card.oui .mc-title { color: #81C784; }
+  .moment-card .mc-body { font-size: 0.85rem; line-height: 1.5; opacity: 0.9; }
+
+  /* Règle simple */
+  .regle {
+    text-align: center;
+    background: rgba(210,0,122,0.1);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .regle strong { color: #D2007A; font-style: normal; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+	margin-bottom: 0.8rem;
+  }
+  
+   /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06);
+    border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .script-line {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+  }
+  .timing {
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q5
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Le bœuf émet <strong>10 fois plus de CO₂</strong> que le poulet.<br>
+    Et il coûte <strong>2 à 3 fois plus cher</strong> au kilo.<br>
+    <span class="sub">Même énergie consommée, même protéines — pas les mêmes conséquences.</span>
+  </div>
+
+  <!-- Barres CO2 comparées -->
+  <div class="co2-block">
+
+    <div class="co2-row">
+      <div class="co2-header">
+        <span>🐄 Bœuf</span>
+        <span style="color:#EF9A9A;">~27 kg CO₂ / kg</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#E53935,#C62828);">Référence</div>
+      </div>
+      <div class="co2-tags">
+        <span class="tag money">💰 ~14 €/kg</span>
+        <span class="tag co2">🌡️ Méthane des ruminants + surface agricole</span>
+      </div>
+    </div>
+
+    <div class="co2-row">
+      <div class="co2-header">
+        <span>🦆 Canard</span>
+        <span style="color:#FFA726;">~5–6 kg CO₂ / kg</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:20%; background:linear-gradient(90deg,#FFA726,#FF7043);"></div>
+      </div>
+      <div class="co2-tags">
+        <span class="tag money">💰 ~10–12 €/kg</span>
+        <span class="tag good">✅ 5× moins que le bœuf — avec autant de plaisir</span>
+      </div>
+    </div>
+
+    <div class="co2-row">
+      <div class="co2-header">
+        <span>🐔 Poulet</span>
+        <span style="color:#81C784;">~2,7 kg CO₂ / kg</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:10%; background:linear-gradient(90deg,#66BB6A,#43A047);"></div>
+      </div>
+      <div class="co2-tags">
+        <span class="tag money">💰 ~5–7 €/kg</span>
+        <span class="tag good">✅ 10× moins que le bœuf</span>
+      </div>
+    </div>
+
+    <div class="co2-row">
+      <div class="co2-header">
+        <span>🥚 Œuf</span>
+        <span style="color:#90CAF9;">~2 kg CO₂ / kg</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:8%; background:linear-gradient(90deg,#42A5F5,#1E88E5);"></div>
+      </div>
+      <div class="co2-tags">
+        <span class="tag money">💰 ~0,20 € / œuf = 12g de protéines complètes</span>
+        <span class="tag good">✅ La protéine animale la moins chère — de loin</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Pourquoi le bœuf émet autant -->
+  <div class="why-block">
+    <div class="why-title">⚙️ Pourquoi le bœuf émet 10× plus ?</div>
+    Une vache est un ruminant — elle digère en fermentant, ce qui produit du méthane, un gaz à effet de serre ~28× plus puissant que le CO₂. Elle a aussi besoin de grandes surfaces de pâturage ou de cultures fourragères pour se nourrir.<br>
+    Le poulet, lui, ne rumine pas et convertit sa nourriture bien plus efficacement. <strong>Ce n'est pas de la morale — c'est de la biologie.</strong>
+  </div>
+
+  <!-- Les 3 niveaux de choix -->
+  <div class="niveaux">
+
+    <div class="niveau-card n1">
+      <div class="nv-title">🟢 Niveau 1 — Le réflexe quotidien</div>
+      Pour les repas ordinaires — le soir, le midi au travail, le plateau devant une série — ces protéines font le même travail pour bien moins cher et bien moins d'impact :
+      <div class="proteines-grid">
+        <div class="prot-item">
+          <div class="pi-icon">🥚</div>
+          <div class="pi-name">Œufs</div>
+          <div class="pi-co2">~2 kg CO₂/kg</div>
+          <div class="pi-prix">~0,20 €/unité</div>
+        </div>
+        <div class="prot-item">
+          <div class="pi-icon">🐔</div>
+          <div class="pi-name">Poulet</div>
+          <div class="pi-co2">~2,7 kg CO₂/kg</div>
+          <div class="pi-prix">~6 €/kg</div>
+        </div>
+        <div class="prot-item">
+          <div class="pi-icon">🦆</div>
+          <div class="pi-name">Canard</div>
+          <div class="pi-co2">~5–6 kg CO₂/kg</div>
+          <div class="pi-prix">~11 €/kg</div>
+        </div>
+        <div class="prot-item">
+          <div class="pi-icon">🫘</div>
+          <div class="pi-name">Légumineuses</div>
+          <div class="pi-co2">~0,9 kg CO₂/kg</div>
+          <div class="pi-prix">~2 €/kg</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="niveau-card n2">
+      <div class="nv-title">🟡 Niveau 2 — Le choix conscient</div>
+      Le repas de famille du dimanche, le barbecue entre amis, le restaurant — là, le bœuf a toute sa place. Vous en profitez vraiment, vous vous en souviendrez. <strong>C'est exactement le bon moment.</strong>
+    </div>
+
+    <div class="niveau-card n3">
+      <div class="nv-title">🔴 Niveau 3 — La règle simple</div>
+      Si vous ne vous souvenez pas ce que vous avez mangé hier soir — c'était probablement pas le bon moment pour du bœuf.
+    </div>
+
+  </div>
+
+  <!-- Plateau repas vs fête -->
+  <div class="moment-block">
+    <div class="moment-card non">
+      <div class="mc-title">😶 Le plateau repas</div>
+      <div class="mc-body">
+        Seul devant sa série. On mange sans vraiment goûter. On aurait tout aussi bien mangé des lentilles, des œufs ou du poulet — et on n'aurait pas fait la différence.<br>
+        <span style="opacity:0.65; font-style:italic;">→ Pourtant, c'est là que ça pèse le plus lourd sur la planète et le porte-monnaie.</span>
+      </div>
+    </div>
+    <div class="moment-card oui">
+      <div class="mc-title">😄 Le repas de fête</div>
+      <div class="mc-body">
+        En famille, entre amis. On choisit, on savoure, on se souvient du repas. La qualité de l'expérience justifie le choix.<br>
+        <span style="opacity:0.65; font-style:italic;">→ C'est pour ça que le bœuf existe. Pas pour les soirs pressés.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Règle de poche -->
+  <div class="regle">
+    <strong>La règle :</strong> « Mangez du bœuf quand ça compte vraiment. Pour le reste — il y a mieux, moins cher, et tout aussi bon. »
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> CO₂ = énergie = argent. Le bœuf consomme 10× plus d'énergie que le poulet pour produire les mêmes protéines — et ça se voit sur la facture. Remplacer un repas bœuf par semaine par du poulet ou des œufs, c'est ~150–200 € économisés par an.
+  </div>
+  
+     <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    ADEME / INRAE — Agribalyse (base ACV alimentaire, édition 2022) ·
+	Poore & Nemecek (2018), Science — « Reducing food's environmental impacts »
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« Le bœuf local c'est différent, c'est pas comme le bœuf brésilien. »</div>
+        <div class="r">Partiellement vrai — la déforestation liée à l'élevage brésilien aggrave le bilan. Mais le méthane des ruminants, lui, est inévitable quelle que soit l'origine. Le bœuf local a un meilleur bilan que le bœuf importé, mais il reste 5 à 8× plus émetteur que le poulet local. L'origine compte, l'espèce compte plus encore.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Le canard c'est trop gras. »</div>
+        <div class="r">Le gras du canard est principalement insaturé — proche de l'huile d'olive sur le plan nutritionnel. La graisse de canard est utilisée en cuisine gastronomique depuis des siècles. Trop gras : non. Riche : oui — comme tous les aliments savoureux.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Les œufs font monter le cholestérol. »</div>
+        <div class="r">C'est une idée des années 70, largement révisée depuis. Les études actuelles montrent que la consommation modérée d'œufs (jusqu'à 1 par jour) n'augmente pas le risque cardiovasculaire chez la plupart des gens. L'ANSES recommande jusqu'à 6 œufs par semaine.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
