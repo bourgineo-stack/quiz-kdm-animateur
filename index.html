@@ -850,6 +850,10 @@ async function startQuizNow() {
             });
             
             console.log('✅ Participants marqués avec session:', SETTINGS.startTime);
+            
+            // Attendre que le marquage soit écrit dans le Sheet
+            await new Promise(r => setTimeout(r, 2000));
+            
         } else {
             state.referenceTime = startedAt;
         }
