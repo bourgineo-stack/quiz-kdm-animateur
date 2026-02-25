@@ -1,43 +1,466 @@
-<div class="info-block">
-<h3>Vélo vs Voiture</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q3 — Vélo vs Voiture</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">⚡ Le match de l'énergie</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.2rem;">
-  <div style="text-align:center; padding:1rem;">
-    <div style="font-size:3rem;">🚲</div>
-    <div style="font-size:1.8rem; font-weight:900; color:#43A047;">1 kWh</div>
-    <div style="font-size:0.9rem; opacity:0.8;">pour 100 km</div>
-    <div style="font-size:0.85rem; margin-top:0.3rem;">~50-100€/an</div>
-  </div>
-  <div style="display:flex; align-items:center; font-size:2rem; font-weight:900; color:#D2007A;">×100</div>
-  <div style="text-align:center; padding:1rem;">
-    <div style="font-size:3rem;">🚗</div>
-    <div style="font-size:1.8rem; font-weight:900; color:#E53935;">60-80 kWh</div>
-    <div style="font-size:0.9rem; opacity:0.8;">pour 100 km</div>
-    <div style="font-size:0.85rem; margin-top:0.3rem;">~3 500-5 000€/an</div>
-  </div>
-</div>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
 
-<div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;">
-  <div style="background:rgba(67,160,71,0.15); border:2px solid #43A047; border-radius:12px; padding:0.8rem 1.2rem; text-align:center;">
-    <div style="font-size:1.5rem; font-weight:900; color:#43A047;">600€/an</div>
-    <div style="font-size:0.85rem;">Forfait Mobilités Durables</div>
-  </div>
-  <div style="background:rgba(30,136,229,0.15); border:2px solid #1E88E5; border-radius:12px; padding:0.8rem 1.2rem; text-align:center;">
-    <div style="font-size:1.5rem; font-weight:900; color:#1E88E5;">900€/an</div>
-    <div style="font-size:0.85rem;">FMD + abonnement transport</div>
-  </div>
-  <div style="background:rgba(229,57,53,0.15); border:2px solid #E53935; border-radius:12px; padding:0.8rem 1.2rem; text-align:center;">
-    <div style="font-size:1.5rem; font-weight:900; color:#E53935;">÷2</div>
-    <div style="font-size:0.85rem;">Risque cardiovasculaire<br>(30 min vélo/jour)</div>
-  </div>
-</div>
+  /* Match visuel */
+  .match {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .match-card {
+    text-align: center;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    border: 2px solid;
+    min-width: 130px;
+    flex: 1;
+  }
+  .match-card.velo  { border-color: #43A047; background: rgba(67,160,71,0.1); }
+  .match-card.elec  { border-color: #FFA726; background: rgba(255,167,38,0.1); }
+  .match-card.therm { border-color: #E53935; background: rgba(229,57,53,0.1); }
+  .match-card .mc-icon  { font-size: 2rem; margin-bottom: 0.3rem; }
+  .match-card .mc-label { font-size: 0.78rem; font-weight: 700; opacity: 0.75; margin-bottom: 0.4rem; }
+  .match-card .mc-value { font-size: 1.5rem; font-weight: 900; line-height: 1.1; }
+  .match-card.velo  .mc-value { color: #43A047; }
+  .match-card.elec  .mc-value { color: #FFA726; }
+  .match-card.therm .mc-value { color: #E53935; }
+  .match-card .mc-sub { font-size: 0.75rem; opacity: 0.65; margin-top: 0.2rem; }
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Chez Keolis :</strong> Renseignez-vous sur le FMD auprès de votre service RH !
+  .vs-badge {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #D2007A;
+    background: rgba(210,0,122,0.15);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Rendement thermique */
+  .rendement {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .rendement-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 0.6rem;
+    color: rgba(255,255,255,0.9);
+  }
+  .litre-visual {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0.6rem 0;
+  }
+  .litre {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .litre.perdu { background: rgba(229,57,53,0.25); border: 1px solid rgba(229,57,53,0.4); }
+  .litre.utile { background: rgba(67,160,71,0.25); border: 1px solid rgba(67,160,71,0.4); }
+  .litre-legend {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .litre-legend span { display: flex; align-items: center; gap: 0.3rem; }
+
+  /* FMD */
+  .fmd-block {
+    background: rgba(67,160,71,0.1);
+    border: 2px solid rgba(67,160,71,0.35);
+    border-radius: 14px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+  }
+  .fmd-title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #81C784;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .fmd-grid {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .fmd-item {
+    flex: 1;
+    min-width: 110px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.6rem 0.5rem;
+  }
+  .fmd-item .fi-value { font-size: 1.4rem; font-weight: 900; color: #81C784; }
+  .fmd-item .fi-label { font-size: 0.75rem; opacity: 0.75; margin-top: 0.15rem; line-height: 1.3; }
+
+  /* Fun block */
+  .fun-block {
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1.1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .fun-block .fun-title {
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+  .fun-icons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+  .fun-icons .fi {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 700;
+  }
+  .fun-icons .fi.fun { opacity: 0.55; font-style: italic; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    margin-top: 0.2rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+	margin-bottom: 0.8rem;
+  }
+   /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 700px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06);
+    border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .script-line {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+  }
+  .timing {
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q3
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Un vélo électrique consomme <strong>×100 moins</strong> qu'un gros thermique.<br>
+    <span class="sub">×80 pour une voiture thermique standard · ×15 pour une voiture électrique</span>
+  </div>
+
+  <!-- Match des 3 -->
+  <div class="match">
+    <div class="match-card velo">
+      <div class="mc-icon">🚲</div>
+      <div class="mc-label">Vélo électrique</div>
+      <div class="mc-value">1 kWh</div>
+      <div class="mc-sub">pour 100 km</div>
+      <div class="mc-sub" style="margin-top:0.4rem; font-weight:700; color:#81C784;">⚡1500km ~3€/an</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="match-card elec">
+      <div class="mc-icon">⚡🚗</div>
+      <div class="mc-label">Voiture électrique</div>
+      <div class="mc-value">15–20 kWh</div>
+      <div class="mc-sub">pour 100 km</div>
+      <div class="mc-sub" style="margin-top:0.4rem; font-weight:700; color:#FFA726;">×15 plus</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="match-card therm">
+      <div class="mc-icon">⛽🚗</div>
+      <div class="mc-label">Voiture thermique</div>
+      <div class="mc-value">60–100 kWh</div>
+      <div class="mc-sub">pour 100 km</div>
+      <div class="mc-sub" style="margin-top:0.4rem; font-weight:700; color:#EF9A9A;">×80 plus</div>
+    </div>
+  </div>
+
+  <!-- Pourquoi le thermique est si gourmand -->
+  <div class="rendement">
+    <div class="rendement-title">⚙️ Pourquoi le thermique consomme autant ?</div>
+    Sur 4 litres d'essence brûlés pour faire 100 km, voici ce qui se passe réellement :
+    <div class="litre-visual">
+      <div class="litre perdu">🔥</div>
+      <div class="litre perdu">🔥</div>
+      <div class="litre perdu">🔥</div>
+      <div class="litre utile">🚗</div>
+    </div>
+    <div class="litre-legend">
+      <span><span style="color:#EF9A9A;">🔥 ×3</span> partent chauffer l'atmosphère</span>
+      <span><span style="color:#81C784;">🚗 ×1</span> fait vraiment avancer la voiture</span>
+    </div>
+    <div style="margin-top:0.6rem; opacity:0.85;">
+      Le moteur électrique, lui, convertit <strong>~90% de l'énergie</strong> en mouvement. C'est pour ça qu'il consomme 5 à 7 fois moins qu'un thermique — pas de magie, juste de la physique.
+    </div>
+  </div>
+
+  <!-- FMD Keolis -->
+  <div class="fmd-block">
+    <div class="fmd-title">💚 Forfait Mobilités Durables — chez Keolis Dijon</div>
+    <div class="fmd-grid">
+      <div class="fmd-item">
+        <div class="fi-value">100 €</div>
+        <div class="fi-label">remboursés / an<br>si vous venez à vélo</div>
+      </div>
+      <div class="fmd-item">
+        <div class="fi-value">0 €</div>
+        <div class="fi-label">d'impôt dessus<br>c'est net</div>
+      </div>
+      <div class="fmd-item">
+        <div class="fi-value">~50 €</div>
+        <div class="fi-label">coût annuel<br>du vélo électrique</div>
+      </div>
+    </div>
+    <div style="margin-top:0.7rem; font-size:0.85rem; opacity:0.8;">
+      👉 Et si vous souhaitez élargir l'assiette aux trottinettes et rollers, c'est un sujet à porter au CSE.
+    </div>
+  </div>
+
+  <!-- Fun block véhicules -->
+  <div class="fun-block">
+    <div class="fun-title">🎉 Le FMD, c'est valable pour :</div>
+    <div class="fun-icons">
+      <span class="fi">🚲 Vélo classique</span>
+      <span class="fi">⚡🚲 Vélo électrique</span>
+      <span class="fi fun">🛼 Rollers <small>(pas encore chez KDM)</small></span>
+      <span class="fi fun">🛴 Trottinette <small>(pas encore chez KDM)</small></span>
+      <span class="fi fun">🐴 Cheval <small>(et bonne route !)</small></span>
+    </div>
+  </div>
+
+  <!-- Clin d'œil usage -->
+  <div class="fun-block" style="border: 1px solid rgba(255,193,7,0.2);">
+    <div class="fun-title">😅 Le bon usage du vélo électrique</div>
+    <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+
+      <div style="flex:1; min-width:200px; background:rgba(229,57,53,0.08); border:1px solid rgba(229,57,53,0.25); border-radius:10px; padding:0.7rem 0.9rem;">
+        <div style="font-weight:800; color:#EF9A9A; margin-bottom:0.4rem;">😤 Vous voulez souffrir ?</div>
+        <div style="font-size:0.85rem; line-height:1.5; opacity:0.9;">
+          🔻 Pneus dégonflés<br>
+          🔋 Batterie éteinte<br>
+          ⛰️ Parcours avec dénivelés<br>
+          <span style="opacity:0.6; font-style:italic;">→ Arrivée en nage garantie</span>
+        </div>
+      </div>
+
+      <div style="flex:1; min-width:200px; background:rgba(67,160,71,0.08); border:1px solid rgba(67,160,71,0.25); border-radius:10px; padding:0.7rem 0.9rem;">
+        <div style="font-weight:800; color:#81C784; margin-bottom:0.4rem;">😎 Vous voulez arriver frais ?</div>
+        <div style="font-size:0.85rem; line-height:1.5; opacity:0.9;">
+          ✅ Pneus bien gonflés<br>
+          ⚡ Moteur allumé<br>
+          🛣️ Parcours plat<br>
+          <span style="opacity:0.6; font-style:italic;">→ Moins fatigant que chercher à se garer</span>
+        </div>
+      </div>
+
+    </div>
+    <div style="margin-top:0.7rem; font-size:0.82rem; opacity:0.65; font-style:italic;">
+      💡 Le vélo électrique n'est pas fait pour souffrir — il est fait pour arriver. La santé vient du fait de pédaler, même assisté.
+    </div>
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 L'idée :</strong> Pas besoin de vendre la voiture. Les beaux jours, les horaires de jour — remplacer quelques trajets par le vélo, c'est du CO₂ en moins, des euros en plus, et un cœur qui dit merci.<br>
+    <span style="opacity:0.85;">30 min de vélo par jour = risque cardiovasculaire divisé par 2. <em>(OMS)</em></span>
+  </div>
+  
+       <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    ADEME — Bilan carbone des modes de transport (2023) ·
+	OMS — activité physique et santé cardiovasculaire ·
+	Décret n°2022-226 — Forfait Mobilités Durables (montants et conditions)
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« Je travaille en horaires décalés, le vélo c'est pas possible. »</div>
+        <div class="r">Totalement compris. L'idée n'est pas de remplacer la voiture en toutes circonstances — juste les trajets de jour, par beau temps. Même 2 jours par semaine à vélo, c'est une économie réelle et un bénéfice santé mesurable.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« J'habite loin, le vélo c'est irréaliste. »</div>
+        <div class="r">Pour les longues distances, le vélo électrique repousse la limite à 15–20 km sans effort. Et pour les distances vraiment longues, le combo vélo + transport en commun reste souvent plus rapide en ville — et moins cher que la voiture.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Je dois déposer mes enfants le matin. »</div>
+        <div class="r">Cargo bike, vélo avec remorque — ça existe et ça se démocratise. Mais surtout : même les jours sans enfants, le vélo reste une option. L'objectif c'est d'augmenter les occasions, pas de forcer un changement radical.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
