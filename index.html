@@ -883,7 +883,6 @@ async function startQuizNow() {
 
     await fetchData();
     // Countdown de 10s avant la première question
-    state.isCountdown = true;
     state.referenceTime = Date.now() + 10000;
     startLoop();
 }
@@ -957,29 +956,23 @@ async function startQuizLoop() {
     const now = Date.now();
     
     // COUNTDOWN 5 secondes
-    if (state.isCountdown) {
-        const remaining = Math.ceil((state.referenceTime - now) / 1000);
-        
-        if (remaining > 0) {
-            // Afficher le countdown
-            $('question-text').textContent = `Le quiz commence dans ${remaining} seconde${remaining > 1 ? 's' : ''}...`;
-            $('question-timer').textContent = remaining;
-            $('question-timer').className = 'question-timer warning';
-            $('phase-badge').textContent = '⏱️ Préparation';
-            $('phase-badge').className = 'phase-indicator vote';
-            $('q-num').textContent = '1';
-            $('options-grid').innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; font-size: 1.2rem; opacity: 0.7;">
-                    📋 Préparez-vous à voter !<br>
-                    <small style="font-size: 0.9rem; opacity: 0.6;">10 questions • Vote par équipe • Durée ${SETTINGS.voteDuration}s par question</small>
-                </div>
-            `;
-            return;
-        } else {
-            // Fin du countdown
-            state.isCountdown = false;
-            console.log('🎬 Fin du countdown, début du quiz');
-        }
+    // Période firstQuestionDelay : countdown avant Q1
+    const elapsed = (now - state.referenceTime) / 1000;
+    if (SETTINGS.mode === 'session' && SETTINGS.firstQuestionDelay > 0 && elapsed < SETTINGS.firstQuestionDelay) {
+        const remaining = Math.ceil(SETTINGS.firstQuestionDelay - elapsed);
+        $('question-text').textContent = `⏳ Le quiz commence dans ${remaining} seconde${remaining > 1 ? 's' : ''}...`;
+        $('question-timer').textContent = remaining;
+        $('question-timer').className = 'question-timer warning';
+        $('phase-badge').textContent = '⏱️ Préparation';
+        $('phase-badge').className = 'phase-indicator vote';
+        $('q-num').textContent = '1';
+        $('options-grid').innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; font-size: 1.2rem; opacity: 0.7;">
+                📋 Préparez-vous à voter !<br>
+                <small style="font-size: 0.9rem; opacity: 0.6;">${QUESTIONS.length} questions • Vote par équipe • Durée ${SETTINGS.voteDuration}s par question</small>
+            </div>
+        `;
+        return;
     }
     
     // QUIZ NORMAL
