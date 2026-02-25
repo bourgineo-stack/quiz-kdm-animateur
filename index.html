@@ -1257,7 +1257,39 @@ async function preloadQuestionInfo(question) {
         return `<p style="color:#E53935; text-align:center;">⚠️ Impossible de charger le contenu pédagogique.<br><small style="opacity:0.7;">${error.message}</small></p>`;
     }
 }
+/**
+ * Fonctions utiles pour les questions
+ */
+        
+function toggleDetail() {
+    const panel = document.getElementById('detail-panel');
+    const arrow = document.getElementById('arrow');
+    const isOpen = panel.classList.contains('open');
+    panel.classList.toggle('open', !isOpen);
+    arrow.textContent = isOpen ? '▼' : '▲';
+}
 
+        function calculate(km, btn) {
+    // Mettre à jour les boutons actifs
+    document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const thermique = Math.round(km * COUT_THERMIQUE_PAR_KM / 100) * 100;
+    const elec      = Math.round(km * COUT_ELEC_PAR_KM / 100) * 100;
+    const kdm       = Math.round(km * COUT_ELEC_KDM_PAR_KM / 100) * 100;
+    const economie  = thermique - kdm;
+
+    document.getElementById('res-thermique').textContent = thermique.toLocaleString('fr-FR') + ' €';
+    document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
+    document.getElementById('res-kdm').textContent       = kdm.toLocaleString('fr-FR') + ' €';
+    document.getElementById('kdm-badge').textContent     =
+      `⚡ Avec la recharge KDM : jusqu'à ${economie.toLocaleString('fr-FR')} € économisés / an vs thermique`;
+
+    const result = document.getElementById('calc-result');
+    result.classList.remove('visible');
+    void result.offsetWidth; // force reflow pour l'animation
+    result.classList.add('visible');
+  }
 /**
  * Affiche le contenu préchargé (ou charge si pas encore fait)
  */
