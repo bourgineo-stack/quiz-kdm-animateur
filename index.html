@@ -989,10 +989,9 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     const tour = getCurrentTour(state.referenceTime);
     const scoreKey = `Q${quizState.questionIndex}-T${tour}`;
     
-    if (!state.scoreTriggered[scoreKey]) {
+   if (!state.scoreTriggered[scoreKey]) {
         state.scoreTriggered[scoreKey] = true;
-        // ✅ IMMÉDIAT au lieu de setTimeout 3s
-        triggerScoreCalculation(quizState);
+        setTimeout(() => triggerScoreCalculation(quizState), 3000);
     }
 }
     
@@ -1113,7 +1112,10 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
                 const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
                 $('info-body-overlay').innerHTML = content;
                 $('info-overlay').classList.add('active');
-                $('info-overlay-content').scrollTop = 0;
+                setTimeout(() => {
+                    $('info-overlay').scrollTop = 0;
+                    $('info-overlay-content').scrollTop = 0;
+                }, 50);
                 console.log('✅ Overlay affiché');
             }, 3000);
         }
