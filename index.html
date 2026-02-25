@@ -1113,6 +1113,7 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
                 const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
                 $('info-body-overlay').innerHTML = content;
                 $('info-overlay').classList.add('active');
+                $('info-overlay-content').scrollTop = 0;
                 console.log('✅ Overlay affiché');
             }, 3000);
         }
