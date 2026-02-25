@@ -1263,11 +1263,9 @@ async function preloadQuestionInfo(question) {
         
 // Utilisée par toutes les questions
 function toggleDetail(btn) {
-    // Chercher dans le parent du bouton
-    const parent = btn.closest('.main-block') || btn.parentElement;
-    const panel = parent.querySelector('.detail-panel');
+    const panel = btn.nextElementSibling;
+    if (!panel || !panel.classList.contains('detail-panel')) return;
     const arrow = btn.querySelector('span');
-    if (!panel) return;
     const isOpen = panel.classList.contains('open');
     panel.classList.toggle('open', !isOpen);
     if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
