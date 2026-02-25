@@ -831,7 +831,6 @@ async function startQuizNow() {
     const startedAt = Date.now();
 
     try {
-        // Mettre à jour le startTime dans le Sheet
         await fetch(CONFIG.sheetUrl, {
             method: 'POST', 
             mode: 'no-cors',
@@ -841,20 +840,12 @@ async function startQuizNow() {
 
         console.log('Commande startSession envoyée');
         
-        await new Promise(r => setTimeout(r, 2000));
+        await new Promise(r => setTimeout(r, 1500));
         await loadConfigFromSheet();
         
         if (SETTINGS.startTime) {
             state.referenceTime = SETTINGS.startTime;
             
-            // ✅ NOUVEAU : Marquer tous les participants en attente
-            await new Promise(r => setTimeout(r, 1500));
-        await loadConfigFromSheet();
-        
-        if (SETTINGS.startTime) {
-            state.referenceTime = SETTINGS.startTime;
-            
-            // Fire-and-forget, pas besoin d'attendre
             fetch(CONFIG.sheetUrl, {
                 method: 'POST',
                 mode: 'no-cors',
@@ -866,9 +857,6 @@ async function startQuizNow() {
             });
             
             console.log('✅ markSessionParticipants envoyé (fire-and-forget)');
-            // Pas de boucle d'attente - la correction GAS gère la transition
-            if (!marked) console.warn('⚠️ Aucun participant détecté après marquage');
-            
         } else {
             state.referenceTime = startedAt;
         }
@@ -880,12 +868,12 @@ async function startQuizNow() {
         state.referenceTime = startedAt;
         state.isFirstQuestion = true;
     }
+
     console.log('Session démarrée:', {
         mode: state.mode,
         referenceTime: state.referenceTime,
         currentTime: Date.now(),
-        diff: Date.now() - state.referenceTime,
-        firstQuestion: state.isFirstQuestion
+        diff: Date.now() - state.referenceTime
     });
 
     $('mode-badge').textContent = 'Mode Atelier';
