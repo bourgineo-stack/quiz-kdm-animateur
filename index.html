@@ -611,7 +611,7 @@
                 <div class="question-top">
                     <div>
                         <span class="question-badge">Question <span id="q-num">1</span>/<span id="q-total">10</span></span>
-                        <span class="phase-indicator vote" id="phase-badge">⏱️ Vote</span>
+                        <span class="phase-indicator vote" id="phase-badge">⏱️ Solution dans...</span>
                     </div>
                     <div class="question-timer" id="question-timer">2:00</div>
                 </div>
@@ -1113,7 +1113,7 @@ async function tryFetchScores(label) {
     const votePercent = (SETTINGS.voteDuration / totalCycle) * 100;
     const explainPercent = (SETTINGS.explainDuration / totalCycle) * 100;
 
-    $('timer-phase-label-top').textContent = quizState.phase === 'vote' ? '⏱️ Vote' : '💡 Discussion';
+    $('timer-phase-label-top').textContent = quizState.phase === 'vote' ? '⏱️ Solution dans...' : '💡 Discussion';
     $('timer-countdown-top').textContent = formatTime(quizState.timeRemaining);
 
     if (quizState.phase === 'vote') {
