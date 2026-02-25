@@ -881,6 +881,7 @@ async function startQuizNow() {
     $('start-screen').classList.add('hidden');
     $('main-screen').classList.add('active');
 
+    await fetchData();
     startLoop();
 }
 async function resetQuiz() {
