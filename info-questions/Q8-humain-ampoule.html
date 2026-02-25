@@ -1,44 +1,495 @@
-<div class="info-block">
-<h3>L'humain-ampoule</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q8 — L'humain-ampoule</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">💡 Votre corps = une ampoule</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; align-items:flex-end; margin-bottom:1.2rem;">
-  <div style="text-align:center; padding:0.8rem; opacity:0.4;">
-    <div style="font-size:2.5rem;">🚗</div>
-    <div style="font-size:1.3rem; font-weight:900;">50 000 W</div>
-    <div style="font-size:0.8rem;">Voiture</div>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Visuel ampoule vs humain */
+  .ampoule-visual {
+    display: flex;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .av-card {
+    flex: 1;
+    min-width: 140px;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+  .av-card.ampoule {
+    background: rgba(255,193,7,0.1);
+    border: 2px solid rgba(255,193,7,0.35);
+  }
+  .av-card.humain {
+    background: rgba(210,0,122,0.1);
+    border: 2px solid rgba(210,0,122,0.35);
+  }
+  .av-card .av-icon  { font-size: 2.5rem; margin-bottom: 0.4rem; }
+  .av-card .av-value { font-size: 1.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 0.2rem; }
+  .av-card.ampoule .av-value { color: #FFD54F; }
+  .av-card.humain  .av-value { color: #D2007A; }
+  .av-card .av-label { font-size: 0.82rem; font-weight: 700; opacity: 0.8; line-height: 1.35; }
+
+  /* Équivalences groupe */
+  .groupe-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .groupe-title { font-weight: 800; margin-bottom: 0.5rem; font-size: 0.92rem; }
+  .groupe-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .groupe-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .groupe-row .gr-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .groupe-row .gr-val  { font-weight: 800; min-width: 80px; }
+  .groupe-row .gr-desc { opacity: 0.8; font-size: 0.85rem; }
+
+  /* Slow heat */
+  .slowheat-block {
+    background: rgba(255,167,38,0.07);
+    border: 1px solid rgba(255,167,38,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .slowheat-title { font-weight: 800; color: #FFD54F; margin-bottom: 0.5rem; font-size: 0.95rem; }
+  .slowheat-contrast {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 0.7rem;
+  }
+  .sc-card {
+    flex: 1;
+    min-width: 140px;
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+  .sc-card.non { background: rgba(229,57,53,0.1); border: 1px solid rgba(229,57,53,0.25); }
+  .sc-card.oui { background: rgba(67,160,71,0.1);  border: 1px solid rgba(67,160,71,0.25); }
+  .sc-card .sc-title { font-weight: 800; margin-bottom: 0.3rem; }
+  .sc-card.non .sc-title { color: #EF9A9A; }
+  .sc-card.oui .sc-title { color: #81C784; }
+
+  /* Parois froides */
+  .parois-block {
+    background: rgba(30,136,229,0.07);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .parois-title { font-weight: 800; color: #90CAF9; margin-bottom: 0.5rem; font-size: 0.92rem; }
+  .parois-exemple {
+    margin-top: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-style: italic;
+    opacity: 0.9;
+  }
+
+  /* Solutions pratiques */
+  .solutions-title {
+    font-weight: 800;
+    font-size: 0.92rem;
+    margin-bottom: 0.7rem;
+    opacity: 0.9;
+  }
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .sol-card {
+    background: rgba(67,160,71,0.08);
+    border: 1px solid rgba(67,160,71,0.25);
+    border-radius: 12px;
+    padding: 0.75rem 0.9rem;
+    font-size: 0.87rem;
+    line-height: 1.45;
+  }
+  .sol-card .sc-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+  }
+  .sol-card .sc-icon  { font-size: 1.2rem; }
+  .sol-card .sc-name  { font-weight: 800; color: #81C784; font-size: 0.9rem; }
+  .sol-card .sc-desc  { opacity: 0.8; }
+  .sol-card .sc-power {
+    display: inline-block;
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    border-radius: 6px;
+    padding: 0.1rem 0.45rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    margin-top: 0.3rem;
+  }
+
+  /* Teaser Q9 */
+  .teaser {
+    background: rgba(210,0,122,0.1);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    text-align: center;
+  }
+  .teaser strong { color: #D2007A; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06);
+    border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .script-line {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+  }
+  .timing {
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+  .script-source {
+    display: inline-block;
+    background: rgba(255,193,7,0.12);
+    color: #FFD54F;
+    border-radius: 6px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 0.3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q8
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Un être humain au repos produit <strong>environ 100 watts de chaleur.</strong><br>
+    Exactement comme une ampoule à filament.<br>
+    <span class="sub">On chauffe 90m² pour réchauffer un corps qui chauffe déjà tout seul.</span>
   </div>
-  <div style="text-align:center; padding:0.8rem; opacity:0.4;">
-    <div style="font-size:2.5rem;">🍞</div>
-    <div style="font-size:1.3rem; font-weight:900;">1 000 W</div>
-    <div style="font-size:0.8rem;">Grille-pain</div>
-  </div>
-  <div style="text-align:center; padding:1rem; border:3px solid #D2007A; border-radius:16px; background:rgba(210,0,122,0.1);">
-    <div style="font-size:3rem;">🧍</div>
-    <div style="font-size:2rem; font-weight:900; color:#D2007A;">100 W</div>
-    <div style="font-size:0.9rem; font-weight:700;">= Vous !</div>
-  </div>
-</div>
 
-<div style="text-align:center; margin-bottom:1.2rem; font-size:1.1rem;">
-  <strong>Le paradoxe :</strong> On chauffe <span style="background:#D2007A; padding:0.1rem 0.5rem; border-radius:4px;">100 m²</span> d'air pour réchauffer <span style="background:#D2007A; padding:0.1rem 0.5rem; border-radius:4px;">100 W</span> de corps humain.
-</div>
-
-<div style="max-width:500px; margin:0 auto 1rem;">
-  <div style="font-weight:700; margin-bottom:0.5rem;">🧥 Solutions « slow heat » — chauffer le corps, pas l'air :</div>
-  <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-    <span style="background:rgba(67,160,71,0.2); padding:0.4rem 0.8rem; border-radius:8px; font-size:0.9rem;">🧶 Pull (+2 à 4°C ressentis)</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.4rem 0.8rem; border-radius:8px; font-size:0.9rem;">🔌 Couverture chauffante (50W)</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.4rem 0.8rem; border-radius:8px; font-size:0.9rem;">⌨️ Sous-main chauffant</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.4rem 0.8rem; border-radius:8px; font-size:0.9rem;">🧦 Chaussettes chaudes</span>
+  <!-- Visuel ampoule / humain -->
+  <div class="ampoule-visual">
+    <div class="av-card ampoule">
+      <div class="av-icon">💡</div>
+      <div class="av-value">100 W</div>
+      <div class="av-label">Ampoule à filament<br>incandescente</div>
+    </div>
+    <div class="av-card humain">
+      <div class="av-icon">🧍</div>
+      <div class="av-value">~100 W</div>
+      <div class="av-label">Corps humain<br>au repos</div>
+    </div>
   </div>
-</div>
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Bonus santé :</strong> Un écart faible entre intérieur et extérieur renforce votre système immunitaire. Sortir d'un logement surchauffé en hiver = choc thermique !
+  <!-- Équivalences groupe -->
+  <div class="groupe-block">
+    <div class="groupe-title">👥 Ce que ça représente en groupe</div>
+    <div class="groupe-row">
+      <span class="gr-icon">🧍</span>
+      <span class="gr-val">1 personne</span>
+      <span class="gr-desc">= 100W — comme une ampoule à filament</span>
+    </div>
+    <div class="groupe-row">
+      <span class="gr-icon">👨‍👩‍👧</span>
+      <span class="gr-val">4 personnes</span>
+      <span class="gr-desc">= 400W — comme un petit radiateur d'appoint</span>
+    </div>    
+    <div class="groupe-row">
+      <span class="gr-icon">🏃</span>
+      <span class="gr-val">En activité</span>
+      <span class="gr-desc">150 à 300W selon l'effort — encore plus en mouvement</span>
+    </div>
+  </div>
+
+  <!-- Slow heat -->
+  <div class="slowheat-block">
+    <div class="slowheat-title">🎯 Le principe du "slow heat" : chauffer le corps, pas l'air</div>
+    Le chauffage compense les pertes thermiques du bâtiment pour maintenir une température d'air cible. Mais si le corps est déjà à l'aise, la cible peut être plus basse — et le chauffage travaille moins.
+    <div class="slowheat-contrast">
+      <div class="sc-card non">
+        <div class="sc-title">❌ Approche classique</div>
+        Chauffer l'air à 22-23°C pour être en T-shirt.<br>
+        Le chauffage travaille à plein régime.<br>
+        Facture maximale.
+      </div>
+      <div class="sc-card oui">
+        <div class="sc-title">✅ Slow heat</div>
+        Chauffer le corps directement — pull, plaid, bouillotte.<br>
+        L'air peut être à 18-19°C.<br>
+        Le chauffage travaille moins.
+      </div>
+    </div>
+  </div>
+
+  <!-- Parois froides -->
+  <div class="parois-block">
+    <div class="parois-title">🧱 Pourquoi le pull marche mieux qu'on ne croit</div>
+    On perd de la chaleur de deux façons : par <strong>convection</strong> (l'air froid autour de soi) et par <strong>rayonnement</strong>, comme un feu, mais en version froide (murs, fenêtres, sols). Un pull isole contre les deux.
+    <div class="parois-exemple">
+      C'est pour ça qu'à 18°C dans une maison bien isolée avec des murs chauds, on est souvent plus à l'aise qu'à 20°C dans une maison mal isolée avec des murs froids. La température de l'air ne dit pas tout.
+    </div>
+  </div>
+
+  <!-- Bouger -->
+  <div class="parois-block" style="border-color: rgba(67,160,71,0.3); background: rgba(67,160,71,0.07); margin-bottom: 1.2rem;">
+    <div class="parois-title" style="color: #81C784;">🏃 Bouger — l'astuce la plus sous-estimée</div>
+    Assis sans bouger, le corps produit ~80-100W. En activité légère (debout, marche lente), il monte à ~130-150W — soit 30 à 50% de chaleur métabolique en plus. Selon les normes de confort thermique, <strong>une activité légère permet d'abaisser la température ressentie de 3 à 4°C.</strong>
+    <div class="parois-exemple">
+      Passer de 22°C assis à 18°C en bougeant légèrement — même confort ressenti. Et 4°C de moins sur le thermostat, c'est ~28% d'économie sur la facture chauffage. Sur 1 500€/an : <strong>~420€ économisés.</strong> Sur du fioul à 2 200€/an : <strong>~615€.</strong>
+      <span style="font-size:0.78rem; opacity:0.7; display:block; margin-top:0.3rem;">Source : norme ISO 7730 — confort thermique et activité métabolique · ADEME 7%/°C</span>
+    </div>
+  </div>
+
+  <!-- Solutions pratiques -->
+  <div class="solutions-title">🛠️ Les gestes qui changent vraiment quelque chose</div>
+  <div class="solutions-grid">
+
+    <div class="sol-card">
+      <div class="sc-header">
+        <span class="sc-icon">🧥</span>
+        <span class="sc-name">Le pull</span>
+      </div>
+      <div class="sc-desc">Isole contre l'air froid ET le rayonnement des parois. Un bon pull = 2 à 3°C de confort en moins sur le thermostat.</div>
+      <span class="sc-power">0 W · 0 €</span>
+    </div>
+
+    <div class="sol-card">
+      <div class="sc-header">
+        <span class="sc-icon">🛏️</span>
+        <span class="sc-name">Chambre à 16-17°C</span>
+      </div>
+      <div class="sc-desc">Meilleur sommeil prouvé. Une bonne couette remplace le chauffage. La nuit, le corps n'a pas besoin d'air chaud.</div>
+      <span class="sc-power">Économies directes sur la nuit</span>
+    </div>
+
+    <div class="sol-card">
+      <div class="sc-header">
+        <span class="sc-icon">🔌</span>
+        <span class="sc-name">Couverture chauffante</span>
+      </div>
+      <div class="sc-desc">Chauffe directement le corps, pas la pièce. Consomme ~50W — soit 20× moins qu'un radiateur électrique de 1 000W.</div>
+      <span class="sc-power">~50 W seulement</span>
+    </div>
+
+    <div class="sol-card">
+      <div class="sc-header">
+        <span class="sc-icon">🌡️</span>
+        <span class="sc-name">Baisser en absence</span>
+      </div>
+      <div class="sc-desc">Une pièce vide n'a pas besoin d'être à 19°C. Baisser de 3-4°C pendant les heures de travail = économies immédiates.</div>
+      <span class="sc-power">Zéro inconfort · Économies réelles</span>
+    </div>
+
+    <div class="sol-card">
+      <div class="sc-header">
+        <span class="sc-icon">🍳</span>
+        <span class="sc-name">La cuisine en hiver</span>
+      </div>
+      <div class="sc-desc">Un four à 200°C consomme 2 000-2 500W — et chauffe la pièce gratuitement. Laisser la porte ouverte après cuisson récupère toute la chaleur résiduelle.</div>
+      <span class="sc-power">Chaleur gratuite · Rien ne se perd</span>
+    </div>
+
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> Votre corps produit 100W de chaleur gratuite en permanence. En le chauffant directement plutôt que la pièce entière, vous réduisez ce que le chauffage doit compenser — et les économies suivent mécaniquement.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    Physiologie humaine — métabolisme basal ~80W (femme) à ~100W (homme) au repos ·
+    INSERM — température et qualité du sommeil ·
+    ADEME — comportements et économies d'énergie dans le logement
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« Mettre un pull chez soi c'est quand même se priver. »</div>
+        <div class="r">On a l'habitude de 22°C en T-shirt parce que c'est ce qu'on fait depuis les années 70-80, quand l'énergie était quasi gratuite. Avant ça, tout le monde portait des pulls en hiver — et personne ne se privait. C'est une habitude, pas un besoin physiologique.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Une couverture chauffante c'est dangereux, ça prend feu. »</div>
+        <div class="r">Les modèles récents ont des systèmes d'arrêt automatique et des normes de sécurité strictes (CE). Un usage normal — assis sur le canapé, pas pendant le sommeil — ne présente pas de risque particulier. Le risque de laisser un radiateur allumé toute la nuit est bien plus réel.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Baisser le chauffage quand on part, ça consomme plus pour tout remonter. »</div>
+        <div class="r">C'est un mythe tenace. En physique thermique, maintenir une température haute consomme toujours plus que laisser refroidir et relancer. La seule exception : une absence de moins de 2-3 heures dans un logement très bien isolé. Pour une journée de travail, baisser systématiquement est toujours gagnant.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
