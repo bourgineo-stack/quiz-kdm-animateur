@@ -849,10 +849,22 @@ async function startQuizNow() {
                 })
             });
             
-            console.log('✅ Participants marqués avec session:', SETTINGS.startTime);
+            console.log('✅ markSessionParticipants envoyé, vérification...');
             
-            // Attendre que le marquage soit écrit dans le Sheet
-            await new Promise(r => setTimeout(r, 2000));
+            // Vérifier que les participants sont bien marqués (max 5 tentatives)
+            let marked = false;
+            for (let i = 0; i < 5; i++) {
+                await new Promise(r => setTimeout(r, 1500));
+                const checkRes = await fetch(`${CONFIG.sheetUrl}?action=getParticipants`);
+                const checkData = await checkRes.json();
+                console.log(`Tentative ${i+1} - participants détectés:`, checkData.counts.total);
+                if (checkData.counts.total > 0) {
+                    marked = true;
+                    console.log('✅ Participants confirmés dans la session');
+                    break;
+                }
+            }
+            if (!marked) console.warn('⚠️ Aucun participant détecté après marquage');
             
         } else {
             state.referenceTime = startedAt;
@@ -1148,10 +1160,8 @@ async function tryFetchScores(label) {
             setTimeout(() => {
                 const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
                 $('info-body-overlay').innerHTML = content;
-                $('info-overlay').classList.add('active');
                 setTimeout(() => {
                     $('info-overlay').scrollTop = 0;
-                    $('info-overlay-content').scrollTop = 0;
                 }, 50);
                 console.log('✅ Overlay affiché');
             }, 3000);
