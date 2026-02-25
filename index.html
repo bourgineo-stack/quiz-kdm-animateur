@@ -862,6 +862,7 @@ async function startQuizNow() {
         }
 
         state.isFirstQuestion = true;
+        state.lastScoreTimestamp = Date.now();
 
     } catch (e) {
         console.error('Erreur démarrage:', e);
@@ -1151,6 +1152,7 @@ async function tryFetchScores(label) {
             setTimeout(() => {
                 const content = state.preloadedContent[q.id] || q.info || '<p>Information non disponible.</p>';
                 $('info-body-overlay').innerHTML = content;
+                $('info-overlay').classList.add('active');
                 setTimeout(() => {
                     $('info-overlay').scrollTop = 0;
                 }, 50);
