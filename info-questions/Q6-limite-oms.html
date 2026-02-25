@@ -1,37 +1,376 @@
-<div class="info-block">
-<h3>La limite OMS (viande rouge)</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q6 — La limite OMS</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">⚠️ Le seuil de l'OMS</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.2rem;">
-  <div style="background:rgba(67,160,71,0.15); border:2px solid #43A047; border-radius:16px; padding:1.2rem; text-align:center; min-width:160px;">
-    <div style="font-size:2.5rem; font-weight:900; color:#43A047;">≤ 500g</div>
-    <div style="font-weight:700;">par semaine</div>
-    <div style="font-size:0.85rem; opacity:0.8;">= seuil recommandé</div>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Seuil visuel */
+  .seuil-block {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+  .seuil-card {
+    flex: 1;
+    min-width: 150px;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+  .seuil-card.ok  { background: rgba(67,160,71,0.1);  border: 2px solid rgba(67,160,71,0.35); }
+  .seuil-card.nok { background: rgba(229,57,53,0.1);  border: 2px solid rgba(229,57,53,0.35); }
+  .seuil-card .sc-icon  { font-size: 2rem; margin-bottom: 0.3rem; }
+  .seuil-card .sc-value { font-size: 1.6rem; font-weight: 900; line-height: 1.1; }
+  .seuil-card.ok  .sc-value { color: #81C784; }
+  .seuil-card.nok .sc-value { color: #EF9A9A; }
+  .seuil-card .sc-label { font-size: 0.82rem; font-weight: 700; opacity: 0.8; margin-top: 0.3rem; line-height: 1.35; }
+
+  /* Quoi c'est la viande rouge */
+  .viandes-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .viandes-title { font-weight: 800; margin-bottom: 0.6rem; font-size: 0.92rem; }
+  .viandes-grid {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.7rem;
+  }
+  .viande-tag {
+    background: rgba(229,57,53,0.15);
+    color: #EF9A9A;
+    border: 1px solid rgba(229,57,53,0.25);
+    border-radius: 20px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  /* Charcuterie */
+  .charcuterie-block {
+    background: rgba(255,167,38,0.07);
+    border: 1px solid rgba(255,167,38,0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .charcuterie-title {
+    font-weight: 800;
+    color: #FFD54F;
+    margin-bottom: 0.5rem;
+    font-size: 0.92rem;
+  }
+  .groupe-badge {
+    display: inline-block;
+    background: rgba(229,57,53,0.2);
+    color: #EF9A9A;
+    border: 1px solid rgba(229,57,53,0.35);
+    border-radius: 8px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-right: 0.4rem;
+  }
+  .nuance {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+
+  /* Triple bénéfice */
+  .triple {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+  }
+  .triple-item {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.7rem 0.5rem;
+  }
+  .triple-item .ti-icon  { font-size: 1.6rem; margin-bottom: 0.3rem; }
+  .triple-item .ti-label { font-size: 0.82rem; font-weight: 800; }
+  .triple-item .ti-sub   { font-size: 0.75rem; opacity: 0.65; margin-top: 0.15rem; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Sources */
+  .sources {
+    margin-top: 0.8rem;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06);
+    border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .script-line {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+  }
+  .timing {
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+  .script-source {
+    display: inline-block;
+    background: rgba(255,193,7,0.12);
+    color: #FFD54F;
+    border-radius: 6px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-left: 0.3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q6
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    L'OMS recommande de ne pas dépasser <strong>500g de viande rouge par semaine.</strong><br>
+    Au-delà, le risque de cancer colorectal augmente de <strong>+18%.</strong><br>
+    <span class="sub">En dessous de ce seuil — aucun problème documenté. C'est une limite, pas une interdiction.</span>
   </div>
-  <div style="background:rgba(229,57,53,0.15); border:2px solid #E53935; border-radius:16px; padding:1.2rem; text-align:center; min-width:160px;">
-    <div style="font-size:2.5rem; font-weight:900; color:#E53935;">+18%</div>
-    <div style="font-weight:700;">risque cancer colorectal</div>
-    <div style="font-size:0.85rem; opacity:0.8;">si dépassement régulier</div>
-  </div>
-</div>
 
-<div style="max-width:500px; margin:0 auto 1rem;">
-  <div style="font-weight:700; margin-bottom:0.5rem;">🥩 Qu'est-ce que la « viande rouge » ?</div>
-  <div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.8rem;">
-    <span style="background:rgba(229,57,53,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🐄 Bœuf</span>
-    <span style="background:rgba(229,57,53,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🐖 Porc</span>
-    <span style="background:rgba(229,57,53,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🐑 Agneau</span>
-    <span style="background:rgba(229,57,53,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🐴 Cheval</span>
+  <!-- Seuil vert / rouge -->
+  <div class="seuil-block">
+    <div class="seuil-card ok">
+      <div class="sc-icon">✅</div>
+      <div class="sc-value">≤ 500g</div>
+      <div class="sc-label">par semaine<br>Pas de risque accru documenté</div>
+    </div>
+    <div class="seuil-card nok">
+      <div class="sc-icon">⚠️</div>
+      <div class="sc-value">> 500g</div>
+      <div class="sc-label">par semaine<br>+18% de risque de cancer colorectal</div>
+    </div>
   </div>
-  <div style="font-weight:700; margin-bottom:0.3rem;">🌭 Attention spéciale : la charcuterie</div>
-  <div style="font-size:0.95rem; opacity:0.9;">Classée cancérogène certain (groupe 1) par l'OMS — au même titre que le tabac pour le type de preuve.</div>
-</div>
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Triple bénéfice :</strong> Réduire la viande rouge = économies + meilleure santé + moins d'impact environnemental. La moyenne française dépasse déjà ce seuil.
+  <!-- Ce qui compte comme viande rouge -->
+  <div class="viandes-block">
+    <div class="viandes-title">🥩 Qu'est-ce que la viande rouge exactement ?</div>
+    <div class="viandes-grid">
+      <span class="viande-tag">🐄 Bœuf</span>
+      <span class="viande-tag">🐖 Porc</span>
+      <span class="viande-tag">🐑 Agneau</span>
+      <span class="viande-tag">🐴 Cheval</span>
+      <span class="viande-tag">🦌 Gibier à poil</span>
+    </div>
+    <div style="font-size:0.85rem; opacity:0.8;">
+      Le poulet, le canard, la dinde — c'est de la <strong>viande blanche</strong>, non concernée par ce seuil.
+    </div>
+  </div>
+
+  <!-- Charcuterie -->
+  <div class="charcuterie-block">
+    <div class="charcuterie-title">🌭 La charcuterie — un cran au-dessus</div>
+    <span class="groupe-badge">Groupe 1 CIRC</span> cancérogène certain — la preuve scientifique est établie. Ça mérite d'en manger moins, pas d'en avoir peur.
+  </div>
+
+  <!-- Triple bénéfice -->
+  <div class="triple">
+    <div class="triple-item">
+      <div class="ti-icon">💰</div>
+      <div class="ti-label">Économies</div>
+      <div class="ti-sub">Moins de viande rouge = moins de dépenses alimentaires</div>
+    </div>
+    <div class="triple-item">
+      <div class="ti-icon">❤️</div>
+      <div class="ti-label">Santé</div>
+      <div class="ti-sub">Risque cardiovasculaire et cancéreux réduit</div>
+    </div>
+    <div class="triple-item">
+      <div class="ti-icon">🌱</div>
+      <div class="ti-label">Empreinte</div>
+      <div class="ti-sub">10× moins de CO₂ en remplaçant par du poulet</div>
+    </div>
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 Le message :</strong> 500g/semaine c'est environ 2 steaks ou 3 côtelettes. La plupart des Français y sont. Réduire un peu, choisir malin (poulet, canard, œufs, légumineuses) — c'est un triple bénéfice sans contrainte majeure.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    OMS / CIRC — classement viande rouge et transformée (2015) ·
+    ANSES — recommandations alimentaires adultes (2017) ·
+    NutriNet-Santé (INSERM/INRAE) — consommation viande en France
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« La charcuterie c'est comme fumer alors ? »</div>
+        <div class="r">Non — même niveau de certitude scientifique, pas même niveau de risque. Le tabac multiplie le risque de cancer du poumon par 15 à 20. La charcuterie augmente le risque de cancer colorectal de +18% en consommation régulière. C'est documenté et ça mérite attention — mais c'est une échelle très différente.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Et si on mange 1 kg ou 1,5 kg par semaine — c'est proportionnellement plus dangereux ? »</div>
+        <div class="r">Ce n'est pas linéaire mais c'est dose-dépendant : plus on consomme, plus le risque augmente, sans être proportionnel. Chaque tranche de 100g supplémentaire par jour au-delà du seuil ajoute environ +12 à +17% de risque relatif supplémentaire. Quelqu'un à 1,5 kg/semaine n'est pas 3× plus à risque que quelqu'un à 500g — mais son risque est clairement et significativement plus élevé. <em>(Source : méta-analyses WCRF/AIRC)</em></div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« 500g c'est pas beaucoup — c'est quoi concrètement ? »</div>
+        <div class="r">Environ 2 steaks de 200g + 1 tranche de jambon. Ou 3 côtelettes de porc. La plupart des gens qui font attention y sont facilement. Les gros consommateurs de charcuterie quotidienne dépassent vite ce seuil sans s'en rendre compte.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Mon grand-père mangeait de la viande tous les jours et il a vécu 90 ans. »</div>
+        <div class="r">Le risque statistique ne détermine pas le destin individuel. Un fumeur peut vivre vieux, un non-fumeur peut avoir un cancer. Ce que dit la statistique : sur 100 personnes qui dépassent régulièrement 500g/semaine, 18 de plus développeront un cancer colorectal par rapport à 100 personnes qui restent en dessous. C'est un risque relatif, pas une condamnation.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
