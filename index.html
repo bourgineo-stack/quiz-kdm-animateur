@@ -1060,7 +1060,7 @@ async function tryFetchScores(label) {
 
         console.log(`📊 ${label} - lastCalcTime: ${lastCalcTime}, lastScoreTimestamp: ${state.lastScoreTimestamp}`);
 
-        if (lastCalcTime > state.lastScoreTimestamp) {
+        if (lastCalcTime > state.lastScoreTimestamp || (lastCalcTime === 0 && (data.blue > 0 || data.red > 0))) {
             state.pendingScores = data;
             state.lastScoreTimestamp = lastCalcTime;
             state.scoreCalculating = false;
