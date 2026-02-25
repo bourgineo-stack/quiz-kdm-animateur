@@ -1,48 +1,446 @@
-<div class="info-block">
-<h3>Le match des protéines</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q4 — Le match des protéines</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">🥊 Le match : Bœuf vs Lentilles</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<table style="width:100%; border-collapse:collapse; margin-bottom:1.2rem;">
-  <thead>
-    <tr>
-      <th style="padding:0.7rem; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.1); text-align:center;"></th>
-      <th style="padding:0.7rem; border:1px solid rgba(255,255,255,0.2); background:rgba(229,57,53,0.2); text-align:center; font-size:1.3rem;">🥩 Bœuf</th>
-      <th style="padding:0.7rem; border:1px solid rgba(255,255,255,0.2); background:rgba(67,160,71,0.2); text-align:center; font-size:1.3rem;">🫘 Lentilles</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); font-weight:700;">💰 Prix pour 20g de protéines</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center; font-size:1.3rem; font-weight:900; color:#E53935;">~2,50€</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center; font-size:1.3rem; font-weight:900; color:#43A047;">~0,30€</td>
-    </tr>
-    <tr>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); font-weight:700;">📦 Conservation</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center;">3-5 jours frigo</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center;">1-2 ans (sec)</td>
-    </tr>
-    <tr>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); font-weight:700;">🌍 kg CO₂ par kg</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center; color:#E53935; font-weight:700;">27 kg</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center; color:#43A047; font-weight:700;">0,9 kg</td>
-    </tr>
-    <tr>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); font-weight:700;">💪 Bonus</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center;">Fer, B12</td>
-      <td style="padding:0.6rem; border:1px solid rgba(255,255,255,0.2); text-align:center;">Fibres, fer, zéro gaspillage</td>
-    </tr>
-  </tbody>
-</table>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
 
-<div style="text-align:center; margin-bottom:1rem;">
-  <span style="background:#D2007A; padding:0.4rem 1.2rem; border-radius:20px; font-weight:800; font-size:1.2rem;">×8 moins cher à protéines égales</span>
-</div>
+  /* Tableau comparatif */
+  .match-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+  }
+  .match-table th {
+    padding: 0.7rem 0.8rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .match-table th.beef { background: rgba(229,57,53,0.2); color: #EF9A9A; border-radius: 8px 0 0 0; }
+  .match-table th.lentil { background: rgba(67,160,71,0.2); color: #81C784; border-radius: 0 8px 0 0; }
+  .match-table th.label { background: transparent; }
+  .match-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    line-height: 1.4;
+  }
+  .match-table td.label { font-weight: 700; font-size: 0.85rem; opacity: 0.8; }
+  .match-table td.beef  { text-align: center; background: rgba(229,57,53,0.07); color: #EF9A9A; font-weight: 800; }
+  .match-table td.lentil { text-align: center; background: rgba(67,160,71,0.07); color: #81C784; font-weight: 800; }
+  .match-table tr:last-child td { border-bottom: none; }
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Idées rapides :</strong> Salade de lentilles, dahl express, soupe — c'est aussi facile qu'un steak haché et bien meilleur pour le porte-monnaie.
+  /* Calcul eau */
+  .eau-block {
+    background: rgba(30,136,229,0.08);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .eau-title {
+    font-weight: 800;
+    color: #90CAF9;
+    margin-bottom: 0.7rem;
+    font-size: 0.95rem;
+  }
+  .eau-visual {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+  }
+  .eau-card {
+    flex: 1;
+    min-width: 140px;
+    border-radius: 10px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+  }
+  .eau-card.beef   { background: rgba(229,57,53,0.1); border: 1px solid rgba(229,57,53,0.25); }
+  .eau-card.lentil { background: rgba(67,160,71,0.1); border: 1px solid rgba(67,160,71,0.25); }
+  .eau-card .ec-title { font-weight: 800; margin-bottom: 0.5rem; }
+  .eau-card.beef   .ec-title { color: #EF9A9A; }
+  .eau-card.lentil .ec-title { color: #81C784; }
+  .eau-card .ec-line { margin-bottom: 0.25rem; }
+  .eau-card .ec-line span { font-weight: 800; }
+
+  /* Nutriments */
+  .nutri-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .nutri-title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+    opacity: 0.9;
+  }
+  .nutri-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nutri-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .nutri-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 0.05rem; }
+  .nutri-content { flex: 1; }
+  .nutri-content strong { display: block; font-weight: 800; margin-bottom: 0.15rem; }
+  .nutri-content .solution {
+    display: inline-block;
+    background: rgba(67,160,71,0.15);
+    color: #81C784;
+    border-radius: 6px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+  }
+  .nutri-content .warning {
+    display: inline-block;
+    background: rgba(255,167,38,0.15);
+    color: #FFD54F;
+    border-radius: 6px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 0.2rem;
+  }
+
+  /* Message central */
+  .message-block {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(210,0,122,0.1);
+    border: 2px solid rgba(210,0,122,0.3);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.1rem;
+    flex-wrap: wrap;
+  }
+  .message-block .mb-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .message-block .mb-text { flex: 1; font-size: 0.95rem; line-height: 1.55; }
+  .message-block .mb-text strong { color: #D2007A; font-size: 1rem; display: block; margin-bottom: 0.2rem; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    margin-top: 0.2rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+   /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+	margin-bottom: 0.8rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 900px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.7rem;
+  }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px;
+    margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06);
+    border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+  }
+  .script-line {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+    align-items: flex-start;
+  }
+  .timing {
+    background: rgba(255,193,7,0.15);
+    color: #FFD54F;
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q4
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Pour obtenir <strong>20g de protéines</strong>, le bœuf coûte ~2,50 € — les lentilles ~0,30 €.<br>
+    <strong>8 fois moins cher.</strong> À protéines strictement égales.<br>
+    <span class="sub">Et encore — on ne vous dit pas tout sur ce que vous payez dans un steak.</span>
+  </div>
+
+  <!-- Tableau comparatif -->
+  <table class="match-table">
+    <thead>
+      <tr>
+        <th class="label"></th>
+        <th class="beef">🥩 Bœuf (steak haché)</th>
+        <th class="lentil">🫘 Lentilles sèches</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="label">💰 Prix / kg</td>
+        <td class="beef">~12–15 €</td>
+        <td class="lentil">~2 €</td>
+      </tr>
+      <tr>
+        <td class="label">💪 Protéines / 100g</td>
+        <td class="beef">~20g</td>
+        <td class="lentil">~25g (sec)</td>
+      </tr>
+      <tr>
+        <td class="label">💰 Prix / kg de protéines</td>
+        <td class="beef">~70 €</td>
+        <td class="lentil">~8 €</td>
+      </tr>
+      <tr>
+        <td class="label">📦 Conservation</td>
+        <td class="beef">3–5 jours (frigo)</td>
+        <td class="lentil">2 ans (sec, température ambiante)</td>
+      </tr>
+      <tr>
+        <td class="label">🦠 Risque intoxication</td>
+        <td class="beef">Élevé si mal conservé</td>
+        <td class="lentil">Quasi nul</td>
+      </tr>
+      <tr>
+        <td class="label">🌍 CO₂ / kg</td>
+        <td class="beef">~27 kg CO₂</td>
+        <td class="lentil">~0,9 kg CO₂</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Le piège de l'eau -->
+  <div class="eau-block">
+    <div class="eau-title">💧 Ce que vous payez vraiment dans un steak</div>
+    <div class="eau-visual">
+      <div class="eau-card beef">
+        <div class="ec-title">🥩 100g de steak haché</div>
+        <div class="ec-line">🥩 <span>~20g</span> de protéines</div>
+        <div class="ec-line">🫙 <span>~15g</span> de graisses</div>
+        <div class="ec-line">💧 <span>~65g d'eau</span> payée au prix du bœuf</div>
+      </div>
+      <div class="eau-card lentil">
+        <div class="ec-title">🫘 80g de lentilles sèches</div>
+        <div class="ec-line">💪 <span>~20g</span> de protéines</div>
+        <div class="ec-line">💧 L'eau, vous la rajoutez</div>
+        <div class="ec-line" style="margin-top:0.3rem;">→ <span style="color:#81C784;">200g une fois cuites</span></div>
+      </div>
+    </div>
+    <div style="font-size:0.85rem; opacity:0.8;">
+      La comparaison honnête : <strong>poids sec vs poids humide</strong>. Dans un steak, vous payez 65g d'eau au prix de la viande. Dans les lentilles, l'eau vient du robinet.
+    </div>
+  </div>
+
+  <!-- Ce que la viande apporte vraiment -->
+  <div class="nutri-block">
+    <div class="nutri-title">🔬 Ce que la viande apporte — soyons honnêtes</div>
+
+    <div class="nutri-row">
+      <span class="nutri-icon">🩸</span>
+      <div class="nutri-content">
+        <strong>Fer</strong>
+        La viande rouge contient du fer mieux absorbé (~25%) que le fer végétal (~5–10%). Réel avantage, surtout pour les femmes.
+        <span class="solution">✅ Avec de la vitamine C (citron, poivron), l'absorption du fer végétal augmente significativement. Un filet de citron sur les lentilles, c'est suffisant.</span>
+      </div>
+    </div>
+
+    <div class="nutri-row">
+      <span class="nutri-icon">🧬</span>
+      <div class="nutri-content">
+        <strong>Vitamine B12</strong>
+        Uniquement dans les produits animaux — viande, poisson, œufs, laitages. Pas dans les végétaux.
+        <span class="solution">✅ Œufs, poisson, fromage couvrent facilement les besoins sans viande rouge.</span>
+      </div>
+    </div>
+
+    <div class="nutri-row">
+      <span class="nutri-icon">⚙️</span>
+      <div class="nutri-content">
+        <strong>Acides aminés essentiels</strong>
+        La viande est une protéine "complète". Les lentilles seules ne le sont pas — mais lentilles + céréales (riz, pain, pâtes) dans la journée = protéine complète. C'est la base de toutes les cuisines traditionnelles du monde.
+        <span class="solution">✅ Pas besoin de les combiner au même repas — juste dans la journée.</span>
+      </div>
+    </div>
+
+    <div style="margin-top:0.8rem; padding:0.7rem 0.9rem; background:rgba(255,193,7,0.08); border:1px solid rgba(255,193,7,0.2); border-radius:10px; font-size:0.88rem; line-height:1.5;">
+      <strong style="color:#FFD54F;">💡 Si vous mangez moins d'une portion de viande par semaine en moyenne</strong> — pas d'alerte, mais renseignez-vous pour bien compenser. Œufs, poisson, laitages pour la B12 ; légumineuses + céréales pour les acides aminés ; un peu de vitamine C pour le fer. Simple, pas contraignant.
+    </div>
+  </div>
+
+  <!-- Message central -->
+  <div class="message-block">
+    <div class="mb-icon">🎯</div>
+    <div class="mb-text">
+      <strong>Le message : manger malin, pas manger végétalien</strong>
+      Diviser par deux sa consommation de viande rouge, c'est accessible à tout le monde, meilleur pour la santé, meilleur pour le porte-monnaie — et sans sacrifier aucun nutriment essentiel si on fait attention.
+    </div>
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> Moins de viande rouge = économies + santé. Pas besoin d'aller jusqu'à Djokovic — mais sachez qu'il est champion du monde en étant végétalien. Carl Lewis aussi, à son époque.<br>
+    <span style="opacity:0.8; font-size:0.9rem;">La viande est utile. Trop de viande est nuisible. L'équilibre, c'est ~500g de viande rouge par semaine maximum — on y revient à la question suivante.</span>
+  </div>
+
+ <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    ADEME / INRAE — Agribalyse, base de données ACV alimentaire ·
+	Ciqual (ANSES) — table de composition nutritionnelle des aliments
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« Les lentilles c'est pas nourrissant, ça ne remplace pas la viande. »</div>
+        <div class="r">Les lentilles ont plus de protéines au kilo que le steak haché. Et lentilles + un peu de riz = protéine complète, tous acides aminés présents. Nourrissant, oui. Moins cher, oui. Moins sexy, peut-être — mais ça se cuisine.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Je suis anémique, j'ai besoin de viande rouge. »</div>
+        <div class="r">Le fer héminique de la viande est mieux absorbé, c'est vrai. Mais une source végétale de fer avec de la vitamine C (citron, poivron) triple l'absorption. Et les lentilles sont parmi les meilleures sources de fer végétal. À discuter avec un médecin pour les cas sévères.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Cuisiner des lentilles c'est long et compliqué. »</div>
+        <div class="r">Les lentilles corail cuisent en 15 minutes sans trempage. Une salade de lentilles vertes en boîte, c'est 2 minutes. Le dahl de lentilles, c'est une casserole et 20 minutes. Pas plus compliqué qu'un steak haché.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Les végétaux c'est plein de pesticides. »</div>
+        <div class="r">Les légumineuses sèches (lentilles, pois chiches, haricots) sont parmi les produits agricoles les moins chargés en résidus de pesticides — elles poussent vite, nécessitent peu de traitements, et le séchage réduit encore les résidus. C'est un des aliments les plus "propres" qu'on puisse manger.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
