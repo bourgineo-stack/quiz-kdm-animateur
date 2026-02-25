@@ -670,6 +670,7 @@ const state = {
     preloadedContent: {},
     pendingScores: null,
     scoreCalculating: false,
+    lastScoreTimestamp: 0,
     isFirstQuestion: true,  // ← NOUVEAU
     isCountdown: false,
     configured: false        // ← NOUVEAU    
@@ -1007,9 +1008,10 @@ async function triggerScoreCalculation(quizState) {
     
     console.log('🎯 Calcul score Q', q.id, 'tour', tour);
     state.scoreCalculating = true;
+    state.pendingScores = null;
 
     try {
-        // Calculer
+        // POST immédiat
         await fetch(CONFIG.sheetUrl, {
             method: 'POST',
             mode: 'no-cors',
@@ -1021,21 +1023,45 @@ async function triggerScoreCalculation(quizState) {
             })
         });
         
-        // Attendre que GAS ait écrit
-        await new Promise(r => setTimeout(r, 3000));
-        
-        // Récupérer les nouveaux scores
-        const res = await fetch(`${CONFIG.sheetUrl}?action=getScores`);
-        const data = await res.json();
-        
-        // Stocker en attente (pas encore affiché)
-        state.pendingScores = data;
-        state.scoreCalculating = false;
-        console.log('✅ Scores prêts:', data.blue, '-', data.red);
-        
+        console.log('✅ calculateTurnScore envoyé, lecture scores dans 10s');
+
+        // Première lecture à T+10 après la transition (soit 10s après le POST)
+        await new Promise(r => setTimeout(r, 10000));
+        await tryFetchScores('tentative 1');
+
+        // Si pas encore prêt, fallback 6s plus tard
+        if (!state.pendingScores) {
+            await new Promise(r => setTimeout(r, 6000));
+            await tryFetchScores('tentative 2');
+        }
+
     } catch (e) {
         console.error('❌ Erreur calcul score:', e);
         state.scoreCalculating = false;
+    }
+}
+
+async function tryFetchScores(label) {
+    try {
+        const res = await fetch(`${CONFIG.sheetUrl}?action=getScores`);
+        const data = await res.json();
+
+        const lastCalcTime = data.details && data.details.length > 0
+            ? Math.max(...data.details.map(d => d.timestamp))
+            : 0;
+
+        console.log(`📊 ${label} - lastCalcTime: ${lastCalcTime}, lastScoreTimestamp: ${state.lastScoreTimestamp}`);
+
+        if (lastCalcTime > state.lastScoreTimestamp) {
+            state.pendingScores = data;
+            state.lastScoreTimestamp = lastCalcTime;
+            state.scoreCalculating = false;
+            console.log(`✅ Scores frais confirmés: bleu=${data.blue}, rouge=${data.red}`);
+        } else {
+            console.warn(`⚠️ ${label} - scores pas encore mis à jour`);
+        }
+    } catch (e) {
+        console.error(`❌ Erreur ${label}:`, e);
     }
 }
         
@@ -1130,12 +1156,8 @@ async function triggerScoreCalculation(quizState) {
    } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        if ($('info-overlay').classList.contains('active')) {
-            $('info-overlay').classList.remove('active');
-            if (state.pendingScores) {
-                applyScores(state.pendingScores);
-                state.pendingScores = null;
-            }
+       if ($('info-overlay').classList.contains('active')) {
+            closeOverlay();
         }
     }
 }
@@ -1147,63 +1169,20 @@ async function triggerScoreCalculation(quizState) {
             });
         }
 
-       async function fetchData() {
+async function fetchData() {
     try {
-        const tour = getCurrentTour(state.referenceTime);
         const currentQ = QUESTIONS[state.lastQuestionIndex];
         if (!currentQ) return;
-        const questionId = currentQ.id;
 
-        console.log('🔍 Fetch data pour question:', questionId, 'TOUR:', tour);
-
-        const [statsRes, participantsRes, scoresRes] = await Promise.all([
-            fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${questionId}&tour=${tour}`),
-            fetch(`${CONFIG.sheetUrl}?action=getParticipants`),
-            fetch(`${CONFIG.sheetUrl}?action=getScores`)
+        const [participantsRes] = await Promise.all([
+            fetch(`${CONFIG.sheetUrl}?action=getParticipants`)
         ]);
 
-        const stats = await statsRes.json();
         const participants = await participantsRes.json();
-        const scoresData = await scoresRes.json(); // Changé le nom pour éviter le conflit
 
-        console.log('📊 Stats reçues:', stats);
-
-       
-
-        // Mise à jour des participants
         $('total-participants').textContent = participants.counts.total || 0;
         $('members-blue').textContent = participants.counts.blue || 0;
         $('members-red').textContent = participants.counts.red || 0;
-
-        // Mise à jour des scores
-        if (!state.scoreCalculating) {
-        const prevBlue = parseInt($('score-blue').dataset.prev || 0);
-        const prevRed = parseInt($('score-red').dataset.prev || 0);
-        
-        const currentBlue = scoresData.blue || 0;
-        const currentRed = scoresData.red || 0;
-
-        $('score-blue').textContent = currentBlue;
-        $('score-red').textContent = currentRed;
-
-        // Animations si le score augmente
-        if (prevBlue < currentBlue) {
-            $('card-blue').classList.add('scoring');
-            setTimeout(() => $('card-blue').classList.remove('scoring'), 800);
-        }
-        if (prevRed < currentRed) {
-            $('card-red').classList.add('scoring');
-            setTimeout(() => $('card-red').classList.remove('scoring'), 800);
-        }
-
-        // Sauvegarde pour la prochaine comparaison
-        $('score-blue').dataset.prev = currentBlue;
-        $('score-red').dataset.prev = currentRed;
-
-        // Indicateur d'équipe en tête
-        $('card-blue').classList.toggle('leading', currentBlue > currentRed);
-        $('card-red').classList.toggle('leading', currentRed > currentBlue);
-        }
 
     } catch (e) { 
         console.error('❌ Erreur fetch data:', e); 
@@ -1363,34 +1342,29 @@ function displayQuestionInfo(question) {
         });
     }
 }
-$('info-overlay-close').addEventListener('click', () => {
+
+function closeOverlay() {
     $('info-overlay').classList.remove('active');
     if (state.pendingScores) {
         applyScores(state.pendingScores);
         state.pendingScores = null;
+    } else if (!state.scoreCalculating) {
+        // Secours : si pendingScores null et calcul terminé, forcer un fetch
+        fetch(`${CONFIG.sheetUrl}?action=getScores`)
+            .then(r => r.json())
+            .then(data => applyScores(data))
+            .catch(e => console.error('❌ Erreur fetch secours:', e));
     }
+}
+        
+$('info-overlay-close').addEventListener('click', () => closeOverlay());
+
+$('info-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'info-overlay') closeOverlay();
 });
-    
-    // Fermeture au clic sur le fond noir (optionnel)
-   $('info-overlay').addEventListener('click', (e) => {
-    if (e.target.id === 'info-overlay') {
-        $('info-overlay').classList.remove('active');
-        if (state.pendingScores) {
-            applyScores(state.pendingScores);
-            state.pendingScores = null;
-        }
-    }
-});
-    
-    // Fermeture avec la touche Échap (optionnel)
-    document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) {
-        $('info-overlay').classList.remove('active');
-        if (state.pendingScores) {
-            applyScores(state.pendingScores);
-            state.pendingScores = null;
-        }
-    }
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) closeOverlay();
 });
     </script>
   <!-- Overlay info pédagogique -->
