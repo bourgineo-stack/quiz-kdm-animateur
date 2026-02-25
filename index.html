@@ -728,6 +728,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+    $('info-overlay-close').addEventListener('click', () => closeOverlay());
+
+    $('info-overlay').addEventListener('click', (e) => {
+        if (e.target.id === 'info-overlay') closeOverlay();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) closeOverlay();
+    });
 });
 
 function selectMode(mode) {
@@ -1371,15 +1380,6 @@ function closeOverlay() {
     }
 }
         
-$('info-overlay-close').addEventListener('click', () => closeOverlay());
-
-$('info-overlay').addEventListener('click', (e) => {
-    if (e.target.id === 'info-overlay') closeOverlay();
-});
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && $('info-overlay').classList.contains('active')) closeOverlay();
-});
     </script>
   <!-- Overlay info pédagogique -->
     <div class="info-overlay" id="info-overlay">
