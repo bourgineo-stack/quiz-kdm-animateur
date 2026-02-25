@@ -1261,16 +1261,21 @@ async function preloadQuestionInfo(question) {
  * Fonctions utiles pour les questions
  */
         
-function toggleDetail() {
-    const panel = document.getElementById('detail-panel');
-    const arrow = document.getElementById('arrow');
+// Utilisée par toutes les questions
+function toggleDetail(btn) {
+    const panel = btn.nextElementSibling;
+    const arrow = btn.querySelector('#arrow');
     const isOpen = panel.classList.contains('open');
     panel.classList.toggle('open', !isOpen);
     arrow.textContent = isOpen ? '▼' : '▲';
 }
 
-        function calculate(km, btn) {
-    // Mettre à jour les boutons actifs
+// Utilisée uniquement par Q1
+const COUT_THERMIQUE_PAR_KM = 0.42;
+const COUT_ELEC_PAR_KM = 0.33;
+const COUT_ELEC_KDM_PAR_KM = 0.315;
+
+function calculate(km, btn) {
     document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
@@ -1283,13 +1288,13 @@ function toggleDetail() {
     document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
     document.getElementById('res-kdm').textContent       = kdm.toLocaleString('fr-FR') + ' €';
     document.getElementById('kdm-badge').textContent     =
-      `⚡ Avec la recharge KDM : jusqu'à ${economie.toLocaleString('fr-FR')} € économisés / an vs thermique`;
+        `⚡ Avec la recharge KDM : jusqu'à ${economie.toLocaleString('fr-FR')} € économisés / an vs thermique`;
 
     const result = document.getElementById('calc-result');
     result.classList.remove('visible');
-    void result.offsetWidth; // force reflow pour l'animation
+    void result.offsetWidth;
     result.classList.add('visible');
-  }
+}
 /**
  * Affiche le contenu préchargé (ou charge si pas encore fait)
  */
