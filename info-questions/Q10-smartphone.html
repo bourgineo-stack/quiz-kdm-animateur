@@ -1,52 +1,437 @@
-<div class="info-block">
-<h3>Smartphone : usage ou achat ?</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q10 — Le numérique</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">📱 L'impact caché de votre téléphone</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="max-width:400px; margin:0 auto 1.2rem;">
-  <!-- Barre empilée fabrication vs usage -->
-  <div style="font-weight:700; margin-bottom:0.5rem; text-align:center;">Empreinte carbone d'un smartphone :</div>
-  <div style="background:rgba(255,255,255,0.1); border-radius:12px; height:50px; overflow:hidden; display:flex;">
-    <div style="width:80%; background:linear-gradient(90deg, #E53935, #C62828); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:1.1rem;">
-      🏭 Fabrication — 80%
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Fabrication vs usage */
+  .fab-visual {
+    display: flex;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .fab-card {
+    flex: 1;
+    min-width: 150px;
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    text-align: center;
+  }
+  .fab-card.fab {
+    background: rgba(229,57,53,0.1);
+    border: 2px solid rgba(229,57,53,0.4);
+  }
+  .fab-card.use {
+    background: rgba(67,160,71,0.08);
+    border: 2px solid rgba(67,160,71,0.25);
+  }
+  .fab-card .fc-icon  { font-size: 2rem; margin-bottom: 0.4rem; }
+  .fab-card .fc-pct   { font-size: 2.2rem; font-weight: 900; line-height: 1; margin-bottom: 0.2rem; }
+  .fab-card.fab .fc-pct { color: #EF9A9A; }
+  .fab-card.use .fc-pct { color: #81C784; }
+  .fab-card .fc-label { font-size: 0.85rem; font-weight: 700; opacity: 0.8; line-height: 1.35; }
+
+  /* Pourquoi la fabrication pèse */
+  .why-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .why-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 0.6rem; }
+  .why-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .why-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .why-row .wr-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .why-row .wr-text { flex: 1; }
+
+  /* Appareils comparatif */
+  .appareils-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 0.7rem; opacity: 0.9; }
+  .appareil-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.88rem;
+  }
+  .appareil-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .appareil-row .ar-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .appareil-row .ar-content { flex: 1; }
+  .appareil-row .ar-name { font-weight: 800; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .appareil-row .ar-fab  { font-size: 0.8rem; color: #EF9A9A; }
+  .appareil-row .ar-use  { font-size: 0.8rem; color: #90CAF9; }
+  .appareil-row .ar-bar  {
+    width: 80px;
+    flex-shrink: 0;
+  }
+  .ar-bar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 3px;
+  }
+  .ar-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #E53935, #C62828);
+  }
+
+  /* Le geste clé */
+  .geste-block {
+    background: rgba(67,160,71,0.08);
+    border: 2px solid rgba(67,160,71,0.3);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .geste-title { font-weight: 800; color: #81C784; margin-bottom: 0.6rem; font-size: 0.95rem; }
+  .geste-calc {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.7rem;
+  }
+  .gc-item {
+    flex: 1;
+    min-width: 120px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.6rem 0.7rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  .gc-item .gi-val   { font-size: 1.2rem; font-weight: 900; margin-bottom: 0.2rem; }
+  .gc-item .gi-label { font-size: 0.75rem; opacity: 0.7; line-height: 1.3; }
+
+  /* Batterie */
+  .batterie-block {
+    background: rgba(255,193,7,0.07);
+    border: 1px solid rgba(255,193,7,0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .batterie-title { font-weight: 800; color: #FFD54F; margin-bottom: 0.5rem; font-size: 0.92rem; }
+
+  /* Clin d'oeil thermique */
+  .thermique-block {
+    background: rgba(30,136,229,0.07);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .thermique-title { font-weight: 800; color: #90CAF9; margin-bottom: 0.5rem; font-size: 0.92rem; }
+
+  /* Message final */
+  .final-message {
+    text-align: center;
+    background: rgba(210,0,122,0.1);
+    border: 2px solid rgba(210,0,122,0.35);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.55;
+    font-style: italic;
+  }
+  .final-message strong { color: #D2007A; font-style: normal; font-size: 1.05rem; display: block; margin-bottom: 0.3rem; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block; width: 100%; margin-top: 1rem; padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; text-align: center; transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+  .detail-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; opacity: 0; }
+  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    padding: 1rem 1.2rem; font-size: 0.9rem; line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 0.9rem;
+  }
+  .objection { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.7rem; }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px; margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06); border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px; padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F; font-size: 0.8rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
+  }
+  .script-line { display: flex; gap: 0.8rem; margin-bottom: 0.8rem; align-items: flex-start; }
+  .timing {
+    background: rgba(255,193,7,0.15); color: #FFD54F; font-size: 0.72rem; font-weight: 800;
+    padding: 0.15rem 0.5rem; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+  .script-source {
+    display: inline-block; background: rgba(255,193,7,0.12); color: #FFD54F;
+    border-radius: 6px; padding: 0.1rem 0.5rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q10
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    <strong>80% de l'impact de votre smartphone vient de sa fabrication.</strong><br>
+    Deux ans de streaming vidéo pèsent moins que quelques heures en usine.<br>
+    <span class="sub">Le meilleur smartphone pour la planète — et pour votre porte-monnaie — c'est celui que vous avez déjà.</span>
+  </div>
+
+  <!-- Fabrication vs usage -->
+  <div class="fab-visual">
+    <div class="fab-card fab">
+      <div class="fc-icon">🏭</div>
+      <div class="fc-pct">80%</div>
+      <div class="fc-label">Fabrication<br>Extraction · Transport · Assemblage</div>
     </div>
-    <div style="width:20%; background:linear-gradient(90deg, #43A047, #388E3C); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.85rem;">
-      📺 Usage
+    <div class="fab-card use">
+      <div class="fc-icon">📱</div>
+      <div class="fc-pct">20%</div>
+      <div class="fc-label">Usage + fin de vie<br>Charge · Streaming · Réseau</div>
     </div>
   </div>
-  <div style="display:flex; justify-content:space-between; font-size:0.8rem; opacity:0.7; margin-top:0.3rem;">
-    <span>Extraction, transport, assemblage</span>
-    <span>Streaming, apps...</span>
-  </div>
-</div>
 
-<div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.2rem;">
-  <div style="background:rgba(67,160,71,0.15); border:2px solid #43A047; border-radius:16px; padding:1rem 1.5rem; text-align:center;">
-    <div style="font-size:2rem; font-weight:900; color:#43A047;">400€</div>
-    <div style="font-weight:700;">économisés</div>
-    <div style="font-size:0.85rem; opacity:0.8;">en gardant son tel 2 ans de plus</div>
+  <!-- Pourquoi la fabrication pèse -->
+  <div class="why-block">
+    <div class="why-title">⚙️ Pourquoi la fabrication pèse autant</div>
+    <div class="why-row">
+      <span class="wr-icon">⛏️</span>
+      <div class="wr-text"><strong>Métaux rares</strong> — cobalt, lithium, terres rares. Extraction énergivore, souvent dans des zones difficiles d'accès, avec un rendement minier très faible.</div>
+    </div>
+    <div class="why-row">
+      <span class="wr-icon">✈️</span>
+      <div class="wr-text"><strong>Transport intercontinental</strong> — les composants traversent le monde plusieurs fois avant assemblage final.</div>
+    </div>
+    <div class="why-row">
+      <span class="wr-icon">🏭</span>
+      <div class="wr-text"><strong>Salles blanches ultra-énergivores</strong> — l'assemblage des puces et écrans nécessite des environnements contrôlés qui consomment des quantités d'énergie considérables.</div>
+    </div>
   </div>
-  <div style="background:rgba(30,136,229,0.15); border:2px solid #1E88E5; border-radius:12px; padding:1rem 1.5rem; text-align:center;">
-    <div style="font-size:2rem; font-weight:900; color:#1E88E5;">~50€</div>
-    <div style="font-weight:700;">remplacement batterie</div>
-    <div style="font-size:0.85rem; opacity:0.8;">vs 400-1 000€ nouveau tel</div>
-  </div>
-</div>
 
-<div style="max-width:450px; margin:0 auto 1rem;">
-  <div style="font-weight:700; margin-bottom:0.5rem;">✅ Les bons réflexes :</div>
-  <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-    <span style="background:rgba(67,160,71,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🔋 Remplacer la batterie</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">🛡️ Utiliser une coque</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">♻️ Acheter reconditionné</span>
-    <span style="background:rgba(67,160,71,0.2); padding:0.3rem 0.8rem; border-radius:8px; font-size:0.9rem;">⏳ Garder plus longtemps</span>
-  </div>
-</div>
+  <!-- Comparatif appareils -->
+  <div class="appareils-title">📊 Plus c'est gros, plus ça pèse — à la fabrication comme à l'usage</div>
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 À retenir :</strong> Le meilleur smartphone pour la planète et votre portefeuille, c'est celui que vous avez déjà !
+  <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:0.9rem 1.1rem; margin-bottom:1.2rem;">
+
+    <div class="appareil-row">
+      <span class="ar-icon">📱</span>
+      <div class="ar-content">
+        <div class="ar-name">Smartphone</div>
+        <div class="ar-fab">🏭 ~70 kg CO₂ fabrication</div>
+        <div class="ar-use">⚡ 3–5W en charge · quasi rien en veille</div>
+      </div>
+      <div class="ar-bar">
+        <div class="ar-bar-track"><div class="ar-bar-fill" style="width:9%;"></div></div>
+        <div style="font-size:0.7rem; opacity:0.5; text-align:right;">~70 kg</div>
+      </div>
+    </div>
+
+    <div class="appareil-row">
+      <span class="ar-icon">💻</span>
+      <div class="ar-content">
+        <div class="ar-name">Ordinateur portable</div>
+        <div class="ar-fab">🏭 ~300–400 kg CO₂ fabrication</div>
+        <div class="ar-use">⚡ 15–45W en usage</div>
+      </div>
+      <div class="ar-bar">
+        <div class="ar-bar-track"><div class="ar-bar-fill" style="width:46%;"></div></div>
+        <div style="font-size:0.7rem; opacity:0.5; text-align:right;">~350 kg</div>
+      </div>
+    </div>
+
+    <div class="appareil-row">
+      <span class="ar-icon">📺</span>
+      <div class="ar-content">
+        <div class="ar-name">TV 55 pouces</div>
+        <div class="ar-fab">🏭 ~400–500 kg CO₂ fabrication</div>
+        <div class="ar-use">⚡ 80–150W en usage</div>
+      </div>
+      <div class="ar-bar">
+        <div class="ar-bar-track"><div class="ar-bar-fill" style="width:58%;"></div></div>
+        <div style="font-size:0.7rem; opacity:0.5; text-align:right;">~450 kg</div>
+      </div>
+    </div>
+
+    <div class="appareil-row">
+      <span class="ar-icon">🖥️</span>
+      <div class="ar-content">
+        <div class="ar-name">PC de bureau + écran</div>
+        <div class="ar-fab">🏭 ~600–800 kg CO₂ fabrication</div>
+        <div class="ar-use">⚡ 150–300W en usage</div>
+      </div>
+      <div class="ar-bar">
+        <div class="ar-bar-track"><div class="ar-bar-fill" style="width:90%;"></div></div>
+        <div style="font-size:0.7rem; opacity:0.5; text-align:right;">~700 kg</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Le geste clé : durée de vie -->
+  <div class="geste-block">
+    <div class="geste-title">🎯 Le geste le plus impactant : garder ses appareils plus longtemps</div>
+    Doubler la durée de vie d'un appareil, c'est diviser son impact carbone par deux. C'est aussi diviser la dépense par deux.
+    <div class="geste-calc">
+      <div class="gc-item">
+        <div class="gi-val" style="color:#EF9A9A;">2 ans</div>
+        <div class="gi-label">Durée moyenne actuelle d'un smartphone en France</div>
+      </div>
+      <div class="gc-item">
+        <div class="gi-val" style="color:#81C784;">4 ans</div>
+        <div class="gi-label">Impact divisé par 2 · 400–600 € économisés</div>
+      </div>
+      <div class="gc-item">
+        <div class="gi-val" style="color:#90CAF9;">6 ans</div>
+        <div class="gi-label">Impact divisé par 3 · Jusqu'à 1 000 € économisés</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- La batterie -->
+  <div class="batterie-block">
+    <div class="batterie-title">🔋 « Mais ma batterie est morte... »</div>
+    Le remplacement de batterie coûte <strong>30 à 80 €</strong> selon les modèles — souvent réalisable en moins d'une heure chez un réparateur. Un nouveau smartphone équivalent coûte <strong>400 à 1 000 €.</strong><br><br>
+    La batterie usée est la première raison de changer de téléphone. C'est aussi la plus facile à résoudre sans changer d'appareil.
+  </div>
+
+  <!-- Clin d'oeil thermique -->
+  <div class="thermique-block">
+    <div class="thermique-title">😄 Le clin d'œil — les appareils chauffent votre logement</div>
+    En hiver, toute électricité consommée dans votre logement finit en chaleur. Votre TV, votre ordinateur, votre box internet — ils chauffent votre salon pendant leur fonctionnement. Ce n'est pas du gaspillage pur : c'est de l'énergie gratuite qui complète votre chauffage.<br><br>
+    <strong>En été, c'est l'inverse</strong> — ils surchauffent le logement inutilement et font travailler la climatisation. Encore une bonne raison de les éteindre quand on n'en a pas besoin.
+  </div>
+
+  <!-- Message final -->
+  <div class="final-message">
+    <strong>Le meilleur appareil numérique — c'est celui que vous avez déjà.</strong>
+    Réparer plutôt que remplacer. Garder plutôt que renouveler. C'est le geste le plus simple, le plus économique, et le plus efficace sur ce poste.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    ADEME — étude ACV smartphone (2022) ·
+    GreenIT — empreinte numérique des équipements ·
+    ARCEP — durée de vie des équipements numériques en France ·
+    iFixit — coûts de réparation batterie
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« Le streaming et la 5G ça consomme énormément. »</div>
+        <div class="r">La 5G consomme plus que la 4G par connexion, mais les réseaux sont de plus en plus efficaces globalement. Le streaming vidéo consomme quelques grammes de CO₂ par heure — c'est réel mais marginal face aux 70 kg de la fabrication du téléphone. L'ordre de grandeur est sans commune mesure.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Mon vieux téléphone consomme plus d'énergie qu'un neuf. »</div>
+        <div class="r">Partiellement vrai — les nouvelles puces sont plus efficaces. Mais le gain énergétique à l'usage est de quelques watts, soit quelques centimes par an. Il faudrait des décennies d'utilisation pour compenser les 70 kg CO₂ de fabrication du nouvel appareil. Le calcul ne tient pas.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Les centres de données consomment énormément. »</div>
+        <div class="r">Vrai — les data centers représentent environ 1% de la consommation électrique mondiale. Mais leur impact est partagé entre des milliards d'utilisateurs. Votre part personnelle de Netflix ou Gmail est infime. L'impact de votre équipement personnel reste largement dominant.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
