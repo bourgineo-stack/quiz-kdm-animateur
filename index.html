@@ -882,6 +882,9 @@ async function startQuizNow() {
     $('main-screen').classList.add('active');
 
     await fetchData();
+    // Countdown de 10s avant la première question
+    state.isCountdown = true;
+    state.referenceTime = Date.now() + 10000;
     startLoop();
 }
 async function resetQuiz() {
