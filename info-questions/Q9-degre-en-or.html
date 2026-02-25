@@ -1,62 +1,443 @@
-<div class="info-block">
-<h3>Le degré en or</h3>
-<div class="info-body">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q9 — Le degré en or</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
 
-<!-- DÉBUT HTML À COPIER -->
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <span style="font-size:1.8rem; font-weight:900;">🌡️ Chaque degré compte</span>
-</div>
+  .main-block { max-width: 680px; margin: 0 auto; }
 
-<div style="max-width:550px; margin:0 auto 1.2rem;">
-  <!-- Thermomètre visuel -->
-  <div style="display:flex; gap:1rem; align-items:stretch; margin-bottom:1rem;">
-    <div style="flex:1; text-align:center;">
-      <div style="font-weight:700; margin-bottom:0.5rem;">Logement standard</div>
-      <div style="background:rgba(255,165,38,0.15); border:2px solid #FFA726; border-radius:12px; padding:1rem;">
-        <div style="font-size:2rem; font-weight:900; color:#FFA726;">-1°C</div>
-        <div style="font-size:1.5rem; font-weight:900;">= -7%</div>
-        <div style="font-size:0.85rem; opacity:0.8;">sur la facture</div>
-        <div style="font-size:0.75rem; margin-top:0.3rem;">(règle ADEME)</div>
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Calcul par énergie */
+  .calcul-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 0.7rem; opacity: 0.9; }
+  .calcul-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .calcul-card {
+    border-radius: 12px;
+    padding: 0.8rem 0.9rem;
+    font-size: 0.88rem;
+  }
+  .calcul-card.fioul { background: rgba(229,57,53,0.1); border: 1px solid rgba(229,57,53,0.3); }
+  .calcul-card.gaz   { background: rgba(255,167,38,0.1); border: 1px solid rgba(255,167,38,0.3); }
+  .calcul-card.elec  { background: rgba(30,136,229,0.1); border: 1px solid rgba(30,136,229,0.3); }
+  .calcul-card.pac   { background: rgba(67,160,71,0.1);  border: 1px solid rgba(67,160,71,0.3); }
+  .calcul-card .cc-header {
+    display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem;
+  }
+  .calcul-card .cc-icon { font-size: 1.1rem; }
+  .calcul-card .cc-name { font-weight: 800; font-size: 0.88rem; }
+  .calcul-card.fioul .cc-name { color: #EF9A9A; }
+  .calcul-card.gaz   .cc-name { color: #FFD54F; }
+  .calcul-card.elec  .cc-name { color: #90CAF9; }
+  .calcul-card.pac   .cc-name { color: #81C784; }
+  .calcul-card .cc-row { margin-bottom: 0.2rem; font-size: 0.83rem; }
+  .calcul-card .cc-row span { font-weight: 800; }
+
+  /* Pourquoi 7% est sous-estimé */
+  .underestimate-block {
+    background: rgba(255,193,7,0.07);
+    border: 1px solid rgba(255,193,7,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .underestimate-title { font-weight: 800; color: #FFD54F; margin-bottom: 0.6rem; font-size: 0.92rem; }
+  .energies-gratuites {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin: 0.7rem 0 0.5rem;
+  }
+  .eg-tag {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .progression {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.7rem;
+    flex-wrap: wrap;
+  }
+  .prog-item {
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.5rem 0.4rem;
+  }
+  .prog-item .pi-val { font-size: 1.3rem; font-weight: 900; }
+  .prog-item .pi-label { font-size: 0.72rem; opacity: 0.7; margin-top: 0.15rem; }
+  .prog-arrow { font-size: 1.2rem; opacity: 0.5; }
+
+  /* Les 4 mois */
+  .quatre-mois {
+    background: rgba(210,0,122,0.08);
+    border: 1px solid rgba(210,0,122,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .quatre-mois-title { font-weight: 800; color: #D2007A; margin-bottom: 0.6rem; font-size: 0.92rem; }
+  .mois-visual {
+    display: flex;
+    gap: 0.3rem;
+    margin: 0.7rem 0;
+    flex-wrap: wrap;
+  }
+  .mois-item {
+    flex: 1;
+    min-width: 50px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 0.4rem 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .mois-item.chaud { background: rgba(229,57,53,0.25); color: #EF9A9A; border: 1px solid rgba(229,57,53,0.4); }
+  .mois-item.tiede { background: rgba(255,167,38,0.15); color: #FFD54F; border: 1px solid rgba(255,167,38,0.3); }
+  .mois-item.froid { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.1); }
+  .defi-box {
+    margin-top: 0.7rem;
+    background: rgba(210,0,122,0.12);
+    border: 2px solid rgba(210,0,122,0.4);
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.9rem;
+  }
+  .defi-box strong { color: #D2007A; font-size: 1rem; display: block; margin-bottom: 0.2rem; }
+
+  /* Températures par pièce */
+  .pieces-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .pieces-title { font-weight: 800; font-size: 0.92rem; margin-bottom: 0.7rem; }
+  .piece-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 0.7rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .piece-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .piece-row .pr-icon  { font-size: 1.4rem; flex-shrink: 0; }
+  .piece-row .pr-content { flex: 1; }
+  .piece-row .pr-name  { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
+  .piece-row .pr-note  { font-size: 0.8rem; opacity: 0.6; line-height: 1.3; }
+  .piece-row .pr-temp  { font-size: 1.4rem; font-weight: 900; flex-shrink: 0; min-width: 65px; text-align: right; }
+
+  /* Clin d'oeil appartement */
+  .appart-block {
+    background: rgba(30,136,229,0.07);
+    border: 1px solid rgba(30,136,229,0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .appart-title { font-weight: 800; color: #90CAF9; margin-bottom: 0.5rem; font-size: 0.92rem; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton + panneau */
+  .btn-more {
+    display: block; width: 100%; margin-top: 1rem; padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px; color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; text-align: center; transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+  .detail-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, opacity 0.3s ease; opacity: 0; }
+  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+    padding: 1rem 1.2rem; font-size: 0.9rem; line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem; font-weight: 800; text-transform: uppercase;
+    letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 0.9rem;
+  }
+  .objection { background: rgba(255,255,255,0.05); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.7rem; }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+
+  /* Script */
+  .script-block {
+    max-width: 680px; margin: 2.5rem auto 0;
+    background: rgba(255,193,7,0.06); border: 1px dashed rgba(255,193,7,0.35);
+    border-radius: 14px; padding: 1.2rem 1.4rem;
+  }
+  .script-block h4 {
+    color: #FFD54F; font-size: 0.8rem; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;
+  }
+  .script-line { display: flex; gap: 0.8rem; margin-bottom: 0.8rem; align-items: flex-start; }
+  .timing {
+    background: rgba(255,193,7,0.15); color: #FFD54F; font-size: 0.72rem; font-weight: 800;
+    padding: 0.15rem 0.5rem; border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-top: 0.2rem;
+  }
+  .script-text { font-size: 0.93rem; line-height: 1.55; }
+  .script-text em { color: #D2007A; font-style: normal; font-weight: 800; }
+  .script-text .aside { display: block; margin-top: 0.25rem; opacity: 0.45; font-size: 0.82rem; }
+  .script-source {
+    display: inline-block; background: rgba(255,193,7,0.12); color: #FFD54F;
+    border-radius: 6px; padding: 0.1rem 0.5rem; font-size: 0.75rem; font-weight: 700; margin-left: 0.3rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     BLOC PRINCIPAL — à injecter dans info-body de Q9
+============================================================ -->
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Baisser son thermostat d'1°C, c'est <strong>entre 100 et 330 € économisés par an</strong> selon son chauffage.<br>
+    À -3°C : <strong>un tiers à la moitié de la facture en moins.</strong><br>
+    <span class="sub">Sans isolation. Sans travaux. Sans investissement. Ce soir.</span>
+  </div>
+
+  <!-- Calcul par type d'énergie -->
+  <div class="calcul-title">💶 Ce que ça représente concrètement — par degré, par an :</div>
+  <div class="calcul-grid">
+
+    <div class="calcul-card fioul">
+      <div class="cc-header"><span class="cc-icon">🛢️</span><span class="cc-name">Fioul · ~2 200 €/an</span></div>
+      <div class="cc-row">-1°C : <span>~150–330 €/an</span></div>
+      <div class="cc-row">-3°C : <span>~450–990 €/an</span></div>
+    </div>
+
+    <div class="calcul-card gaz">
+      <div class="cc-header"><span class="cc-icon">🔥</span><span class="cc-name">Gaz · ~1 500 €/an</span></div>
+      <div class="cc-row">-1°C : <span>~105–225 €/an</span></div>
+      <div class="cc-row">-3°C : <span>~315–675 €/an</span></div>
+    </div>
+
+    <div class="calcul-card elec">
+      <div class="cc-header"><span class="cc-icon">⚡</span><span class="cc-name">Électrique · ~1 800 €/an</span></div>
+      <div class="cc-row">-1°C : <span>~125–270 €/an</span></div>
+      <div class="cc-row">-3°C : <span>~375–810 €/an</span></div>
+    </div>
+
+    <div class="calcul-card pac">
+      <div class="cc-header"><span class="cc-icon">♻️</span><span class="cc-name">PAC · ~650 €/an</span></div>
+      <div class="cc-row">-1°C : <span>~45–100 €/an</span></div>
+      <div class="cc-row">-3°C : <span>~135–300 €/an</span></div>
+    </div>
+
+  </div>
+
+  <!-- Énergies gratuites -->
+  <div class="underestimate-block">
+    <div class="underestimate-title">☀️ Pourquoi les gains sont si importants — les énergies gratuites</div>
+    Votre logement est chauffé en permanence par des sources qui ne vous coûtent rien :
+    <div class="energies-gratuites">
+      <span class="eg-tag">☀️ Soleil à travers les fenêtres</span>
+      <span class="eg-tag">🧍 Corps humains (~100W/pers)</span>
+      <span class="eg-tag">📺 Appareils électriques</span>
+      <span class="eg-tag">🍳 Cuisine et four</span>
+    </div>
+    En baissant votre température cible, <strong>ces sources gratuites compensent une plus grande part du bilan thermique.</strong> Le chauffage travaille moins — et les économies sont plus importantes que ce qu'on imagine.
+    <div class="progression">
+      <div class="prog-item">
+        <div class="pi-val" style="color:#FFD54F;">-1°C</div>
+        <div class="pi-label">100 à 330 €/an selon énergie</div>
+      </div>
+      <span class="prog-arrow">→</span>
+      <div class="prog-item">
+        <div class="pi-val" style="color:#D2007A;">-3°C</div>
+        <div class="pi-label">300 à 990 €/an</div>
+      </div>
+      <span class="prog-arrow">→</span>
+      <div class="prog-item">
+        <div class="pi-val" style="color:#81C784;">30–45%</div>
+        <div class="pi-label">de la facture en moins</div>
       </div>
     </div>
-    <div style="flex:1; text-align:center;">
-      <div style="font-weight:700; margin-bottom:0.5rem;">Logement bien isolé</div>
-      <div style="background:rgba(67,160,71,0.15); border:2px solid #43A047; border-radius:12px; padding:1rem;">
-        <div style="font-size:2rem; font-weight:900; color:#43A047;">-1°C</div>
-        <div style="font-size:1.5rem; font-weight:900;">= -11 à 15%</div>
-        <div style="font-size:0.85rem; opacity:0.8;">sur la facture</div>
-        <div style="font-size:0.75rem; margin-top:0.3rem;">(étude Enertech)</div>
-      </div>
+  </div>
+
+  <!-- Les 4 mois -->
+  <div class="quatre-mois">
+    <div class="quatre-mois-title">📅 L'effet des 4 mois — agir au bon moment</div>
+    75 à 80% des dépenses de chauffage se concentrent sur 4 mois seulement.
+    <div class="mois-visual">
+      <div class="mois-item froid">Sep</div>
+      <div class="mois-item tiede">Oct</div>
+      <div class="mois-item chaud">Nov</div>
+      <div class="mois-item chaud">Déc</div>
+      <div class="mois-item chaud">Jan</div>
+      <div class="mois-item chaud">Fév</div>
+      <div class="mois-item tiede">Mar</div>
+      <div class="mois-item tiede">Avr</div>
+      <div class="mois-item froid">Mai</div>
+      <div class="mois-item froid">Jun</div>
+      <div class="mois-item froid">Juil</div>
+      <div class="mois-item froid">Aoû</div>
+    </div>
+    <div style="font-size:0.82rem; opacity:0.7; margin-bottom:0.7rem;">
+      🔴 Pic de dépenses · 🟡 Dépenses modérées · ⬜ Quasi zéro
+    </div>
+    Sur une facture gaz de 1 500€/an : <strong>~300-400€ par mois</strong> pendant les 4 mois de pic.
+    <div class="defi-box">
+      <strong>🎯 Le défi d'une semaine</strong>
+      Une semaine pendant le pic hivernal représente ~75-100€ de chauffage consommé. À -3°C pendant cette semaine : <strong>~25-45€ économisés</strong> — sur une seule semaine, sans effort majeur. Sur un mois entier : <strong>~120-180€.</strong>
     </div>
   </div>
-</div>
 
-<div style="text-align:center; margin-bottom:1.2rem;">
-  <div style="display:inline-block; background:rgba(229,57,53,0.15); border:2px solid #E53935; border-radius:16px; padding:1rem 2rem;">
-    <div style="font-size:0.9rem; font-weight:700;">🎯 Le combo gagnant :</div>
-    <div style="font-size:1.3rem; font-weight:900;">Passer de 22°C à 19°C + chambres à 16°C la nuit</div>
-    <div style="font-size:1.8rem; font-weight:900; color:#E53935;">= 40 à 50% d'économie</div>
-  </div>
-</div>
+  <!-- Températures par pièce -->
+  <div class="pieces-block">
+    <div class="pieces-title">🏠 Toutes les pièces n'ont pas besoin de la même température</div>
 
-<div style="display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:center; margin-bottom:1rem;">
-  <div style="background:rgba(255,255,255,0.05); border-radius:10px; padding:0.6rem 1rem; text-align:center;">
-    <div style="font-size:1.3rem;">🛋️</div>
-    <div style="font-weight:700;">19°C</div>
-    <div style="font-size:0.8rem; opacity:0.8;">Pièces à vivre</div>
-  </div>
-  <div style="background:rgba(255,255,255,0.05); border-radius:10px; padding:0.6rem 1rem; text-align:center;">
-    <div style="font-size:1.3rem;">🛏️</div>
-    <div style="font-weight:700;">16-17°C</div>
-    <div style="font-size:0.8rem; opacity:0.8;">Chambres la nuit</div>
-  </div>
-  <div style="background:rgba(255,255,255,0.05); border-radius:10px; padding:0.6rem 1rem; text-align:center;">
-    <div style="font-size:1.3rem;">😴</div>
-    <div style="font-weight:700;">Meilleur sommeil</div>
-    <div style="font-size:0.8rem; opacity:0.8;">On dort mieux au frais</div>
-  </div>
-</div>
+    <div class="piece-row">
+      <span class="pr-icon">🛋️</span>
+      <div class="pr-content">
+        <div class="pr-name">Salon / pièce à vivre</div>
+        <div class="pr-note">Recommandation officielle ADEME / Santé publique France</div>
+      </div>
+      <span class="pr-temp" style="color:#FFA726;">19°C</span>
+    </div>
 
-<div style="background:rgba(210,0,122,0.15); border-left:4px solid #D2007A; padding:0.8rem 1rem; border-radius:0 8px 8px 0;">
-  <strong>💡 Le T-shirt en hiver :</strong> Rester en T-shirt chez soi à 22-23°C peut coûter plusieurs centaines d'€ par an de chauffage supplémentaire.
+    <div class="piece-row">
+      <span class="pr-icon">🛏️</span>
+      <div class="pr-content">
+        <div class="pr-name">Chambre la nuit</div>
+        <div class="pr-note">Meilleur sommeil · la couette fait le reste</div>
+      </div>
+      <span class="pr-temp" style="color:#90CAF9;">16–17°C</span>
+    </div>
+
+    <div class="piece-row">
+      <span class="pr-icon">🚶</span>
+      <div class="pr-content">
+        <div class="pr-name">Couloirs / entrée</div>
+        <div class="pr-note">Pièces de passage — confort thermique non nécessaire</div>
+      </div>
+      <span class="pr-temp" style="color:#81C784;">14–15°C</span>
+    </div>
+
+    <div class="piece-row">
+      <span class="pr-icon">🚫</span>
+      <div class="pr-content">
+        <div class="pr-name">Pièces inoccupées</div>
+        <div class="pr-note">Juste assez pour éviter le gel des canalisations</div>
+      </div>
+      <span class="pr-temp" style="color:#EF9A9A;">12–14°C</span>
+    </div>
+
+  </div>
+
+  <!-- Clin d'oeil appartement -->
+  <div class="appart-block">
+    <div class="appart-title">😄 Le clin d'œil appartement</div>
+    L'appartement le plus chaud de l'immeuble ? Celui du milieu. Il est chauffé par ses voisins du dessus, du dessous, et des deux côtés — ses pertes thermiques sont bien moindres qu'une maison individuelle. Les énergies gratuites de ses voisins travaillent pour lui. En appartement, chaque degré de moins a encore plus d'impact qu'en maison.
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> 19°C salon, 16°C chambre. Deux chiffres, applicables ce soir. Sur une facture gaz moyenne, passer de 21°C à 19°C = ~200-400€ économisés par an. Sans isolation, sans travaux, sans investissement.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    ADEME — règle des 7% par degré (Chiffres clés du bâtiment) ·
+    Santé publique France — recommandation 19°C pièces à vivre ·
+    SDES — répartition mensuelle de la consommation de chauffage en France
+  </div>
+
+  <!-- Bouton détail -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
+</button>
+
+  <div class="detail-panel" id="detail-panel">
+    <div class="detail-inner">
+      <h4>Objections fréquentes</h4>
+
+      <div class="objection">
+        <div class="q">« 16°C dans la chambre c'est trop froid, je vais tomber malade. »</div>
+        <div class="r">C'est l'inverse — un écart réduit entre intérieur et extérieur fatigue moins l'immunité. Et le froid ambiant n'est pas le problème : une bonne couette maintient le corps à 37°C. C'est le corps qui doit être chaud, pas l'air autour.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Mon propriétaire ne me laisse pas régler le chauffage collectif. »</div>
+        <div class="r">Dans ce cas les robinets thermostatiques sur chaque radiateur permettent de régler pièce par pièce même sur un chauffage collectif. Et les gestes d'une autre question — pull, couverture chauffante, chambre à bonne température — s'appliquent indépendamment.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Mes enfants ont besoin de plus de chaleur. »</div>
+        <div class="r">Les enfants en bonne santé ont des besoins thermiques similaires aux adultes. La chambre d'un enfant peut être à 18°C sans problème — un pyjama chaud fait le reste. Les nourrissons sont une exception : leur chambre recommandée est à 18-20°C.</div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
