@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Q2 — Le vrai prix de la voiture</title>
+<title>Q4 — Le Podium Carbone v2</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   body {
@@ -13,147 +13,46 @@
     margin: 0;
   }
 
-  /* ── BLOC PRINCIPAL ──────────────────────────────────────── */
+  /* ── BLOC PRINCIPAL (affiché en session) ─────────────────── */
+
   .main-block { max-width: 680px; margin: 0 auto; }
 
-  /* Chiffre choc */
   .choc {
     text-align: center;
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     font-weight: 700;
     background: rgba(210,0,122,0.12);
     border: 1px solid rgba(210,0,122,0.3);
     border-radius: 12px;
-    padding: 0.8rem 1.1rem;
+    padding: 0.7rem 1rem;
     margin-bottom: 1.2rem;
-    line-height: 1.55;
+    line-height: 1.5;
   }
-  .choc strong { color: #D2007A; font-size: 1.2rem; }
-  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
 
-  /* ── CALCUL INTERACTIF ───────────────────────────────────── */
-  .calculator {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
-    padding: 1rem 1.2rem;
-    margin-bottom: 1.2rem;
-  }
-  .calc-title {
-    font-size: 0.82rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 0.8rem;
-  }
-  .km-buttons {
+  /* Barres */
+  .podium-row { margin-bottom: 0.65rem; }
+  .row-header {
     display: flex;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-  .km-btn {
-    flex: 1;
-    min-width: 80px;
-    padding: 0.7rem 0.5rem;
-    background: rgba(255,255,255,0.07);
-    border: 2px solid rgba(255,255,255,0.15);
-    border-radius: 10px;
-    color: white;
-    font-family: 'Nunito', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-  }
-  .km-btn:hover { border-color: #D2007A; background: rgba(210,0,122,0.12); }
-  .km-btn.active { border-color: #D2007A; background: rgba(210,0,122,0.2); color: white; }
-  .km-btn .sub-label { display: block; font-size: 0.72rem; font-weight: 600; opacity: 0.6; margin-top: 0.15rem; }
-
-  .calc-result {
-    display: none;
-    animation: fadeIn 0.3s ease;
-  }
-  .calc-result.visible { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
-
-  .result-row {
-    display: flex;
-    gap: 0.7rem;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 0.8rem;
-  }
-  .result-card {
-    flex: 1;
-    min-width: 130px;
-    text-align: center;
-    padding: 0.8rem;
-    border-radius: 12px;
-    border: 2px solid;
-  }
-  .result-card.thermique { border-color: #E53935; background: rgba(229,57,53,0.1); }
-  .result-card.elec      { border-color: #FFA726; background: rgba(255,167,38,0.1); }
-  .result-card.elec-kdm  { border-color: #43A047; background: rgba(67,160,71,0.1); }
-  .result-card .rc-label { font-size: 0.78rem; font-weight: 700; opacity: 0.8; margin-bottom: 0.3rem; }
-  .result-card .rc-value { font-size: 1.6rem; font-weight: 900; line-height: 1.1; }
-  .result-card.thermique .rc-value { color: #E53935; }
-  .result-card.elec      .rc-value { color: #FFA726; }
-  .result-card.elec-kdm  .rc-value { color: #43A047; }
-  .result-card .rc-sub   { font-size: 0.75rem; opacity: 0.65; margin-top: 0.2rem; }
-
-  .kdm-badge {
-    display: inline-block;
-    background: rgba(67,160,71,0.2);
-    border: 1px solid rgba(67,160,71,0.4);
-    border-radius: 20px;
-    padding: 0.3rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 800;
-    color: #81C784;
-    text-align: center;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* ── BARRES COÛTS CACHÉS ─────────────────────────────────── */
-  .couts-title {
-    font-weight: 800;
-    font-size: 0.9rem;
-    margin-bottom: 0.6rem;
-    opacity: 0.85;
-  }
-  .bar-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.45rem;
-  }
-  .bar-label {
-    width: 110px;
-    font-size: 0.82rem;
+    justify-content: space-between;
     font-weight: 700;
-    flex-shrink: 0;
-    line-height: 1.3;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
   }
   .bar-track {
-    flex: 1;
     background: rgba(255,255,255,0.08);
-    border-radius: 6px;
-    height: 22px;
+    border-radius: 8px;
+    height: 28px;
     overflow: hidden;
   }
   .bar-fill {
     height: 100%;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    font-size: 0.75rem;
+    padding-left: 10px;
     font-weight: 800;
+    font-size: 0.82rem;
   }
 
   /* Takeaway */
@@ -161,10 +60,10 @@
     border-left: 4px solid #D2007A;
     background: rgba(210,0,122,0.08);
     border-radius: 0 8px 8px 0;
-    padding: 0.75rem 1rem;
+    padding: 0.7rem 1rem;
     margin-top: 1.1rem;
     font-size: 0.95rem;
-    line-height: 1.55;
+    line-height: 1.5;
 	margin-bottom: 0.8rem;
   }
    /* Sources */
@@ -180,7 +79,7 @@
   }
   .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
 
-  /* ── BOUTON + PANNEAU ────────────────────────────────────── */
+  /* ── BOUTON "EN SAVOIR PLUS" ─────────────────────────────── */
   .btn-more {
     display: block;
     width: 100%;
@@ -198,14 +97,20 @@
     transition: all 0.2s ease;
   }
   .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+  .btn-more .arrow { display: inline-block; transition: transform 0.25s ease; margin-left: 0.4rem; }
+  .btn-more.open .arrow { transform: rotate(180deg); }
 
+  /* ── PANNEAU DÉTAIL (masqué par défaut) ───────────────────── */
   .detail-panel {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease, opacity 0.3s ease;
     opacity: 0;
   }
-  .detail-panel.open { max-height: 800px; opacity: 1; }
+  .detail-panel.open {
+    max-height: 600px;
+    opacity: 1;
+  }
   .detail-inner {
     margin-top: 0.8rem;
     background: rgba(255,255,255,0.04);
@@ -214,30 +119,27 @@
     padding: 1rem 1.2rem;
   }
   .detail-inner h4 {
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.45);
     margin-bottom: 0.9rem;
   }
 
-  .cas-block {
-    background: rgba(255,255,255,0.04);
-    border-radius: 10px;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.7rem;
-    font-size: 0.9rem;
-    line-height: 1.5;
+  /* Tags bénéfices */
+  .tag-row { margin-bottom: 0.8rem; }
+  .tag-label { font-weight: 700; font-size: 0.88rem; margin-bottom: 0.35rem; }
+  .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.2rem 0.65rem;
+    border-radius: 20px;
   }
-  .cas-block .cas-title {
-    font-weight: 800;
-    margin-bottom: 0.3rem;
-    font-size: 0.95rem;
-  }
-  .cas-block.old  .cas-title { color: #FFA726; }
-  .cas-block.new  .cas-title { color: #E53935; }
-  .cas-block.elec .cas-title { color: #43A047; }
+  .tag.money { background: rgba(255,193,7,0.15); color: #FFD54F; border: 1px solid rgba(255,193,7,0.25); }
+  .tag.health { background: rgba(67,160,71,0.15); color: #81C784; border: 1px solid rgba(67,160,71,0.25); }
+  .tag.info   { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); border: 1px solid rgba(255,255,255,0.1); font-style: italic; font-weight: 600; }
 
   .objection {
     background: rgba(255,255,255,0.05);
@@ -250,11 +152,11 @@
   .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
   .objection .r { font-weight: 700; color: #D2007A; }
 
-  /* ── SCRIPT ANIMATEUR ────────────────────────────────────── */
+  /* ── SCRIPT ANIMATEUR (hors session) ─────────────────────── */
   .script-block {
     max-width: 680px;
     margin: 2.5rem auto 0;
-    background: rgba(255,193,7,0.06);
+    background: rgba(255, 193, 7, 0.06);
     border: 1px dashed rgba(255,193,7,0.35);
     border-radius: 14px;
     padding: 1.2rem 1.4rem;
@@ -292,129 +194,118 @@
 <body>
 
 <!-- ============================================================
-     BLOC PRINCIPAL — à injecter dans info-body de Q2
+     BLOC PRINCIPAL — à injecter dans info-body de Q1
 ============================================================ -->
 <div class="main-block">
 
-  <!-- Chiffre choc -->
+  <!-- Chiffre choc : le contre-intuitif qui ouvre tout -->
   <div class="choc">
-    La plupart des gens pensent à l'essence. <strong>L'essence, c'est 25–30% du coût réel.</strong><br>
-    Le reste — décote, assurance, entretien — vous le payez sans le voir.<br>
-    <span class="sub">C'est souvent le 2ᵉ poste de dépenses d'un ménage, juste après le logement.</span>
+    Le numérique ? <strong>2 à 4% seulement.</strong><br>
+    Votre voiture, elle, représente <strong style="color:#E53935;">~30%</strong> — parce qu'elle brûle de l'énergie à chaque kilomètre.<br>
+    <span style="opacity:0.85; font-size:0.95rem;">Et l'énergie, ça coûte cher.</span>
   </div>
 
-  <!-- Calcul interactif -->
-  <div class="calculator">
-    <div class="calc-title">🧮 Calculez votre vrai budget voiture</div>
-    <div class="km-buttons">
-      <button class="km-btn" onclick="calculate(5000, this)">
-        5 000 km
-        <span class="sub-label">usage faible</span>
-      </button>
-      <button class="km-btn" onclick="calculate(10000, this)">
-        10 000 km
-        <span class="sub-label">usage moyen</span>
-      </button>
-      <button class="km-btn" onclick="calculate(15000, this)">
-        15 000 km
-        <span class="sub-label">usage élevé</span>
-      </button>
-      <button class="km-btn" onclick="calculate(20000, this)">
-        20 000 km
-        <span class="sub-label">gros rouleur</span>
-      </button>
+  <!-- Barres épurées -->
+  <div class="podium-row">
+    <div class="row-header">
+      <span>🥇 🚗 Mobilité</span>
+      <span style="color:#E53935;">~30%</span>
     </div>
-    <div class="calc-result" id="calc-result">
-      <div class="result-row">
-        <div class="result-card thermique">
-          <div class="rc-label">🚗 Thermique</div>
-          <div class="rc-value" id="res-thermique">—</div>
-          <div class="rc-sub">tout compris / an</div>
-        </div>
-        <div class="result-card elec">
-          <div class="rc-label">⚡ Électrique</div>
-          <div class="rc-value" id="res-elec">—</div>
-          <div class="rc-sub">tout compris / an</div>
-        </div>
-        <div class="result-card elec-kdm">
-          <div class="rc-label">⚡ Électrique + recharge KDM</div>
-          <div class="rc-value" id="res-kdm">—</div>
-          <div class="rc-sub">tout compris / an</div>
-        </div>
-      </div>
-      <div class="kdm-badge" id="kdm-badge">—</div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:100%; background:linear-gradient(90deg,#D2007A,#E53935);">N°1</div>
     </div>
   </div>
 
-  <!-- Barres coûts cachés -->
-  <div class="couts-title">📊 Où part vraiment l'argent (voiture thermique) :</div>
-  <div class="bar-row">
-    <span class="bar-label">📉 Décote</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#E53935,#C62828);">30%</div>
+  <div class="podium-row">
+    <div class="row-header">
+      <span>🥈 🍖 Alimentation</span>
+      <span style="color:#FFA726;">~25%</span>
     </div>
-  </div>
-  <div class="bar-row">
-    <span class="bar-label">⛽ Carburant</span>
     <div class="bar-track">
-      <div class="bar-fill" style="width:27%; background:linear-gradient(90deg,#FFA726,#FF7043);">27%</div>
-    </div>
-  </div>
-  <div class="bar-row">
-    <span class="bar-label">🔧 Entretien</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:25%; background:linear-gradient(90deg,#42A5F5,#1E88E5);">25%</div>
-    </div>
-  </div>
-  <div class="bar-row">
-    <span class="bar-label">🛡️ Assurance</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:18%; background:linear-gradient(90deg,#66BB6A,#43A047);">18%</div>
+      <div class="bar-fill" style="width:83%; background:linear-gradient(90deg,#FFA726,#FF7043);"></div>
     </div>
   </div>
 
-  <!-- Takeaway -->
+  <div class="podium-row">
+    <div class="row-header">
+      <span>🥉 🏠 Logement / Chauffage</span>
+      <span style="color:#42A5F5;">~20%</span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:67%; background:linear-gradient(90deg,#42A5F5,#1E88E5);"></div>
+    </div>
+  </div>
+
+  <div class="podium-row">
+    <div class="row-header">
+      <span>4️⃣ 📱 Numérique</span>
+      <span style="color:#66BB6A;">2–4%</span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" style="width:13%; background:linear-gradient(90deg,#66BB6A,#43A047);"></div>
+    </div>
+  </div>
+
+  <!-- Takeaway unique -->
   <div class="takeaway">
-    <strong>💡 La règle :</strong> kilomètres × 0,40 € = votre vrai budget voiture annuel.<br>
-    <span style="opacity:0.85;">C'est mécanique — comme le CO₂ : plus vous roulez, plus vous brûlez de l'énergie, plus vous payez.</span>
+    <strong>💡 La clé :</strong> CO₂ = énergie consommée = argent dépensé. Ce sont les mêmes euros.<br>
+    <span style="opacity:0.85;">Les postes qui pèsent le plus dans votre empreinte sont exactement ceux qui pèsent le plus dans votre budget. Ce n'est pas une coïncidence — c'est mécanique.</span>
   </div>
   
    <!-- Sources -->
   <div class="sources">
     <strong>Sources :</strong>
-    Automobile Club Association (ACA) — coût réel d'utilisation d'une voiture (barème annuel) ·
-	URSSAF — barème kilométrique fiscal (référence pour le coût officiel par km)
+    ADEME — Base carbone, empreinte carbone d'un Français moyen (2022) ·
+	Carbone 4 / The Shift Project — répartition de l'empreinte individuelle française
   </div>
 
-  <!-- Bouton détail -->
- <button class="btn-more" onclick="toggleDetail(this)">
+  <!-- Bouton expandable -->
+  <button class="btn-more" onclick="toggleDetail(this)">
     💬 Réponses aux questions fréquentes <span id="arrow">▼</span>
 </button>
 
   <!-- Panneau détail -->
   <div class="detail-panel" id="detail-panel">
     <div class="detail-inner">
-      <h4>Tous les cas de figure</h4>
+      <h4>Pour aller plus loin — Ce que cache chaque poste</h4>
 
-      <div class="cas-block old">
-        <div class="cas-title">🚗 « Ma voiture est vieille et payée, ça ne me coûte rien »</div>
-        Une voiture à 4 000 € aujourd'hui vaut peut-être 1 000 € dans 2 ans : c'est 1 000 €/an de perte pure, sans rouler un seul km. Ajoutez l'assurance, le contrôle technique, un entretien qui augmente avec l'âge — et vous êtes vite à 0,30–0,40 €/km.
+      <div class="tag-row">
+        <div class="tag-label">🚗 Mobilité</div>
+        <div class="tags">
+          <span class="tag money">💰 0,35–0,50 € / km tout compris</span>
+          <span class="tag money">💰 Jusqu'à 900 € / an remboursés par l'employeur</span>
+          <span class="tag health">❤️ 30 min vélo / jour = risque cardio divisé par 2</span>
+        </div>
       </div>
 
-      <div class="cas-block new">
-        <div class="cas-title">🚘 Voiture neuve — le piège de la décote</div>
-        Une voiture neuve à 25 000 € perd 15 à 20% dès la première année : 3 750 à 5 000 € évaporés. C'est le poste le plus lourd, et le moins visible parce qu'on ne sort pas de cash immédiatement.
+      <div class="tag-row">
+        <div class="tag-label">🍖 Alimentation</div>
+        <div class="tags">
+          <span class="tag money">💰 Mêmes protéines, 8× moins cher avec les légumineuses</span>
+          <span class="tag health">❤️ Réduire la viande rouge : risque cancer colorectal -18%</span>
+        </div>
       </div>
 
-      <div class="cas-block elec">
-        <div class="cas-title">⚡ Voiture électrique — moins chère, vraiment</div>
-        Prix d'achat plus élevé, mais énergie 3 à 4× moins chère et entretien réduit (pas de vidange, moins de freinage). Sur la durée, le coût total passe à 0,30–0,35 €/km en moyenne.<br><br>
-        <strong style="color:#81C784;">Chez Keolis Dijon Métropole :</strong> recharge à 20 cts/kWh, soit <strong>3,50 €/100 km</strong> d'énergie contre 12–15 € pour un thermique. C'est 4× moins cher sur le carburant — un avantage accessible à tous ici.
+      <div class="tag-row">
+        <div class="tag-label">🏠 Logement</div>
+        <div class="tags">
+          <span class="tag money">💰 -3°C = jusqu'à 600 € / an sur la facture</span>
+          <span class="tag health">❤️ Chambre à 16–17°C : meilleur sommeil, immunité renforcée</span>
+        </div>
       </div>
 
+      <div class="tag-row">
+        <div class="tag-label">📱 Numérique</div>
+        <div class="tags">
+          <span class="tag money">💰 Garder son tel 2 ans de plus = 400 € économisés</span>
+          <span class="tag info">ℹ️ La fabrication pèse 80% de l'impact — pas le streaming</span>
+        </div>
+      </div>
+
+      <!-- Objection type -->
       <div class="objection">
-        <div class="q">« 0,40 €/km c'est exagéré pour ma vieille Clio. »</div>
-        <div class="r">Faites le calcul : assurance (~500 €) + entretien (~600 €) + carburant (~900 € pour 10 000 km) = déjà 2 000 € sans la décote. Divisé par 10 000 km = 0,20 €/km minimum. Et la décote, même sur une vieille voiture, existe toujours.</div>
+        <div class="q">« Je m'en fous du CO₂, ça ne me concerne pas. »</div>
+        <div class="r">Pas de souci — ce quiz parle surtout d'argent et de santé. Le CO₂, c'est juste le thermomètre qu'on utilise pour mesurer. Ce qui compte pour vous, c'est ce que ça vous coûte.</div>
       </div>
 
     </div>
