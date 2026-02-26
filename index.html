@@ -577,7 +577,7 @@
             <div class="qr-code-url">bourgineo-stack.github.io/quiz-kdm-participant/</div>
         </div>
     </div>
-    <div class="participants">👥 <span id="total-participants">0</span> participants</div>
+    <div class="participants">👥 <span id="total-participants">0</span> participants <span style="font-size:0.65rem; opacity:0.4;">~30s</span></div>
     <div class="master-timer" id="master-timer">00:00</div>
 </div>
 </header>
@@ -942,7 +942,7 @@ async function startQuizLoop() {
         function startLoop() {
             update();
             setInterval(update, 500);
-            setInterval(fetchData, 2000);
+            setInterval(fetchData, 30000);
         }
 
         function update() {
