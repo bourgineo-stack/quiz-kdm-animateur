@@ -867,7 +867,7 @@ state.referenceTime = SETTINGS.startTime || startedAt;
     $('start-screen').classList.add('hidden');
     $('main-screen').classList.add('active');
 
-    await fetchData();
+    fetchData();
     startLoop();
 }
 async function resetQuiz() {
