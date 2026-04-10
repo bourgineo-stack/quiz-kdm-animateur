@@ -952,8 +952,8 @@ async function startQuizLoop() {
         $('q-num').textContent = '1';
         $('options-grid').innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; font-size: 1.2rem; opacity: 0.7;">
-                📋 Préparez-vous à voter !<br>
-                <small style="font-size: 0.9rem; opacity: 0.6;">${QUESTIONS.length} questions • Vote par équipe • Durée ${SETTINGS.voteDuration}s par question</small>
+                10 questions pour découvrir ce que l'écologie peut vous faire économiser et gagner en santé.<br>
+                <small style="font-size: 0.9rem; opacity: 0.6;">Votez en équipe · ${SETTINGS.voteDuration}s pour voter · ${SETTINGS.explainDuration}s d'explication</small>
             </div>
         `;
         return;
