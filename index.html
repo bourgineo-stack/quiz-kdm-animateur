@@ -837,26 +837,13 @@ async function startQuizNow() {
 
         console.log('Commande startSession envoyée');
         
-        await new Promise(r => setTimeout(r, 1500));
-        await loadConfigFromSheet();
-        
-        if (SETTINGS.startTime) {
-            state.referenceTime = SETTINGS.startTime;
-            
-            fetch(CONFIG.sheetUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    action: 'markSessionParticipants', 
-                    startTime: SETTINGS.startTime 
-                })
-            });
-            
-            console.log('✅ markSessionParticipants envoyé (fire-and-forget)');
-        } else {
-            state.referenceTime = startedAt;
-        }
+        let attempts = 0;
+while (!SETTINGS.startTime && attempts < 20) {
+    await new Promise(r => setTimeout(r, 1000));
+    await loadConfigFromSheet();
+    attempts++;
+}
+state.referenceTime = SETTINGS.startTime || startedAt;
 
         state.isFirstQuestion = true;
         state.lastScoreTimestamp = Date.now();
