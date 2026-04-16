@@ -838,10 +838,16 @@ async function startQuizNow() {
         console.log('Commande startSession envoyée');
         
         const previousStartTime = SETTINGS.startTime;
+// Après :
 let attempts = 0;
 while (attempts < 20) {
     await new Promise(r => setTimeout(r, 1000));
-    await loadConfigFromSheet();
+    try {
+        await Promise.race([
+            loadConfigFromSheet(),
+            new Promise((_, reject) => setTimeout(() => reject(), 2000))
+        ]);
+    } catch(e) { /* timeout ou erreur, on retente */ }
     if (SETTINGS.startTime && SETTINGS.startTime !== previousStartTime) break;
     attempts++;
 }
