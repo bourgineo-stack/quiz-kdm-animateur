@@ -668,7 +668,9 @@ const state = {
     lastScoreTimestamp: 0,
     isFirstQuestion: true,  // ← NOUVEAU
     isCountdown: false,
-    configured: false        // ← NOUVEAU    
+    configured: false,        // ← NOUVEAU 
+    recalibrated: false,
+    recalibrated2: false
 };
 
 // Génération QR code
@@ -936,6 +938,16 @@ async function startQuizLoop() {
     // Période firstQuestionDelay : countdown avant Q1
     const elapsed = (now - state.referenceTime) / 1000;
     if (SETTINGS.mode === 'session' && SETTINGS.firstQuestionDelay > 0 && elapsed < SETTINGS.firstQuestionDelay) {
+        // Recalage unique sur le vrai startTime GAS
+        if (!state.recalibrated && elapsed > 3) {
+            state.recalibrated = true;
+            loadConfigFromSheet().then(() => {
+                if (SETTINGS.startTime && Math.abs(SETTINGS.startTime - state.referenceTime) > 500) {
+                    console.log(`🔧 Recalage: ${state.referenceTime} → ${SETTINGS.startTime}`);
+                    state.referenceTime = SETTINGS.startTime;
+                }
+            }).catch(() => {});
+        }
         const remaining = Math.ceil(SETTINGS.firstQuestionDelay - elapsed);
         $('question-text').textContent = `⏳ Le quiz commence dans ${remaining} seconde${remaining > 1 ? 's' : ''}...`;
         $('question-timer').textContent = remaining;
@@ -968,7 +980,15 @@ async function startQuizLoop() {
 
     updateTimers(quizState);
     updatePhase(quizState);
-
+if (!state.recalibrated2 && quizState.questionIndex === 0 && quizState.phase === 'vote' && quizState.timeRemaining < (SETTINGS.voteDuration - 5)) {
+        state.recalibrated2 = true;
+        loadConfigFromSheet().then(() => {
+            if (SETTINGS.startTime && Math.abs(SETTINGS.startTime - state.referenceTime) > 500) {
+                console.log(`🔧 Recalage Q1 vote: ${state.referenceTime} → ${SETTINGS.startTime}`);
+                state.referenceTime = SETTINGS.startTime;
+            }
+        }).catch(() => {});
+    }
    // Détection transition vote → explain
 if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     const tour = getCurrentTour(state.referenceTime);
