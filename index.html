@@ -996,7 +996,8 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     
    if (!state.scoreTriggered[scoreKey]) {
         state.scoreTriggered[scoreKey] = true;
-        setTimeout(() => triggerScoreCalculation(quizState), 3000);
+       const scoreDelay = Math.max(3000, (SETTINGS.explainDuration || 150) * 1000 - 25000);
+        setTimeout(() => triggerScoreCalculation(quizState), scoreDelay);
     }
 }
     
