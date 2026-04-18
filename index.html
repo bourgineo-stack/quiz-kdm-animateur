@@ -1269,29 +1269,28 @@ function toggleDetail(btn) {
 }
 
 // Utilisée uniquement par Q1
-const COUT_THERMIQUE_PAR_KM = 0.42;
-const COUT_ELEC_PAR_KM = 0.33;
-const COUT_ELEC_KDM_PAR_KM = 0.315;
+const COUTS = {
+  thermique: { 5000: 0.61, 10000: 0.37, 15000: 0.29, 20000: 0.25 },
+  elec:      { 5000: 0.54, 10000: 0.29, 15000: 0.21, 20000: 0.17 },
+  kdm:       { 5000: 0.53, 10000: 0.28, 15000: 0.20, 20000: 0.16 }
+};
 
 function calculate(km, btn) {
-    document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-
-    const thermique = Math.round(km * COUT_THERMIQUE_PAR_KM / 100) * 100;
-    const elec      = Math.round(km * COUT_ELEC_PAR_KM / 100) * 100;
-    const kdm       = Math.round(km * COUT_ELEC_KDM_PAR_KM / 100) * 100;
-    const economie  = thermique - kdm;
-
-    document.getElementById('res-thermique').textContent = thermique.toLocaleString('fr-FR') + ' €';
-    document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
-    document.getElementById('res-kdm').textContent       = kdm.toLocaleString('fr-FR') + ' €';
-    document.getElementById('kdm-badge').textContent     =
-        `⚡ Avec la recharge KDM : jusqu'à ${economie.toLocaleString('fr-FR')} € économisés / an vs thermique`;
-
-    const result = document.getElementById('calc-result');
-    result.classList.remove('visible');
-    void result.offsetWidth;
-    result.classList.add('visible');
+  document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const thermique = Math.round(km * COUTS.thermique[km] / 100) * 100;
+  const elec      = Math.round(km * COUTS.elec[km] / 100) * 100;
+  const kdm       = Math.round(km * COUTS.kdm[km] / 100) * 100;
+  const economie  = thermique - kdm;
+  document.getElementById('res-thermique').textContent = thermique.toLocaleString('fr-FR') + ' €';
+  document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
+  document.getElementById('res-kdm').textContent       = kdm.toLocaleString('fr-FR') + ' €';
+  document.getElementById('kdm-badge').textContent     =
+      `⚡ Avec la recharge KDM : jusqu'à ${economie.toLocaleString('fr-FR')} € économisés / an vs thermique`;
+  const result = document.getElementById('calc-result');
+  result.classList.remove('visible');
+  void result.offsetWidth;
+  result.classList.add('visible');
 }
         function applyScores(scoresData) {
     const newBlue = scoresData.blue || 0;
