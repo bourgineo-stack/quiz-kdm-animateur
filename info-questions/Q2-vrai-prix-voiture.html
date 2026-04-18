@@ -155,6 +155,13 @@
     font-size: 0.75rem;
     font-weight: 800;
   }
+  .profil-note {
+  font-size: 0.78rem;
+  opacity: 0.65;
+  font-style: italic;
+  margin: 0.2rem 0 0 0;
+  line-height: 1.5;
+}
 
   /* Takeaway */
   .takeaway {
@@ -346,32 +353,92 @@
     </div>
   </div>
 
-  <!-- Barres coûts cachés -->
-  <div class="couts-title">📊 Où part vraiment l'argent (voiture thermique) :</div>
-  <div class="bar-row">
-    <span class="bar-label">📉 Décote</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#E53935,#C62828);">30%</div>
-    </div>
+ <!-- Barres coûts cachés -->
+<div class="couts-title">📊 Où part vraiment l'argent (voiture thermique) :</div>
+
+<!-- PROFIL 1 : NEUF -->
+<div class="profil-label" style="color:#E53935; font-size:0.82rem; font-weight:800; margin:0.6rem 0 0.4rem;">🆕 Véhicule neuf : « Le poids du prestige »</div>
+<div class="bar-row">
+  <span class="bar-label">📉 Décote</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:47%; background:linear-gradient(90deg,#E53935,#C62828);">47%</div>
   </div>
-  <div class="bar-row">
-    <span class="bar-label">⛽ Carburant</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:27%; background:linear-gradient(90deg,#FFA726,#FF7043);">27%</div>
-    </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">⛽ Carburant</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:22%; background:linear-gradient(90deg,#FFA726,#FF7043);">22%</div>
   </div>
-  <div class="bar-row">
-    <span class="bar-label">🔧 Entretien</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:25%; background:linear-gradient(90deg,#42A5F5,#1E88E5);">25%</div>
-    </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🛡️ Assurance</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:17%; background:linear-gradient(90deg,#66BB6A,#43A047);">17%</div>
   </div>
-  <div class="bar-row">
-    <span class="bar-label">🛡️ Assurance</span>
-    <div class="bar-track">
-      <div class="bar-fill" style="width:18%; background:linear-gradient(90deg,#66BB6A,#43A047);">18%</div>
-    </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🔧 Entretien</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:9%; background:linear-gradient(90deg,#42A5F5,#1E88E5);">9%</div>
   </div>
+</div>
+<div class="profil-note">On perd 20% dès la clé tournée. La décote écrase tout : sans sortir de cash immédiatement. <em>Source : L'Argus 2025</em></div>
+
+<!-- PROFIL 2 : OCCASION 5 ANS -->
+<div class="profil-label" style="color:#FFA726; font-size:0.82rem; font-weight:800; margin:1rem 0 0.4rem;">🔄 Occasion ~5 ans : « L'équilibre »</div>
+<div class="bar-row">
+  <span class="bar-label">⛽ Carburant</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#FFA726,#FF7043);">30%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">📉 Décote</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:30%; background:linear-gradient(90deg,#E53935,#C62828);">30%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🔧 Entretien</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:22%; background:linear-gradient(90deg,#42A5F5,#1E88E5);">22%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🛡️ Assurance</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:18%; background:linear-gradient(90deg,#66BB6A,#43A047);">18%</div>
+  </div>
+</div>
+<div class="profil-note">Le choix le plus rationnel. Prix d'achat amorti, entretien qui commence à peser. <em>Source : Roole Data 2025</em></div>
+
+<!-- PROFIL 3 : VIEILLE VOITURE -->
+<div class="profil-label" style="color:#90A4AE; font-size:0.82rem; font-weight:800; margin:1rem 0 0.4rem;">⚠️ Vieille voiture +12 ans : « Le piège des réparations »</div>
+<div class="bar-row">
+  <span class="bar-label">⛽ Carburant</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:45%; background:linear-gradient(90deg,#FFA726,#FF7043);">45%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🔧 Entretien</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:35%; background:linear-gradient(90deg,#42A5F5,#1E88E5);">35%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">🛡️ Assurance</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:12%; background:linear-gradient(90deg,#66BB6A,#43A047);">12%</div>
+  </div>
+</div>
+<div class="bar-row">
+  <span class="bar-label">📉 Décote</span>
+  <div class="bar-track">
+    <div class="bar-fill" style="width:8%; background:linear-gradient(90deg,#E53935,#C62828);">8%</div>
+  </div>
+</div>
+<div class="profil-note">Un embrayage ou un turbo peut coûter le prix de la voiture. La décote a disparu : mais l'entretien explose. <em>Source : Leocare / Odopass 2026</em></div>
 
   <!-- Takeaway -->
   <div class="takeaway">
@@ -416,8 +483,8 @@
         <div class="q">« 0,40 €/km c'est exagéré pour ma vieille Clio. »</div>
         <div class="r">Faites le calcul : assurance (~500 €) + entretien (~600 €) + carburant (~900 € pour 10 000 km) = déjà 2 000 € sans la décote. Divisé par 10 000 km = 0,20 €/km minimum. Et la décote, même sur une vieille voiture, existe toujours.</div>
       </div>
-
-<div class="objection">
+	  
+	  <div class="objection">
   <div class="q">« Comment sont calculés ces chiffres ? »</div>
   <div class="r">
     Les hypothèses varient selon l'usage, parce que le profil de voiture change aussi.<br><br>
