@@ -1061,7 +1061,20 @@ async function triggerScoreCalculation(quizState) {
             
             if (totalResponses === 0) {
                 console.warn(`⚠️ Aucune réponse détectée pour Q${q.id}. Application du pansement : +1 à chaque équipe.`);
-                // Injecter les scores de secours
+                
+                // Écrire dans le Sheet Scores pour persister le pansement côté serveur
+                await fetch(CONFIG.sheetUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'injectPansementScore',
+                        questionId: parseInt(q.id),
+                        tour: parseInt(tour)
+                    })
+                });
+                
+                // Mettre à jour l'affichage immédiatement (pas d'attente sur le serveur)
                 const currentBlue = parseInt($('score-blue').textContent) || 0;
                 const currentRed = parseInt($('score-red').textContent) || 0;
                 state.pendingScores = {
@@ -1069,6 +1082,10 @@ async function triggerScoreCalculation(quizState) {
                     red: currentRed + 1
                 };
                 state.scoreCalculating = false;
+                
+                // Forcer le lastScoreTimestamp pour que les getScores suivants ne l'écrasent pas immédiatement
+                // (le Sheet aura bien été mis à jour avec +1/+1 côté serveur d'ici la prochaine question)
+                state.lastScoreTimestamp = Date.now();
             }
         }
 
