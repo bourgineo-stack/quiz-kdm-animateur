@@ -837,6 +837,17 @@ async function startQuizNow() {
         });
 
         console.log('Commande startSession envoyée');
+
+        // ✅ Marquer tous les participants en attente avec le startTime de session
+        // Évite que chaque participant fasse un re-register concurrent
+        await new Promise(r => setTimeout(r, 1500)); // Laisser le temps au startTime d'être écrit
+        await fetch(CONFIG.sheetUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'markSessionParticipants', startTime: startedAt })
+        });
+        console.log('✅ markSessionParticipants envoyé avec startTime =', startedAt);
         
         // Après :
 state.referenceTime = startedAt;
