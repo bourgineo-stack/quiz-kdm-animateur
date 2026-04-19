@@ -1006,7 +1006,7 @@ if (quizState.phase === 'explain' && state.lastPhase === 'vote') {
     
    if (!state.scoreTriggered[scoreKey]) {
         state.scoreTriggered[scoreKey] = true;
-       const scoreDelay = 15000;
+       const scoreDelay = 45000;
         setTimeout(() => triggerScoreCalculation(quizState), scoreDelay);
     }
 }
