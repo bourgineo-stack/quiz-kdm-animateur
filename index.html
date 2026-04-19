@@ -977,7 +977,11 @@ async function startQuizLoop() {
     // QUIZ NORMAL
     const quizState = getQuizState(state.referenceTime);
 
-    if (quizState.finished) {
+if (quizState.finished) {
+        // ✅ Fermer l'overlay info qui pourrait rester ouvert depuis explain Q10
+        if ($('info-overlay').classList.contains('active')) {
+            closeOverlay();
+        }
         showEndScreen();
         return;
     }
