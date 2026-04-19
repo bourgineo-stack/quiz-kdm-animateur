@@ -791,10 +791,10 @@ async function configureQuiz() {
         
         state.configured = true;
         // Warm-up silencieux pendant l'attente participants
-        setInterval(() => fetch(`${CONFIG.sheetUrl}?action=getFullConfig`).catch(()=>{}), 20000);
+        setInterval(() => fetch(`${CONFIG.sheetUrl}?action=getFullConfig`).catch(()=>{}), 60000);
         
         // Rafraîchir le compteur
-        setInterval(updateReadyCount, 2000);
+        setInterval(updateReadyCount, 5000);
         updateReadyCount();
         
     } catch (e) {
