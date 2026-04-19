@@ -1038,7 +1038,7 @@ async function triggerScoreCalculation(quizState) {
         
         console.log('✅ calculateTurnScore envoyé, lecture scores dans 10s');
 
-        // Première lecture à T+10 après la transition (soit 10s après le POST)
+        // Première lecture à T+10 après la transition
         await new Promise(r => setTimeout(r, 10000));
         await tryFetchScores('tentative 1');
 
@@ -1048,12 +1048,31 @@ async function triggerScoreCalculation(quizState) {
             await tryFetchScores('tentative 2');
         }
 
+        // ✅ PANSEMENT Q1/Q2 : si aucune réponse détectée sur les 2 premières questions,
+        // attribuer 1 point à chaque équipe pour maintenir la dynamique côté participants
+        if (quizState.questionIndex <= 1) {
+            const statsRes = await fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${parseInt(q.id)}&tour=${parseInt(tour)}`);
+            const stats = await statsRes.json();
+            const totalResponses = stats.total || 0;
+            
+            if (totalResponses === 0) {
+                console.warn(`⚠️ Aucune réponse détectée pour Q${q.id}. Application du pansement : +1 à chaque équipe.`);
+                // Injecter les scores de secours
+                const currentBlue = parseInt($('score-blue').textContent) || 0;
+                const currentRed = parseInt($('score-red').textContent) || 0;
+                state.pendingScores = {
+                    blue: currentBlue + 1,
+                    red: currentRed + 1
+                };
+                state.scoreCalculating = false;
+            }
+        }
+
     } catch (e) {
         console.error('❌ Erreur calcul score:', e);
         state.scoreCalculating = false;
     }
 }
-
 async function tryFetchScores(label) {
     try {
         const res = await fetch(`${CONFIG.sheetUrl}?action=getScores`);
