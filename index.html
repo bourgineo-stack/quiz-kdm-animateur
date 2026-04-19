@@ -1050,7 +1050,7 @@ async function triggerScoreCalculation(quizState) {
 
         // ✅ PANSEMENT Q1/Q2 : si aucune réponse détectée sur les 2 premières questions,
         // attribuer 1 point à chaque équipe pour maintenir la dynamique côté participants
-        if (quizState.questionIndex <= 1) {
+        if (quizState.questionIndex <= 2) {
             const statsRes = await fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${parseInt(q.id)}&tour=${parseInt(tour)}`);
             const stats = await statsRes.json();
             const totalResponses = stats.total || 0;
