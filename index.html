@@ -502,16 +502,24 @@
     flex-direction: column;
     align-items: center;
     gap: 0.4rem;
-    opacity: 0.5;
+    opacity: 0.7;
     transition: opacity 0.3s;
     z-index: 50;
 }
-.voltface-credit:hover { opacity: 0.8; }
-.voltface-logo { height: 40px; width: auto; }
+.voltface-credit:hover { opacity: 1; }
+.voltface-logo { height: 55px; width: auto; }
 .voltface-credit span {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: white;
     font-weight: 600;
+}
+.voltface-label {
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 700;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
         
     </style>
@@ -570,10 +578,11 @@
         <div class="logo">🌱 Éco-<span>Quiz</span></div>
         <div class="mode-badge" id="mode-badge">Mode Atelier</div>
     </div>
-            <div class="voltface-credit">
-    <img src="voltfaceblanc.png" alt="VoltFace" class="voltface-logo">
-    <span>volt.face@outlook.fr</span>
-</div>
+    <div class="voltface-credit">
+        <span class="voltface-label">Quiz créé par</span>
+        <img src="voltfaceblanc.png" alt="VoltFace" class="voltface-logo">
+        <span>volt.face@outlook.fr</span>
+    </div>
     
     <!-- NOUVEAU : Barre de progression au centre -->
     <div class="header-center">
