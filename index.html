@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Éco-Quiz KDM - Animation</title>
+    <title>Éco-Quiz Divia Mobilités - Animation</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
@@ -494,6 +494,24 @@
     cursor: not-allowed;
     transform: none;
 }
+        .voltface-credit {
+    position: fixed;
+    bottom: 0.6rem;
+    right: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.35;
+    transition: opacity 0.3s;
+    z-index: 50;
+}
+.voltface-credit:hover { opacity: 0.8; }
+.voltface-logo { height: 22px; width: auto; }
+.voltface-credit span {
+    font-size: 0.7rem;
+    color: white;
+    font-weight: 600;
+}
         
     </style>
 </head>
@@ -551,6 +569,10 @@
         <div class="logo">🌱 Éco-<span>Quiz</span></div>
         <div class="mode-badge" id="mode-badge">Mode Atelier</div>
     </div>
+            <div class="voltface-credit">
+    <img src="voltfaceblanc.png" alt="VoltFace" class="voltface-logo">
+    <span>volt.face@outlook.fr</span>
+</div>
     
     <!-- NOUVEAU : Barre de progression au centre -->
     <div class="header-center">
