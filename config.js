@@ -12,7 +12,9 @@ let SETTINGS = {
     explainDuration: 60,
     mode: 'session',
     startTime: null,
-    firstQuestionDelay: 120  // ← NOUVEAU : 2 minutes pour les consignes
+    firstQuestionDelay: 120,  // ← NOUVEAU : 2 minutes pour les consignes
+discussionTimeSup: 0,
+interDiscussionTime: 0
 };
 
 /**
@@ -57,65 +59,73 @@ function getQuizState(referenceTime) {
     const now = Date.now();
     const elapsed = (now - referenceTime) / 1000;
 
-    // ✅ NOUVEAU : Ajouter le délai première question (mode session uniquement)
     let adjustedElapsed = elapsed;
     if (SETTINGS.mode === 'session' && SETTINGS.firstQuestionDelay > 0) {
         adjustedElapsed = Math.max(0, elapsed - SETTINGS.firstQuestionDelay);
     }
 
     const cycleLength = SETTINGS.voteDuration + SETTINGS.explainDuration;
-    const totalCycleLength = cycleLength * QUESTIONS.length;
+    const disc = SETTINGS.discussionTimeSup || 0;
+    const interDisc = SETTINGS.interDiscussionTime || 0;
 
-    if (QUESTIONS.length === 0 || totalCycleLength === 0) {
-        return {
-            questionIndex: 0, phase: 'vote', timeRemaining: 0,
-            totalElapsed: 0, currentQuestion: null, finished: false, explainProgress: 0
-        };
+    if (QUESTIONS.length === 0 || cycleLength === 0) {
+        return { questionIndex: 0, phase: 'vote', timeRemaining: 0,
+            totalElapsed: 0, currentQuestion: null, finished: false, explainProgress: 0 };
     }
 
-    // Détection fin de quiz
-    if (SETTINGS.mode === 'session' && adjustedElapsed > 0 && adjustedElapsed >= totalCycleLength) {
-        return {
-            questionIndex: QUESTIONS.length - 1,
-            phase: 'finished',
-            timeRemaining: 0,
-            totalElapsed: Math.floor(elapsed),
-            currentQuestion: QUESTIONS[QUESTIONS.length - 1] || null,
-            finished: true,
-            explainProgress: 1
-        };
+    // Calculer la durée totale en tenant compte des pauses
+    let totalDuration = 0;
+    for (let i = 0; i < QUESTIONS.length; i++) {
+        totalDuration += cycleLength;
+        // Pause APRÈS la question (i+1) si multiple de interDisc, sauf après la dernière
+        if (disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0 && i < QUESTIONS.length - 1) {
+            totalDuration += disc;
+        }
     }
 
-    // Position dans le cycle (avec boucle pour mode loop)
-    const positionInTotal = ((adjustedElapsed % totalCycleLength) + totalCycleLength) % totalCycleLength;
-    const questionIndex = Math.floor(positionInTotal / cycleLength);
-    const positionInQuestion = positionInTotal % cycleLength;
-
-    let phase, timeRemaining;
-
-    if (positionInQuestion < SETTINGS.voteDuration) {
-        phase = 'vote';
-        timeRemaining = SETTINGS.voteDuration - positionInQuestion;
-    } else {
-        phase = 'explain';
-        timeRemaining = cycleLength - positionInQuestion;
+    // Fin de quiz
+    if (SETTINGS.mode === 'session' && adjustedElapsed >= totalDuration && adjustedElapsed > 0) {
+        return { questionIndex: QUESTIONS.length - 1, phase: 'finished', timeRemaining: 0,
+            totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[QUESTIONS.length - 1] || null,
+            finished: true, explainProgress: 1 };
     }
 
-    let explainProgress = 0;
-    if (phase === 'explain') {
-        const timeInExplain = positionInQuestion - SETTINGS.voteDuration;
-        explainProgress = timeInExplain / SETTINGS.explainDuration;
+    // Mode loop : boucle sur totalDuration
+    const positionInTotal = SETTINGS.mode === 'session'
+        ? Math.max(0, adjustedElapsed)
+        : ((adjustedElapsed % totalDuration) + totalDuration) % totalDuration;
+
+    // Itérer question par question pour trouver la position
+    let cursor = 0;
+    for (let i = 0; i < QUESTIONS.length; i++) {
+        const voteEnd = cursor + SETTINGS.voteDuration;
+        const explainEnd = voteEnd + SETTINGS.explainDuration;
+        const hasDiscussion = disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0 && i < QUESTIONS.length - 1;
+        const discEnd = hasDiscussion ? explainEnd + disc : explainEnd;
+
+        if (positionInTotal < voteEnd) {
+            return { questionIndex: i, phase: 'vote',
+                timeRemaining: Math.ceil(voteEnd - positionInTotal),
+                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false, explainProgress: 0 };
+        }
+        if (positionInTotal < explainEnd) {
+            const timeInExplain = positionInTotal - voteEnd;
+            return { questionIndex: i, phase: 'explain',
+                timeRemaining: Math.ceil(explainEnd - positionInTotal),
+                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false,
+                explainProgress: timeInExplain / SETTINGS.explainDuration };
+        }
+        if (hasDiscussion && positionInTotal < discEnd) {
+            return { questionIndex: i, phase: 'discussion',
+                timeRemaining: Math.ceil(discEnd - positionInTotal),
+                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false, explainProgress: 1 };
+        }
+        cursor = discEnd;
     }
 
-    return {
-        questionIndex,
-        phase,
-        timeRemaining: Math.ceil(timeRemaining),
-        totalElapsed: Math.floor(elapsed),
-        currentQuestion: QUESTIONS[questionIndex] || null,
-        finished: false,
-        explainProgress
-    };
+    // Fallback
+    return { questionIndex: QUESTIONS.length - 1, phase: 'finished', timeRemaining: 0,
+        totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[QUESTIONS.length - 1], finished: true, explainProgress: 1 };
 }
 
 /**
