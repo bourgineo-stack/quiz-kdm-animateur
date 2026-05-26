@@ -1450,29 +1450,43 @@ function showDiscussionPanel(quizState) {
     if (!quizState) quizState = window._lastDiscussionState;
     if (!quizState) return;
 
-    const upTo = quizState.questionIndex; // questions 0 à upTo déjà jouées
-    const buttons = QUESTIONS.slice(0, upTo + 1).map((q, i) => `
-        <button onclick="openQuestionReview(${i})" style="
+    // Calculer le bloc de questions depuis la dernière discussion
+    const upTo = quizState.questionIndex;
+    const interDisc = SETTINGS.interDiscussionTime || 0;
+    // Index de début du bloc : questions depuis la dernière pause (ou depuis 0)
+    let blockStart = 0;
+    if (interDisc > 0) {
+        // La discussion N couvre les questions [(N-1)*interDisc ... N*interDisc-1]
+        // upTo = N*interDisc - 1, donc blockStart = upTo - interDisc + 1
+        blockStart = Math.max(0, upTo - interDisc + 1);
+    }
+
+    const buttons = QUESTIONS.slice(blockStart, upTo + 1).map((q, i) => {
+        const globalIndex = blockStart + i;
+        const shortText = q.text.length > 55 ? q.text.substring(0, 55) + '…' : q.text;
+        return `<button onclick="openQuestionReview(${globalIndex})" style="
             background: rgba(255,255,255,0.08);
             border: 2px solid rgba(255,255,255,0.2);
             color: white;
             padding: 0.8rem 1.2rem;
             border-radius: 12px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
+            text-align: left;
+            width: 100%;
             transition: all 0.2s ease;
         " onmouseover="this.style.background='rgba(210,0,122,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-            Q${i + 1}
-        </button>
-    `).join('');
+            <span style="opacity:0.5; font-size:0.8rem; margin-right:0.5rem;">Q${globalIndex + 1}</span>${shortText}
+        </button>`;
+    }).join('');
 
     $('info-body-overlay').innerHTML = `
-        <div style="text-align:center; padding: 1.5rem 1rem;">
-            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">💬 Temps de discussion</div>
-            <div style="opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem;">Cliquez sur une question pour revoir son explication</div>
-            <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center;">
+        <div style="padding: 1.5rem 1rem;">
+            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; text-align:center;">💬 Temps de discussion</div>
+            <div style="opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem; text-align:center;">Cliquez sur une question pour revoir son explication</div>
+            <div style="display: flex; flex-direction: column; gap: 0.8rem; max-width: 700px; margin: 0 auto;">
                 ${buttons}
             </div>
         </div>
@@ -1481,10 +1495,11 @@ function showDiscussionPanel(quizState) {
     $('info-overlay').classList.add('active');
 }
 
-function openQuestionReview(questionIndex) {
+async function openQuestionReview(questionIndex) {
     const q = QUESTIONS[questionIndex];
     if (!q) return;
-    const content = state.preloadedContent[q.id] || q.info || '<p>Contenu non disponible.</p>';
+
+    // Afficher un loader immédiatement pendant le chargement éventuel
     $('info-body-overlay').innerHTML = `
         <div style="margin-bottom: 1rem;">
             <button onclick="showDiscussionPanel(window._lastDiscussionState)" style="
@@ -1499,7 +1514,33 @@ function openQuestionReview(questionIndex) {
                 cursor: pointer;
             ">← Retour</button>
         </div>
-        ${content}
+        <div style="text-align:center; padding:2rem;">
+            <div style="font-size:2rem;">⏳</div>
+            <div style="margin-top:0.5rem;">Chargement...</div>
+        </div>
+    `;
+
+    // Charger si pas en cache (utilise preloadQuestionInfo qui gère fetch + fallback)
+    let content = state.preloadedContent[q.id];
+    if (!content) {
+        content = await preloadQuestionInfo(q);
+    }
+
+    $('info-body-overlay').innerHTML = `
+        <div style="margin-bottom: 1rem;">
+            <button onclick="showDiscussionPanel(window._lastDiscussionState)" style="
+                background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.3);
+                color: white;
+                padding: 0.4rem 1rem;
+                border-radius: 8px;
+                font-family: inherit;
+                font-size: 0.85rem;
+                font-weight: 700;
+                cursor: pointer;
+            ">← Retour</button>
+        </div>
+        ${content || '<p style="text-align:center; opacity:0.5;">Contenu non disponible.</p>'}
     `;
 }
         
