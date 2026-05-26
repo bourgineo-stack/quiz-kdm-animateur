@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q - Bus électrique et particules fines</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
+
+  .main-block { max-width: 680px; margin: 0 auto; }
+
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Barres émissions échappement */
+  .section-title {
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.5;
+    margin-bottom: 0.7rem;
+    margin-top: 1.2rem;
+  }
+
+  .bar-block { margin-bottom: 1.2rem; }
+  .bar-row { margin-bottom: 0.55rem; }
+  .bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+  }
+  .bar-header .label { display: flex; align-items: center; gap: 0.4rem; }
+  .bar-track {
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    height: 28px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    transition: width 0.6s ease;
+  }
+  .bar-diesel  { background: linear-gradient(90deg, #E53935, #c62828); width: 100%; }
+  .bar-gaz     { background: linear-gradient(90deg, #FB8C00, #e65100); width: 48%; }
+  .bar-hvo     { background: linear-gradient(90deg, #8BC34A, #558b2f); width: 85%; }
+  .bar-elec    { background: linear-gradient(90deg, #26C6DA, #00838f); width: 0%; min-width: 0; }
+
+  .bar-zero {
+    height: 28px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: #26C6DA;
+  }
+
+  .bar-note {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    font-style: italic;
+    margin-top: 0.15rem;
+  }
+
+  /* Bloc nuance freins/pneus */
+  .nuance-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .nuance-block .nuance-title {
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #26C6DA;
+    margin-bottom: 0.5rem;
+  }
+  .nuance-block p { margin: 0 0 0.4rem; }
+  .nuance-block p:last-child { margin: 0; }
+
+  /* Angle santé */
+  .sante-block {
+    background: rgba(67,160,71,0.08);
+    border: 1px solid rgba(67,160,71,0.25);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+  }
+  .sante-title {
+    font-weight: 800;
+    font-size: 0.88rem;
+    color: #81C784;
+    margin-bottom: 0.6rem;
+  }
+  .sante-row {
+    display: flex;
+    gap: 0.7rem;
+    margin-bottom: 0.55rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .sante-row:last-child { margin-bottom: 0; }
+  .sr-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  /* Timeline flotte */
+  .timeline { margin-bottom: 1.2rem; }
+  .tl-row {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.6rem;
+    align-items: flex-start;
+  }
+  .tl-year {
+    background: rgba(210,0,122,0.2);
+    border: 1px solid rgba(210,0,122,0.4);
+    border-radius: 8px;
+    padding: 0.2rem 0.55rem;
+    font-weight: 900;
+    font-size: 0.85rem;
+    color: #D2007A;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .tl-text {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .tl-text strong { color: white; }
+  .tl-text .tl-sub {
+    display: block;
+    font-size: 0.78rem;
+    opacity: 0.6;
+    margin-top: 0.1rem;
+  }
+
+  /* Invitation navettes */
+  .invitation {
+    text-align: center;
+    background: rgba(38,198,218,0.08);
+    border: 1px solid rgba(38,198,218,0.25);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .invitation strong { color: #26C6DA; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton expandable */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 900px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 0.6rem;
+  }
+  .objection:last-child { margin-bottom: 0; }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+</style>
+</head>
+<body>
+
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Un bus électrique, c'est <strong>zéro émission à l'échappement</strong>.<br>
+    <span class="sub">Mais l'échappement n'est qu'une partie de l'histoire : les freins comptent aussi.</span>
+  </div>
+
+  <!-- Émissions échappement -->
+  <div class="section-title">📊 Émissions à l'échappement : comparaison par motorisation</div>
+  <div class="bar-block">
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span class="label">🚌 Diesel</span>
+        <span>référence</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-diesel">100%</div>
+      </div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span class="label">🌿 Bio-diesel (HVO)</span>
+        <span>−15%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill bar-hvo">85%</div>
+      </div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span class="label">⚡ Électrique</span>
+        <span style="color:#26C6DA; font-weight:900;">−100%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-zero">0 : aucune émission d'échappement</div>
+      </div>
+    </div>
+<div class="bar-note">Le Gaz est à -52%.</div>
+    <div class="bar-note">Source : Données émissions échappement HBEFA v4.2</div>
+  </div>
+
+  <!-- Nuance freins/pneus -->
+  <div class="nuance-block">
+    <div class="nuance-title">⚠️ Et les freins ?</div>
+    <p>Sur un bus diesel moderne, <strong>93 à 97% des particules fines ne viennent pas de l'échappement</strong> : elles viennent des freins, des pneus et de la route.</p>
+    <p>Le bus électrique utilise le <strong>freinage régénératif</strong> : au lieu d'user les plaquettes, il récupère l'énergie pour recharger la batterie. Résultat : moins de particules métalliques de freins libérées dans l'air que vous respirez.</p>
+    <p>Des études sur flottes réelles confirment que les bus électriques émettent <strong>systématiquement moins de particules totales</strong> que les bus diesel Euro VI, y compris en comptant freins, pneus et route.</p>
+  </div>
+
+  <!-- Angle santé -->
+  <div class="sante-block">
+    <div class="sante-title">🏥 Pourquoi ça compte pour votre santé</div>
+
+    <div class="sante-row">
+      <span class="sr-icon">🫁</span>
+      <div>
+        <strong>Les PM2.5 atteignent les alvéoles pulmonaires</strong><br>
+        Les particules fines inférieures à 2,5 microns passent les défenses naturelles des voies respiratoires. Elles pénètrent jusqu'aux alvéoles et entrent dans la circulation sanguine.
+      </div>
+    </div>
+
+    <div class="sante-row">
+      <span class="sr-icon">❤️</span>
+      <div>
+        <strong>Maladies cardiovasculaires et respiratoires</strong><br>
+        Exposition prolongée associée à l'asthme, aux maladies pulmonaires chroniques, aux arythmies cardiaques et aux infarctus. L'OCDE estime à plus de 400 000 le nombre de décès annuels imputables aux PM2.5 en Europe.
+      </div>
+    </div>
+
+    <div class="sante-row">
+      <span class="sr-icon">🏙️</span>
+      <div>
+        <strong>En ville, c'est pire</strong><br>
+        Les arrêts fréquents des bus urbains multiplient les phases de freinage : exactement là où les particules de freins sont les plus émises, et là où la densité de population est la plus élevée.
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline flotte Divia -->
+  <div class="section-title">🚌 La flotte Divia : ce qui arrive</div>
+  <div class="timeline">
+
+    <div class="tl-row">
+      <div class="tl-year">2028</div>
+      <div class="tl-text">
+        <strong>32 bus bio-diesel (HVO)</strong> intègrent la flotte
+        <span class="tl-sub">−15% d'émissions à l'échappement vs diesel · premiers véhicules du renouvellement</span>
+      </div>
+    </div>
+
+    <div class="tl-row">
+      <div class="tl-year">2029</div>
+      <div class="tl-text">
+        <strong>45 bus électriques</strong> en service
+        <span class="tl-sub">Zéro émission échappement · freinage régénératif · silencieux</span>
+      </div>
+    </div>
+
+    <div class="tl-row">
+      <div class="tl-year">2030</div>
+      <div class="tl-text">
+        <strong>9 000 → 4 000 tCO2e</strong> sur la flotte
+        <span class="tl-sub">Équivalent à effacer l'empreinte carbone annuelle de 500 Français</span>
+      </div>
+    </div>
+
+    <div class="tl-row">
+      <div class="tl-year">2032</div>
+      <div class="tl-text">
+        <strong>Totalité des 140 bus renouvelés</strong>
+        <span class="tl-sub">Fin de la flotte diesel à Dijon</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Invitation navettes -->
+  <div class="invitation">
+    🎧 <strong>Vous voulez entendre la différence ?</strong><br>
+    Les 5 navettes gratuites du centre-ville de Dijon sont déjà électriques.<br>
+    <span style="font-size:0.85rem; opacity:0.7;">Montez dedans : le silence fait partie de l'expérience.</span>
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> Le bus électrique est la seule motorisation à zéro émission d'échappement <em>et</em> à particules de freins réduites grâce au freinage régénératif. À Dijon, la transition est en cours : 2032, c'est dans 7 ans.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    Keolis : données émissions flotte urbaine ·
+    Ropkins et al. (2023), <em>Sustainability</em> 15(2):1522 : particules totales bus Euro VI vs électrique ·
+    OCDE (2020) : pollution particules freins et pneus ·
+    CITEPA : freinage régénératif et émissions hors échappement
+  </div>
+
+  <!-- Bouton expandable -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span>▼</span>
+  </button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel">
+    <div class="detail-inner">
+      <h4>Pour aller plus loin</h4>
+
+
+      <div class="objection">
+        <div class="q">« Et les pneus, ils polluent autant non ? »</div>
+        <div class="r">Oui, les pneus génèrent des particules quel que soit le moteur. Mais le gain sur les freins grâce à la régénération est réel et mesuré. Le bilan total particules reste favorable à l'électrique selon les études sur flottes réelles.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« 2032 c'est loin. »</div>
+        <div class="r">45 bus électriques arrivent dès 2029 : un tiers de la flotte en moins de 4 ans. C'est un programme de renouvellement rapide.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleDetail(btn) {
+  const panel = btn.nextElementSibling;
+  if (!panel || !panel.classList.contains('detail-panel')) return;
+  const arrow = btn.querySelector('span');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
+</script>
+
+</body>
+</html>
