@@ -1254,7 +1254,9 @@ async function tryFetchScores(label) {
   } else if (quizState.phase === 'discussion') {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
         if (state.lastPhase !== 'discussion') {
-            window._lastDiscussionState = { ...quizState, absoluteCount: state.questionCount };
+            const tour = getCurrentTour(state.referenceTime);
+            const absCount = (tour - 1) * QUESTIONS.length + quizState.questionIndex;
+            window._lastDiscussionState = { ...quizState, absoluteCount: absCount };
             showDiscussionPanel(window._lastDiscussionState);
         }
     } else {
