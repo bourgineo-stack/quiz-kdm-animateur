@@ -1442,8 +1442,8 @@ function displayQuestionInfo(question) {
 }
 
 function showDiscussionPanel(quizState) {
-    // Ne réafficher que si on vient de changer de phase (éviter le redraw à chaque tick)
-    if (state.lastPhase === 'discussion') return;
+    if (!quizState) quizState = window._lastDiscussionState;
+    if (!quizState) return;
 
     const upTo = quizState.questionIndex; // questions 0 à upTo déjà jouées
     const buttons = QUESTIONS.slice(0, upTo + 1).map((q, i) => `
@@ -1472,7 +1472,9 @@ function showDiscussionPanel(quizState) {
             </div>
         </div>
     `;
+    $('info-overlay').dataset.mode = 'discussion';
     $('info-overlay').classList.add('active');
+}
 }
 
 function openQuestionReview(questionIndex) {
