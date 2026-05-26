@@ -1023,8 +1023,8 @@ if (quizState.finished) {
         return;
     }
 
-    if (quizState.questionIndex !== state.lastQuestionIndex) {
-        if (state.lastQuestionIndex !== -1) state.questionCount++;
+   if (quizState.questionIndex !== state.lastQuestionIndex) {
+        if (state.lastQuestionIndex !== -1 && quizState.phase !== 'discussion') state.questionCount++;
         state.lastQuestionIndex = quizState.questionIndex;
         state.lastPhase = null;
         onQuestionChange(quizState);
