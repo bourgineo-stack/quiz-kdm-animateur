@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Q - Prise en charge employeur abonnement TC</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: #1a1030;
+    color: white;
+    padding: 2rem;
+    margin: 0;
+  }
+
+  .main-block { max-width: 680px; margin: 0 auto; }
+
+  /* Chiffre choc */
+  .choc {
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 700;
+    background: rgba(210,0,122,0.12);
+    border: 1px solid rgba(210,0,122,0.3);
+    border-radius: 12px;
+    padding: 0.8rem 1.1rem;
+    margin-bottom: 1.2rem;
+    line-height: 1.55;
+  }
+  .choc strong { color: #D2007A; font-size: 1.25rem; }
+  .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
+
+  /* Réponse employeur */
+  .employeur-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    margin-bottom: 1.2rem;
+  }
+  .emp-card {
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    text-align: center;
+  }
+  .emp-card.prive {
+    background: rgba(210,0,122,0.1);
+    border: 1px solid rgba(210,0,122,0.35);
+  }
+  .emp-card.public {
+    background: rgba(38,198,218,0.1);
+    border: 1px solid rgba(38,198,218,0.35);
+  }
+  .emp-card .emp-pct {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .emp-card.prive .emp-pct { color: #D2007A; }
+  .emp-card.public .emp-pct { color: #26C6DA; }
+  .emp-card .emp-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    opacity: 0.85;
+    line-height: 1.35;
+  }
+  .emp-card .emp-example {
+    font-size: 0.75rem;
+    opacity: 0.6;
+    margin-top: 0.3rem;
+    font-style: italic;
+  }
+
+  /* Section titre */
+  .section-title {
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.5;
+    margin-bottom: 0.7rem;
+    margin-top: 1.2rem;
+  }
+
+  /* Famille cards */
+  .famille-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.9rem;
+  }
+  .famille-header {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.8rem;
+  }
+  .famille-icon { font-size: 1.5rem; }
+  .famille-title {
+    font-weight: 800;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .famille-subtitle {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-top: 0.15rem;
+  }
+
+  /* Lignes de coût */
+  .cout-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 0.88rem;
+  }
+  .cout-row:last-of-type { border-bottom: none; }
+  .cout-label { opacity: 0.8; }
+  .cout-value { font-weight: 700; }
+  .cout-value.strike {
+    text-decoration: line-through;
+    opacity: 0.45;
+    font-weight: 400;
+  }
+  .cout-value.green { color: #81C784; }
+  .cout-value.magenta { color: #D2007A; }
+
+  .famille-total {
+    margin-top: 0.7rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid rgba(255,255,255,0.12);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .total-label {
+    font-size: 0.82rem;
+    opacity: 0.7;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .total-value {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: #81C784;
+  }
+  .total-note {
+    font-size: 0.75rem;
+    opacity: 0.55;
+    margin-top: 0.15rem;
+  }
+
+  /* Bonus enfants */
+  .bonus-block {
+    background: rgba(255,193,7,0.07);
+    border: 1px solid rgba(255,193,7,0.25);
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+  .bonus-block .bonus-icon { font-size: 1.1rem; flex-shrink: 0; }
+  .bonus-block strong { color: #FFD54F; }
+
+  /* Revente voiture */
+  .revente-block {
+    text-align: center;
+    background: rgba(129,199,132,0.08);
+    border: 1px solid rgba(129,199,132,0.25);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .revente-block strong { color: #81C784; font-size: 1.1rem; }
+
+  /* Takeaway */
+  .takeaway {
+    border-left: 4px solid #D2007A;
+    background: rgba(210,0,122,0.08);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 0.8rem;
+  }
+
+  /* Sources */
+  .sources {
+    padding: 0.6rem 0.9rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    line-height: 1.6;
+    margin-bottom: 0.3rem;
+  }
+  .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
+
+  /* Bouton expandable */
+  .btn-more {
+    display: block;
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.65rem 1rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+  .btn-more:hover { background: rgba(210,0,122,0.15); border-color: #D2007A; color: white; }
+
+  .detail-panel {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+  .detail-panel.open { max-height: 1200px; opacity: 1; }
+  .detail-inner {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .detail-inner h4 {
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 0.9rem;
+  }
+  .objection {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 0.6rem;
+  }
+  .objection:last-child { margin-bottom: 0; }
+  .objection .q { font-style: italic; opacity: 0.7; margin-bottom: 0.35rem; }
+  .objection .r { font-weight: 700; color: #D2007A; }
+</style>
+</head>
+<body>
+
+<div class="main-block">
+
+  <!-- Chiffre choc -->
+  <div class="choc">
+    Votre employeur est <strong>obligé par la loi</strong> de payer la moitié de votre abonnement TC.<br>
+    <span class="sub">La plupart des salariés ne le demandent jamais : ou ne savent pas que ça s'applique aussi au train.</span>
+  </div>
+
+  <!-- Bloc employeur -->
+  <div class="employeur-block">
+    <div class="emp-card prive">
+      <div class="emp-pct">50%</div>
+      <div class="emp-label">Secteur privé</div>
+      <div class="emp-example">Ex: abonnement 42 €/mois<br>→ vous payez 21 €/mois</div>
+    </div>
+    <div class="emp-card public">
+      <div class="emp-pct">75%</div>
+      <div class="emp-label">Fonction publique</div>
+      <div class="emp-example">Ex: abonnement 42 €/mois<br>→ vous payez 10,50 €/mois</div>
+    </div>
+  </div>
+
+  <div class="section-title">🏘️ Deux familles, deux situations : même calcul</div>
+
+  <!-- Famille A : Genlis -->
+  <div class="famille-card">
+    <div class="famille-header">
+      <div class="famille-icon">🚉</div>
+      <div>
+        <div class="famille-title">Famille A : Genlis → Dijon</div>
+        <div class="famille-subtitle">30 km · 1 adulte en TC + 2 enfants · TER + Bus&Tram Divia · 1 voiture conservée</div>
+      </div>
+    </div>
+
+    <div class="cout-row">
+  <span class="cout-label">TER adulte ×1 (abonnement mensuel)</span>
+  <span class="cout-value">60,70 €/mois</span>
+</div>
+    <div class="cout-row">
+      <span class="cout-label">TER enfant ×2</span>
+      <span class="cout-value">60,80 €/mois</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Bus&Tram Divia inclus dans le pass combiné</span>
+      <span class="cout-value green">compris</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Remboursement employeur (50% adultes)</span>
+      <span class="cout-value green">− 30,35 €/mois</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Coût net mensuel TC (secteur privé)</span>
+      <span class="cout-value magenta">~91 €/mois</span>
+    </div>
+
+    <div class="famille-total">
+      <div>
+        <div class="total-label">Économie vs 2e voiture</div>
+        <div class="total-note">Coût réel annuel d'une voiture : 3 500 à 5 000 €/an</div>
+      </div>
+      <div style="text-align:right">
+        <div class="total-value">+1 900 à 3 900 €/an</div>
+        <div class="total-note">après abonnements</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Famille B : Chenôve -->
+  <div class="famille-card">
+    <div class="famille-header">
+      <div class="famille-icon">🚲</div>
+      <div>
+        <div class="famille-title">Famille B : Chenôve → Dijon</div>
+        <div class="famille-subtitle">Périphérie urbaine · 1 adulte en TC + 2 enfants · vélo + tram + bus · 1 voiture conservée</div>
+      </div>
+    </div>
+
+    <div class="cout-row">
+      <span class="cout-label">Abonnement annuel adulte ×1</span>
+      <span class="cout-value">441 €/an</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Remboursement employeur 50%</span>
+      <span class="cout-value green">− 220 €/an</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Abonnement annuel enfant ×2 (5-17 ans)</span>
+      <span class="cout-value">273 €/an</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Location VTC annuel (tarif abonné)</span>
+      <span class="cout-value">40 €/an</span>
+    </div>
+	<div class="cout-row">
+      <span class="cout-label">Test vélo cargo 1 mois (tarif abonné −50%)</span>
+  <span class="cout-value green">15 €</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">DiviaVélodi inclus (tarif réduit abonné)</span>
+      <span class="cout-value green">22 €/an</span>
+    </div>
+    <div class="cout-row">
+      <span class="cout-label">Coût net annuel total</span>
+      <span class="cout-value magenta">~533 €/an</span>
+    </div>
+
+    <div class="famille-total">
+      <div>
+        <div class="total-label">Économie vs 2e voiture</div>
+        <div class="total-note">Coût réel annuel d'une voiture : 3 500 à 5 000 €/an</div>
+      </div>
+      <div style="text-align:right">
+        <div class="total-value">+2 900 à 4 400 €/an</div>
+        <div class="total-note">après abonnements</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bonus enfants -->
+  <div class="bonus-block">
+    <span class="bonus-icon">⭐</span>
+    <div>
+      <strong>Abonnement enfant gratuit</strong> sous conditions : si le quotient familial CAF est inférieur à 900 €, l'abonnement 5-17 ans passe à 0 €. La famille B économiserait alors 273 € de plus par an.
+    </div>
+  </div>
+
+  <!-- Revente voiture -->
+  <div class="revente-block">
+    💰 Et la revente de la 2e voiture ?<br>
+    <strong>Entre 2 000 et 15 000 €</strong> récupérés immédiatement selon votre véhicule.<br>
+    <span style="font-size:0.82rem; opacity:0.65;">De l'argent qui dort dans votre parking : et qui se déprécie chaque année.</span>
+  </div>
+
+  <!-- Takeaway -->
+  <div class="takeaway">
+    <strong>💡 À retenir :</strong> La loi oblige votre employeur à couvrir 50% de votre abonnement TC : 75% si vous travaillez dans le public. En combinant ce remboursement avec la suppression d'une 2e voiture, le gain annuel dépasse souvent 2 000 € pour une famille dijonnaise. Et le vélo cargo remplace les courses en voiture.
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <strong>Sources :</strong>
+    Guide DiviaMobilités Bus&Tram (juin 2025) · Guide DiviaMobilités Vélo (juin 2025) ·
+    Tarifs TER Genlis-Dijon 2025 · ACA : coût kilométrique voiture particulière ·
+    Code du travail : art. L. 3261-2 (remboursement 50% abonnement TC)
+  </div>
+
+  <!-- Bouton expandable -->
+  <button class="btn-more" onclick="toggleDetail(this)">
+    💬 Réponses aux questions fréquentes <span>▼</span>
+  </button>
+
+  <!-- Panneau détail -->
+  <div class="detail-panel">
+    <div class="detail-inner">
+      <h4>Pour aller plus loin</h4>
+
+      <div class="objection">
+        <div class="q">« Mais avec le TC je perds du temps. »</div>
+        <div class="r">En voiture, vous ne récupérez pas le temps passé à conduire. En TER ou en tram, ce temps devient disponible : lire, travailler, se reposer. Beaucoup de salariés qui font la bascule considèrent que c'est un gain de qualité de vie, pas une perte.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Et si j'ai besoin d'une voiture ponctuellement ? »</div>
+        <div class="r">Divia propose 3 parkings-relais gratuits en périphérie (433 places). Pour les trajets exceptionnels : covoiturage, autopartage, ou louer ponctuellement : bien moins cher qu'entretenir une 2e voiture à l'année.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Le vélo à Chenôve en hiver, c'est compliqué. »</div>
+        <div class="r">La location DiviaVélo inclut les VTC et VAE : le vélo à assistance électrique rend les côtes et la météo bien plus gérables. Et pour les jours vraiment difficiles, le tram reste l'option de repli.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Je ne savais pas que le remboursement s'applique aussi au train. »</div>
+        <div class="r">Si. Le pass combiné Train Mobigo + Divia est éligible au remboursement employeur. Il suffit d'éditer le justificatif depuis votre compte DiviaMobilités et de le transmettre à votre employeur.</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleDetail(btn) {
+  const panel = btn.nextElementSibling;
+  if (!panel || !panel.classList.contains('detail-panel')) return;
+  const arrow = btn.querySelector('span');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
+}
+</script>
+
+</body>
+</html>
