@@ -701,11 +701,12 @@ const state = {
     pendingScores: null,
     scoreCalculating: false,
     lastScoreTimestamp: 0,
-    isFirstQuestion: true,  // ← NOUVEAU
+    isFirstQuestion: true,
     isCountdown: false,
-    configured: false,        // ← NOUVEAU 
+    configured: false,        
     recalibrated: false,
-    recalibrated2: false
+    recalibrated2: false,
+    questionCount: 0
 };
 
 // Génération QR code
@@ -1023,6 +1024,7 @@ if (quizState.finished) {
     }
 
     if (quizState.questionIndex !== state.lastQuestionIndex) {
+        if (state.lastQuestionIndex !== -1) state.questionCount++;
         state.lastQuestionIndex = quizState.questionIndex;
         state.lastPhase = null;
         onQuestionChange(quizState);
@@ -1249,10 +1251,12 @@ async function tryFetchScores(label) {
             }, 3000);
         }
         
-   } else if (quizState.phase === 'discussion') {
+  } else if (quizState.phase === 'discussion') {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        window._lastDiscussionState = quizState;
-        showDiscussionPanel(quizState);
+        if (state.lastPhase !== 'discussion') {
+            window._lastDiscussionState = { ...quizState, absoluteCount: state.questionCount };
+        }
+        showDiscussionPanel(window._lastDiscussionState);
     } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
@@ -1453,18 +1457,20 @@ function showDiscussionPanel(quizState) {
     if ($('info-overlay').dataset.mode === 'discussion' && $('info-overlay').dataset.reviewing === 'true') return;
 
     // Calculer le bloc de questions depuis la dernière discussion
-    const upTo = quizState.questionIndex;
-    const interDisc = SETTINGS.interDiscussionTime || 0;
-    // Index de début du bloc : questions depuis la dernière pause (ou depuis 0)
-    let blockStart = 0;
-    if (interDisc > 0) {
-        // La discussion N couvre les questions [(N-1)*interDisc ... N*interDisc-1]
-        // upTo = N*interDisc - 1, donc blockStart = upTo - interDisc + 1
-        blockStart = Math.max(0, upTo - interDisc + 1);
+   const interDisc = SETTINGS.interDiscussionTime || 0;
+    const absoluteCount = quizState.absoluteCount || 0;
+    // blockStart en index absolu, puis on ramène en index dans QUESTIONS avec modulo
+    const absBlockStart = interDisc > 0 ? Math.max(0, absoluteCount - interDisc + 1) : 0;
+
+    // Construire le tableau des interDisc dernières questions en absolu
+    const blockIndices = [];
+    for (let a = absBlockStart; a <= absoluteCount; a++) {
+        blockIndices.push(a % QUESTIONS.length);
     }
 
-    const buttons = QUESTIONS.slice(blockStart, upTo + 1).map((q, i) => {
-        const globalIndex = blockStart + i;
+    const buttons = blockIndices.map((qIndex) => {
+        const q = QUESTIONS[qIndex];
+        const globalIndex = qIndex;
         const shortText = q.text.length > 55 ? q.text.substring(0, 55) + '…' : q.text;
         return `<button onclick="openQuestionReview(${globalIndex})" style="
             background: rgba(255,255,255,0.08);
@@ -1487,7 +1493,11 @@ function showDiscussionPanel(quizState) {
     $('info-body-overlay').innerHTML = `
         <div style="padding: 1.5rem 1rem;">
             <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; text-align:center;">💬 Temps de discussion</div>
-            <div style="opacity: 0.6; font-size: 0.9rem; margin-bottom: 2rem; text-align:center;">Cliquez sur une question pour revoir son explication</div>
+            <div style="opacity: 0.6; font-size: 0.9rem; margin-bottom: 1.5rem; text-align:center;">Cliquez sur une question pour revoir son explication</div>
+            <div style="text-align:center; margin-bottom: 1.5rem;">
+                <div id="qr-discussion" style="display:inline-block; padding:0.8rem; background:white; border-radius:12px;"></div>
+                <div style="font-size:0.8rem; opacity:0.6; margin-top:0.5rem;">📱 Pas encore inscrit ? Scannez pour rejoindre</div>
+            </div>
             <div style="display: flex; flex-direction: column; gap: 0.8rem; max-width: 700px; margin: 0 auto;">
                 ${buttons}
             </div>
@@ -1496,6 +1506,18 @@ function showDiscussionPanel(quizState) {
     $('info-overlay').dataset.reviewing = 'false';
     $('info-overlay').dataset.mode = 'discussion';
     $('info-overlay').classList.add('active');
+    // Générer le QR code dans le panneau discussion
+    const qrDisc = document.getElementById('qr-discussion');
+    if (qrDisc && qrDisc.innerHTML === '') {
+        new QRCode(qrDisc, {
+            text: 'https://bourgineo-stack.github.io/quiz-kdm-participant/',
+            width: 150,
+            height: 150,
+            colorDark: "#D2007A",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    }
 }
 
 async function openQuestionReview(questionIndex) {
