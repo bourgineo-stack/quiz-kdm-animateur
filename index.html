@@ -1250,7 +1250,11 @@ async function tryFetchScores(label) {
         }
         
    } else if (quizState.phase === 'discussion') {
-        // Pause discussion : réponse déjà révélée, on garde l'overlay ouvert, on ne fait rien
+        // Fermer l'overlay et revenir à l'écran questions
+        if ($('info-overlay').classList.contains('active')) {
+            closeOverlay();
+        }
+        document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
     } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
