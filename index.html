@@ -1449,6 +1449,8 @@ function displayQuestionInfo(question) {
 function showDiscussionPanel(quizState) {
     if (!quizState) quizState = window._lastDiscussionState;
     if (!quizState) return;
+    // Ne pas écraser si on consulte déjà une question
+    if ($('info-overlay').dataset.mode === 'discussion' && $('info-overlay').dataset.reviewing === 'true') return;
 
     // Calculer le bloc de questions depuis la dernière discussion
     const upTo = quizState.questionIndex;
@@ -1491,6 +1493,7 @@ function showDiscussionPanel(quizState) {
             </div>
         </div>
     `;
+    $('info-overlay').dataset.reviewing = 'false';
     $('info-overlay').dataset.mode = 'discussion';
     $('info-overlay').classList.add('active');
 }
@@ -1498,11 +1501,12 @@ function showDiscussionPanel(quizState) {
 async function openQuestionReview(questionIndex) {
     const q = QUESTIONS[questionIndex];
     if (!q) return;
+    $('info-overlay').dataset.reviewing = 'true';
 
-    // Afficher un loader immédiatement pendant le chargement éventuel
+    // Afficher un loader immédiatement
     $('info-body-overlay').innerHTML = `
         <div style="margin-bottom: 1rem;">
-            <button onclick="showDiscussionPanel(window._lastDiscussionState)" style="
+            <button onclick="document.getElementById('info-overlay').dataset.reviewing='false'; showDiscussionPanel(window._lastDiscussionState)" style="
                 background: rgba(255,255,255,0.1);
                 border: 1px solid rgba(255,255,255,0.3);
                 color: white;
@@ -1528,7 +1532,7 @@ async function openQuestionReview(questionIndex) {
 
     $('info-body-overlay').innerHTML = `
         <div style="margin-bottom: 1rem;">
-            <button onclick="showDiscussionPanel(window._lastDiscussionState)" style="
+            <button onclick="document.getElementById('info-overlay').dataset.reviewing='false'; showDiscussionPanel(window._lastDiscussionState)" style="
                 background: rgba(255,255,255,0.1);
                 border: 1px solid rgba(255,255,255,0.3);
                 color: white;
