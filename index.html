@@ -1256,8 +1256,13 @@ async function tryFetchScores(label) {
     } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        if ($('info-overlay').classList.contains('active')) {
+        if ($('info-overlay').classList.contains('active') && $('info-overlay').dataset.mode !== 'discussion') {
             closeOverlay();
+        }
+        // Si l'overlay discussion est encore ouvert au passage en vote, le fermer proprement
+        if ($('info-overlay').classList.contains('active') && $('info-overlay').dataset.mode === 'discussion') {
+            $('info-overlay').classList.remove('active');
+            $('info-overlay').dataset.mode = '';
         }
     }
 }
@@ -1500,9 +1505,10 @@ function openQuestionReview(questionIndex) {
 }
         
 function closeOverlay() {
+    const isDiscussionMode = $('info-overlay').dataset.mode === 'discussion';
     $('info-overlay').classList.remove('active');
-    const quizState = getQuizState(state.referenceTime);
-    if (quizState.phase === 'discussion') return; // pas de logique scores pendant la pause
+    $('info-overlay').dataset.mode = '';
+    if (isDiscussionMode) return;
     if (state.pendingScores) {
         applyScores(state.pendingScores);
         state.pendingScores = null;
