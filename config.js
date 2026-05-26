@@ -138,9 +138,18 @@ function getCurrentTour(referenceTime) {
     const elapsed = (now - referenceTime) / 1000;
 
     const cycleLength = SETTINGS.voteDuration + SETTINGS.explainDuration;
-    const totalCycleLength = cycleLength * QUESTIONS.length;
+    const disc = SETTINGS.discussionTimeSup || 0;
+    const interDisc = SETTINGS.interDiscussionTime || 0;
+    let totalDuration = 0;
+    for (let i = 0; i < QUESTIONS.length; i++) {
+        totalDuration += cycleLength;
+        if (disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0 && i < QUESTIONS.length - 1) {
+            totalDuration += disc;
+        }
+    }
+    if (totalDuration === 0) return 1;
 
-    return Math.floor(elapsed / totalCycleLength) + 1;
+    return Math.floor(elapsed / totalDuration) + 1;
 }
 
 /**
