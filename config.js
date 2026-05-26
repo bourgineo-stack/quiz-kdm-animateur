@@ -33,6 +33,8 @@ async function loadConfigFromSheet() {
         SETTINGS.mode = data.settings.mode || 'session';
         SETTINGS.startTime = data.settings.startTime ? parseInt(data.settings.startTime) : null;
         SETTINGS.firstQuestionDelay = parseInt(data.settings.firstQuestionDelay) || 0;  // ← NOUVEAU
+        SETTINGS.discussionTimeSup = parseInt(data.settings.DiscussionTimeSup) || 0;
+        SETTINGS.interDiscussionTime = parseInt(data.settings.InterDiscussionTime) || 0;
 
         QUESTIONS = data.questions || [];
 
