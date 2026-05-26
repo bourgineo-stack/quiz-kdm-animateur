@@ -1255,8 +1255,8 @@ async function tryFetchScores(label) {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
         if (state.lastPhase !== 'discussion') {
             window._lastDiscussionState = { ...quizState, absoluteCount: state.questionCount };
+            showDiscussionPanel(window._lastDiscussionState);
         }
-        showDiscussionPanel(window._lastDiscussionState);
     } else {
         // Phase vote : tout cacher
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
