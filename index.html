@@ -1029,11 +1029,6 @@ if (quizState.questionIndex !== state.lastQuestionIndex) {
         onQuestionChange(quizState);
     }
 
-    // Incrémenter questionCount quand une question se termine (explain → discussion ou explain → vote)
-    if (state.lastPhase === 'explain' && (quizState.phase === 'discussion' || quizState.phase === 'vote')) {
-        state.questionCount++;
-    }
-
     updateTimers(quizState);
     updatePhase(quizState);
 if (!state.recalibrated2 && quizState.questionIndex === 0 && quizState.phase === 'vote' && quizState.timeRemaining < (SETTINGS.voteDuration - 5)) {
@@ -1257,10 +1252,14 @@ async function tryFetchScores(label) {
             }, 3000);
         }
         
-  } else if (quizState.phase === 'discussion') {
+ } else if (quizState.phase === 'discussion') {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-      if (state.lastPhase !== 'discussion') {
-            window._lastDiscussionState = { ...quizState, absoluteCount: state.questionCount - 1 };
+        if (state.lastPhase !== 'discussion') {
+            const tour = getCurrentTour(state.referenceTime);
+            // questionIndex est 0-based, tour est 1-based
+            // absCount = nombre de questions terminées depuis le début absolu
+            const absCount = (tour - 1) * QUESTIONS.length + quizState.questionIndex;
+            window._lastDiscussionState = { ...quizState, absoluteCount: absCount };
             showDiscussionPanel(window._lastDiscussionState);
         }
     } else {
