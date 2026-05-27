@@ -67,65 +67,90 @@ function getQuizState(referenceTime) {
     const cycleLength = SETTINGS.voteDuration + SETTINGS.explainDuration;
     const disc = SETTINGS.discussionTimeSup || 0;
     const interDisc = SETTINGS.interDiscussionTime || 0;
+    const nQ = QUESTIONS.length;
 
-    if (QUESTIONS.length === 0 || cycleLength === 0) {
+    if (nQ === 0 || cycleLength === 0) {
         return { questionIndex: 0, phase: 'vote', timeRemaining: 0,
-            totalElapsed: 0, currentQuestion: null, finished: false, explainProgress: 0 };
+            totalElapsed: 0, currentQuestion: null, finished: false,
+            explainProgress: 0, absoluteQuestionIndex: 0 };
     }
 
-    // Calculer la durée totale en tenant compte des pauses
-    let totalDuration = 0;
-    for (let i = 0; i < QUESTIONS.length; i++) {
-        totalDuration += cycleLength;
-        // Pause APRÈS la question (i+1) si multiple de interDisc, sauf après la dernière
-       if (disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0) {
-            totalDuration += disc;
-        }
+    // Durée d'un bloc : interDisc questions + 1 pause
+    // Si pas de discussion, un bloc = toutes les questions sans pause
+    const blockSize = (interDisc > 0 && disc > 0) ? interDisc : 0;
+    const blockDuration = blockSize > 0 ? blockSize * cycleLength + disc : nQ * cycleLength;
+
+    // Mode session : totalDuration = nQ questions avec pauses aux bons endroits
+    // Mode loop : période = blockDuration (on boucle sur un bloc)
+    let totalDuration;
+    if (blockSize > 0) {
+        const fullBlocks = Math.floor(nQ / blockSize);
+        const remainder = nQ % blockSize;
+        totalDuration = fullBlocks * blockDuration + remainder * cycleLength;
+    } else {
+        totalDuration = nQ * cycleLength;
     }
 
-    // Fin de quiz
+    // Fin de quiz (mode session uniquement)
     if (SETTINGS.mode === 'session' && adjustedElapsed >= totalDuration && adjustedElapsed > 0) {
-        return { questionIndex: QUESTIONS.length - 1, phase: 'finished', timeRemaining: 0,
-            totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[QUESTIONS.length - 1] || null,
-            finished: true, explainProgress: 1 };
+        return { questionIndex: nQ - 1, phase: 'finished', timeRemaining: 0,
+            totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[nQ - 1] || null,
+            finished: true, explainProgress: 1, absoluteQuestionIndex: nQ - 1 };
     }
 
-    // Mode loop : boucle sur totalDuration
-    const positionInTotal = SETTINGS.mode === 'session'
-        ? Math.max(0, adjustedElapsed)
-        : ((adjustedElapsed % totalDuration) + totalDuration) % totalDuration;
+    // En mode loop : position dans le bloc courant + compteur absolu de questions
+    // La période est blockDuration, le compteur absolu ne reboucle PAS sur nQ mais sur blockSize
+    let position, absQOffset;
+    if (SETTINGS.mode === 'loop' && blockSize > 0) {
+        // Combien de blocs complets écoulés ?
+        const totalBlocs = Math.floor(Math.max(0, adjustedElapsed) / blockDuration);
+        absQOffset = totalBlocs * blockSize; // questions absolues avant ce bloc
+        position = Math.max(0, adjustedElapsed) - totalBlocs * blockDuration;
+    } else {
+        absQOffset = 0;
+        position = SETTINGS.mode === 'session'
+            ? Math.max(0, adjustedElapsed)
+            : ((adjustedElapsed % totalDuration) + totalDuration) % totalDuration;
+    }
 
-    // Itérer question par question pour trouver la position
+    // Itérer les questions du bloc courant
     let cursor = 0;
-    for (let i = 0; i < QUESTIONS.length; i++) {
+    for (let j = 0; j < (blockSize > 0 ? blockSize : nQ); j++) {
+        const absQ = absQOffset + j;
+        const qIndex = absQ % nQ;
         const voteEnd = cursor + SETTINGS.voteDuration;
-        const explainEnd = voteEnd + SETTINGS.explainDuration;
-        const hasDiscussion = disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0;
-        const discEnd = hasDiscussion ? explainEnd + disc : explainEnd;
+        const explainEnd = cursor + cycleLength;
 
-        if (positionInTotal < voteEnd) {
-            return { questionIndex: i, phase: 'vote',
-                timeRemaining: Math.ceil(voteEnd - positionInTotal),
-                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false, explainProgress: 0 };
+        if (position < voteEnd) {
+            return { questionIndex: qIndex, phase: 'vote',
+                timeRemaining: Math.ceil(voteEnd - position),
+                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[qIndex],
+                finished: false, explainProgress: 0, absoluteQuestionIndex: absQ };
         }
-        if (positionInTotal < explainEnd) {
-            const timeInExplain = positionInTotal - voteEnd;
-            return { questionIndex: i, phase: 'explain',
-                timeRemaining: Math.ceil(explainEnd - positionInTotal),
-                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false,
-                explainProgress: timeInExplain / SETTINGS.explainDuration };
+        if (position < explainEnd) {
+            return { questionIndex: qIndex, phase: 'explain',
+                timeRemaining: Math.ceil(explainEnd - position),
+                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[qIndex],
+                finished: false, explainProgress: (position - voteEnd) / SETTINGS.explainDuration,
+                absoluteQuestionIndex: absQ };
         }
-        if (hasDiscussion && positionInTotal < discEnd) {
-            return { questionIndex: i, phase: 'discussion',
-                timeRemaining: Math.ceil(discEnd - positionInTotal),
-                totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[i], finished: false, explainProgress: 1 };
-        }
-        cursor = discEnd;
+        cursor = explainEnd;
+    }
+
+    // Phase discussion (fin du bloc)
+    if (blockSize > 0 && disc > 0) {
+        const lastAbsQ = absQOffset + blockSize - 1;
+        const lastQIndex = lastAbsQ % nQ;
+        return { questionIndex: lastQIndex, phase: 'discussion',
+            timeRemaining: Math.ceil(blockDuration - position),
+            totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[lastQIndex],
+            finished: false, explainProgress: 1, absoluteQuestionIndex: lastAbsQ };
     }
 
     // Fallback
-    return { questionIndex: QUESTIONS.length - 1, phase: 'finished', timeRemaining: 0,
-        totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[QUESTIONS.length - 1], finished: true, explainProgress: 1 };
+    return { questionIndex: nQ - 1, phase: 'finished', timeRemaining: 0,
+        totalElapsed: Math.floor(elapsed), currentQuestion: QUESTIONS[nQ - 1],
+        finished: true, explainProgress: 1, absoluteQuestionIndex: nQ - 1 };
 }
 
 /**
@@ -140,12 +165,17 @@ function getCurrentTour(referenceTime) {
     const cycleLength = SETTINGS.voteDuration + SETTINGS.explainDuration;
     const disc = SETTINGS.discussionTimeSup || 0;
     const interDisc = SETTINGS.interDiscussionTime || 0;
-    let totalDuration = 0;
-    for (let i = 0; i < QUESTIONS.length; i++) {
-        totalDuration += cycleLength;
-        if (disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0) {
-            totalDuration += disc;
-        }
+    const nQ = QUESTIONS.length;
+    if (nQ === 0) return 1;
+
+    const blockSize = (interDisc > 0 && disc > 0) ? interDisc : 0;
+    let totalDuration;
+    if (blockSize > 0) {
+        const fullBlocks = Math.floor(nQ / blockSize);
+        const remainder = nQ % blockSize;
+        totalDuration = fullBlocks * (blockSize * cycleLength + disc) + remainder * cycleLength;
+    } else {
+        totalDuration = nQ * cycleLength;
     }
     if (totalDuration === 0) return 1;
 
