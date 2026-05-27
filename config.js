@@ -100,7 +100,7 @@ function getQuizState(referenceTime) {
     for (let i = 0; i < QUESTIONS.length; i++) {
         const voteEnd = cursor + SETTINGS.voteDuration;
         const explainEnd = voteEnd + SETTINGS.explainDuration;
-        const hasDiscussion = disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0 && i < QUESTIONS.length - 1;
+        const hasDiscussion = disc > 0 && interDisc > 0 && (i + 1) % interDisc === 0;
         const discEnd = hasDiscussion ? explainEnd + disc : explainEnd;
 
         if (positionInTotal < voteEnd) {
