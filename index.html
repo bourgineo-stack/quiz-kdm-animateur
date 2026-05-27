@@ -1023,11 +1023,15 @@ if (quizState.finished) {
         return;
     }
 
-   if (quizState.questionIndex !== state.lastQuestionIndex) {
-        if (state.lastQuestionIndex !== -1 && quizState.phase !== 'discussion') state.questionCount++;
+if (quizState.questionIndex !== state.lastQuestionIndex) {
         state.lastQuestionIndex = quizState.questionIndex;
         state.lastPhase = null;
         onQuestionChange(quizState);
+    }
+
+    // Incrémenter questionCount quand une question se termine (explain → discussion ou explain → vote)
+    if (state.lastPhase === 'explain' && (quizState.phase === 'discussion' || quizState.phase === 'vote')) {
+        state.questionCount++;
     }
 
     updateTimers(quizState);
@@ -1253,10 +1257,8 @@ async function tryFetchScores(label) {
         
   } else if (quizState.phase === 'discussion') {
         document.querySelectorAll('.option-card').forEach(c => c.classList.remove('correct', 'wrong'));
-        if (state.lastPhase !== 'discussion') {
-            const tour = getCurrentTour(state.referenceTime);
-            const absCount = (tour - 1) * QUESTIONS.length + quizState.questionIndex;
-            window._lastDiscussionState = { ...quizState, absoluteCount: absCount };
+      if (state.lastPhase !== 'discussion') {
+            window._lastDiscussionState = { ...quizState, absoluteCount: state.questionCount - 1 };
             showDiscussionPanel(window._lastDiscussionState);
         }
     } else {
