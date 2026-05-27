@@ -1094,9 +1094,11 @@ async function triggerScoreCalculation(quizState) {
             await tryFetchScores('tentative 2');
         }
 
-        // ✅ PANSEMENT Q1/Q2 : si aucune réponse détectée sur les 2 premières questions,
-        // attribuer 1 point à chaque équipe pour maintenir la dynamique côté participants
-        if (quizState.questionIndex <= 2) {
+        // ✅ PANSEMENT Q1/Q2 : si aucune réponse détectée sur les premières questions,
+        // attribuer 1 point à chaque équipe pour maintenir la dynamique côté participants.
+        // ⚠️ UNIQUEMENT en mode atelier (session) : en mode loop, le quiz boucle des
+        // heures et accumulerait des points fantômes à chaque tour.
+        if (SETTINGS.mode === 'session' && quizState.questionIndex <= 2) {
             const statsRes = await fetch(`${CONFIG.sheetUrl}?action=getStats&questionId=${parseInt(q.id)}&tour=${parseInt(tour)}`);
             const stats = await statsRes.json();
             const totalResponses = stats.total || 0;
