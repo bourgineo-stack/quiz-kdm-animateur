@@ -314,19 +314,19 @@
   <div class="calculator">
     <div class="calc-title">🧮 Calculez votre vrai budget voiture</div>
     <div class="km-buttons">
-      <button class="km-btn" onclick="calculate(5000, this)">
+      <button class="km-btn" onclick="calculateDivia(5000, this)">
         5 000 km
         <span class="sub-label">usage faible</span>
       </button>
-      <button class="km-btn" onclick="calculate(10000, this)">
+      <button class="km-btn" onclick="calculateDivia(10000, this)">
         10 000 km
         <span class="sub-label">usage moyen</span>
       </button>
-      <button class="km-btn" onclick="calculate(15000, this)">
+      <button class="km-btn" onclick="calculateDivia(15000, this)">
         15 000 km
         <span class="sub-label">usage élevé</span>
       </button>
-      <button class="km-btn" onclick="calculate(20000, this)">
+      <button class="km-btn" onclick="calculateDivia(20000, this)">
         20 000 km
         <span class="sub-label">gros rouleur</span>
       </button>
@@ -500,7 +500,7 @@ const COUTS = {
   elec:      { 5000: 0.28, 10000: 0.26, 15000: 0.21, 20000: 0.19 }
 };
 
-function calculate(km, btn) {
+function calculateDivia(km, btn) {
   document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const thermique = Math.round(km * COUTS.thermique[km] / 100) * 100;
@@ -515,12 +515,4 @@ function calculate(km, btn) {
   result.classList.add('visible');
 }
 
-function toggleDetail(btn) {
-  const panel = btn.nextElementSibling;
-  if (!panel) return;
-  const isOpen = panel.classList.contains('open');
-  panel.classList.toggle('open', !isOpen);
-  const arrow = btn.querySelector('span');
-  if (arrow) arrow.textContent = isOpen ? '▼' : '▲';
-}
 </script>
