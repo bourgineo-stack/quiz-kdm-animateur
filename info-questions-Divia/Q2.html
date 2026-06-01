@@ -500,19 +500,6 @@ const COUTS = {
   elec:      { 5000: 0.28, 10000: 0.26, 15000: 0.21, 20000: 0.19 }
 };
 
-function calculateDivia(km, btn) {
-  document.querySelectorAll('.km-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  const thermique = Math.round(km * COUTS.thermique[km] / 100) * 100;
-  const elec      = Math.round(km * COUTS.elec[km] / 100) * 100;
-  document.getElementById('res-thermique').textContent = thermique.toLocaleString('fr-FR') + ' €';
-  document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
-	const economie = thermique - elec;
-  document.getElementById('kdm-badge').textContent = `⚡ Recharge électrique à 0,15 €/kWh -> économie estimée : ${economie.toLocaleString('fr-FR')} € / an vs thermique`;
-  const result = document.getElementById('calc-result');
-  result.classList.remove('visible');
-  void result.offsetWidth;
-  result.classList.add('visible');
-}
+
 
 </script>
