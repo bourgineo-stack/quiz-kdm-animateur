@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Q - Bus électrique et particules fines</title>
+<title>Q - Bus et particules fines</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   body {
@@ -12,10 +12,8 @@
     padding: 2rem;
     margin: 0;
   }
-
   .main-block { max-width: 680px; margin: 0 auto; }
 
-  /* Chiffre choc */
   .choc {
     text-align: center;
     font-size: 1.05rem;
@@ -30,7 +28,6 @@
   .choc strong { color: #D2007A; font-size: 1.25rem; }
   .choc .sub { font-size: 0.88rem; opacity: 0.75; margin-top: 0.3rem; }
 
-  /* Barres émissions échappement */
   .section-title {
     font-weight: 800;
     font-size: 0.85rem;
@@ -41,6 +38,78 @@
     margin-top: 1.2rem;
   }
 
+  .raison-block {
+    background: rgba(38,198,218,0.07);
+    border: 1px solid rgba(38,198,218,0.2);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .raison-block .raison-title {
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #26C6DA;
+    margin-bottom: 0.5rem;
+  }
+  .raison-block p { margin: 0 0 0.4rem; }
+  .raison-block p:last-child { margin: 0; }
+
+  .freins-block {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .freins-title {
+    font-weight: 800;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #FFB74D;
+    margin-bottom: 0.5rem;
+  }
+  .freins-compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    margin: 0.7rem 0;
+  }
+  .freins-card {
+    border-radius: 10px;
+    padding: 0.65rem 0.8rem;
+    text-align: center;
+  }
+  .freins-card.voiture {
+    background: rgba(229,57,53,0.1);
+    border: 1px solid rgba(229,57,53,0.3);
+  }
+  .freins-card.bus {
+    background: rgba(38,198,218,0.08);
+    border: 1px solid rgba(38,198,218,0.25);
+  }
+  .fc-val { font-size: 1.3rem; font-weight: 900; line-height: 1; margin-bottom: 0.2rem; }
+  .freins-card.voiture .fc-val { color: #EF9A9A; }
+  .freins-card.bus .fc-val { color: #26C6DA; }
+  .fc-label { font-size: 0.78rem; opacity: 0.75; line-height: 1.3; }
+  .freins-seuil {
+    text-align: center;
+    font-size: 0.88rem;
+    font-weight: 700;
+    background: rgba(255,183,77,0.1);
+    border: 1px solid rgba(255,183,77,0.3);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    margin-top: 0.6rem;
+  }
+  .freins-seuil strong { color: #FFB74D; }
+
   .bar-block { margin-bottom: 1.2rem; }
   .bar-row { margin-bottom: 0.55rem; }
   .bar-header {
@@ -50,7 +119,6 @@
     font-size: 0.9rem;
     margin-bottom: 0.2rem;
   }
-  .bar-header .label { display: flex; align-items: center; gap: 0.4rem; }
   .bar-track {
     background: rgba(255,255,255,0.08);
     border-radius: 8px;
@@ -65,13 +133,10 @@
     padding-left: 10px;
     font-weight: 800;
     font-size: 0.82rem;
-    transition: width 0.6s ease;
   }
   .bar-diesel  { background: linear-gradient(90deg, #E53935, #c62828); width: 100%; }
-  .bar-gaz     { background: linear-gradient(90deg, #FB8C00, #e65100); width: 48%; }
+  .bar-hybride { background: linear-gradient(90deg, #FB8C00, #e65100); width: 33%; }
   .bar-hvo     { background: linear-gradient(90deg, #8BC34A, #558b2f); width: 85%; }
-  .bar-elec    { background: linear-gradient(90deg, #26C6DA, #00838f); width: 0%; min-width: 0; }
-
   .bar-zero {
     height: 28px;
     display: flex;
@@ -81,36 +146,28 @@
     font-size: 0.82rem;
     color: #26C6DA;
   }
+  .bar-note { font-size: 0.75rem; opacity: 0.55; font-style: italic; margin-top: 0.15rem; }
 
-  .bar-note {
-    font-size: 0.75rem;
-    opacity: 0.55;
-    font-style: italic;
-    margin-top: 0.15rem;
-  }
-
-  /* Bloc nuance freins/pneus */
-  .nuance-block {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
+  .regen-block {
+    background: rgba(129,199,132,0.07);
+    border: 1px solid rgba(129,199,132,0.2);
     border-radius: 12px;
     padding: 0.9rem 1.1rem;
     margin-bottom: 1.2rem;
     font-size: 0.92rem;
     line-height: 1.6;
   }
-  .nuance-block .nuance-title {
+  .regen-title {
     font-weight: 800;
     font-size: 0.82rem;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: #26C6DA;
+    color: #81C784;
     margin-bottom: 0.5rem;
   }
-  .nuance-block p { margin: 0 0 0.4rem; }
-  .nuance-block p:last-child { margin: 0; }
+  .regen-block p { margin: 0 0 0.4rem; }
+  .regen-block p:last-child { margin: 0; }
 
-  /* Angle santé */
   .sante-block {
     background: rgba(67,160,71,0.08);
     border: 1px solid rgba(67,160,71,0.25);
@@ -118,12 +175,7 @@
     padding: 0.9rem 1.1rem;
     margin-bottom: 1.2rem;
   }
-  .sante-title {
-    font-weight: 800;
-    font-size: 0.88rem;
-    color: #81C784;
-    margin-bottom: 0.6rem;
-  }
+  .sante-title { font-weight: 800; font-size: 0.88rem; color: #81C784; margin-bottom: 0.6rem; }
   .sante-row {
     display: flex;
     gap: 0.7rem;
@@ -135,14 +187,8 @@
   .sante-row:last-child { margin-bottom: 0; }
   .sr-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
 
-  /* Timeline flotte */
   .timeline { margin-bottom: 1.2rem; }
-  .tl-row {
-    display: flex;
-    gap: 0.8rem;
-    margin-bottom: 0.6rem;
-    align-items: flex-start;
-  }
+  .tl-row { display: flex; gap: 0.8rem; margin-bottom: 0.6rem; align-items: flex-start; }
   .tl-year {
     background: rgba(210,0,122,0.2);
     border: 1px solid rgba(210,0,122,0.4);
@@ -155,19 +201,10 @@
     flex-shrink: 0;
     margin-top: 0.1rem;
   }
-  .tl-text {
-    font-size: 0.92rem;
-    line-height: 1.5;
-  }
+  .tl-text { font-size: 0.92rem; line-height: 1.5; }
   .tl-text strong { color: white; }
-  .tl-text .tl-sub {
-    display: block;
-    font-size: 0.78rem;
-    opacity: 0.6;
-    margin-top: 0.1rem;
-  }
+  .tl-text .tl-sub { display: block; font-size: 0.78rem; opacity: 0.6; margin-top: 0.1rem; }
 
-  /* Invitation navettes */
   .invitation {
     text-align: center;
     background: rgba(38,198,218,0.08);
@@ -180,7 +217,6 @@
   }
   .invitation strong { color: #26C6DA; }
 
-  /* Takeaway */
   .takeaway {
     border-left: 4px solid #D2007A;
     background: rgba(210,0,122,0.08);
@@ -191,7 +227,6 @@
     margin-bottom: 0.8rem;
   }
 
-  /* Sources */
   .sources {
     padding: 0.6rem 0.9rem;
     background: rgba(255,255,255,0.03);
@@ -204,7 +239,6 @@
   }
   .sources strong { opacity: 1; color: rgba(255,255,255,0.7); }
 
-  /* Bouton expandable */
   .btn-more {
     display: block;
     width: 100%;
@@ -229,7 +263,7 @@
     transition: max-height 0.4s ease, opacity 0.3s ease;
     opacity: 0;
   }
-  .detail-panel.open { max-height: 900px; opacity: 1; }
+  .detail-panel.open { max-height: 1200px; opacity: 1; }
   .detail-inner {
     margin-top: 0.8rem;
     background: rgba(255,255,255,0.04);
@@ -251,8 +285,6 @@
     background: rgba(255,255,255,0.05);
     border-radius: 10px;
     padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-    line-height: 1.55;
     margin-bottom: 0.6rem;
   }
   .objection:last-child { margin-bottom: 0; }
@@ -261,98 +293,32 @@
 </style>
 </head>
 <body>
-
 <div class="main-block">
 
-  <!-- Chiffre choc -->
+  <!-- Accroche CO2 -->
   <div class="choc">
-    Un bus électrique, c'est <strong>zéro émission à l'échappement</strong>.<br>
-    <span class="sub">Mais l'échappement n'est qu'une partie de l'histoire : les freins comptent aussi.</span>
+    D'ici 2030, Dijon Métropole et DiviaMobilités effacent <strong>5 000 tCO2e par an</strong> sur leur flotte.<br>
+    L'équivalent de l'empreinte carbone annuelle de <strong>500 Français</strong> : supprimée par une décision déjà prise.
+    <div class="sub">C'est la part de DiviaMobilités. La part des Dijonnais, elle, n'a pas encore été calculée.</div>
   </div>
 
-  <!-- Émissions échappement -->
-  <div class="section-title">📊 Émissions à l'échappement : comparaison par motorisation</div>
-  <div class="bar-block">
-
-    <div class="bar-row">
-      <div class="bar-header">
-        <span class="label">🚌 Diesel</span>
-        <span>référence</span>
-      </div>
-      <div class="bar-track">
-        <div class="bar-fill bar-diesel">100%</div>
-      </div>
-    </div>
-
-    <div class="bar-row">
-      <div class="bar-header">
-        <span class="label">🌿 Bio-diesel (HVO)</span>
-        <span>−15%</span>
-      </div>
-      <div class="bar-track">
-        <div class="bar-fill bar-hvo">85%</div>
-      </div>
-    </div>
-
-    <div class="bar-row">
-      <div class="bar-header">
-        <span class="label">⚡ Électrique</span>
-        <span style="color:#26C6DA; font-weight:900;">−100%</span>
-      </div>
-      <div class="bar-track">
-        <div class="bar-zero">0 : aucune émission d'échappement</div>
-      </div>
-    </div>
-<div class="bar-note">Le Gaz est à -52%.</div>
-    <div class="bar-note">Source : Données émissions échappement HBEFA v4.2</div>
-  </div>
-
-  <!-- Nuance freins/pneus -->
-  <div class="nuance-block">
-    <div class="nuance-title">⚠️ Et les freins ?</div>
-    <p>Sur un bus diesel moderne, <strong>93 à 97% des particules fines ne viennent pas de l'échappement</strong> : elles viennent des freins, des pneus et de la route.</p>
-    <p>Le bus électrique utilise le <strong>freinage régénératif</strong> : au lieu d'user les plaquettes, il récupère l'énergie pour recharger la batterie. Résultat : moins de particules métalliques de freins libérées dans l'air que vous respirez.</p>
-    <p>Des études sur flottes réelles confirment que les bus électriques émettent <strong>systématiquement moins de particules totales</strong> que les bus diesel Euro VI, y compris en comptant freins, pneus et route.</p>
-  </div>
-
-  <!-- Angle santé -->
-  <div class="sante-block">
-    <div class="sante-title">🏥 Pourquoi ça compte pour votre santé</div>
-
-    <div class="sante-row">
-      <span class="sr-icon">🫁</span>
-      <div>
-        <strong>Les PM2.5 atteignent les alvéoles pulmonaires</strong><br>
-        Les particules fines inférieures à 2,5 microns passent les défenses naturelles des voies respiratoires. Elles pénètrent jusqu'aux alvéoles et entrent dans la circulation sanguine.
-      </div>
-    </div>
-
-    <div class="sante-row">
-      <span class="sr-icon">❤️</span>
-      <div>
-        <strong>Maladies cardiovasculaires et respiratoires</strong><br>
-        Exposition prolongée associée à l'asthme, aux maladies pulmonaires chroniques, aux arythmies cardiaques et aux infarctus. L'OCDE estime à plus de 400 000 le nombre de décès annuels imputables aux PM2.5 en Europe.
-      </div>
-    </div>
-
-    <div class="sante-row">
-      <span class="sr-icon">🏙️</span>
-      <div>
-        <strong>En ville, c'est pire</strong><br>
-        Les arrêts fréquents des bus urbains multiplient les phases de freinage : exactement là où les particules de freins sont les plus émises, et là où la densité de population est la plus élevée.
-      </div>
-    </div>
-  </div>
-
-  <!-- Timeline flotte Divia -->
-  <div class="section-title">🚌 La flotte Divia : ce qui arrive</div>
+  <!-- Timeline décarbonation -->
+  <div class="section-title">⚡ La décarbonation de la flotte DiviaMobilités</div>
   <div class="timeline">
+
+    <div class="tl-row">
+      <div class="tl-year">Aujourd'hui</div>
+      <div class="tl-text">
+        <strong>75% de la flotte déjà en hybride</strong>
+        <span class="tl-sub">140 bus · déjà bien moins d'émissions qu'une flotte 100% diesel</span>
+      </div>
+    </div>
 
     <div class="tl-row">
       <div class="tl-year">2028</div>
       <div class="tl-text">
-        <strong>32 bus bio-diesel (HVO)</strong> intègrent la flotte
-        <span class="tl-sub">−15% d'émissions à l'échappement vs diesel · premiers véhicules du renouvellement</span>
+        <strong>32 bus bio-diesel HVO</strong> intègrent la flotte
+        <span class="tl-sub">−15% émissions à l'échappement · premiers véhicules du renouvellement</span>
       </div>
     </div>
 
@@ -360,7 +326,7 @@
       <div class="tl-year">2029</div>
       <div class="tl-text">
         <strong>45 bus électriques</strong> en service
-        <span class="tl-sub">Zéro émission échappement · freinage régénératif · silencieux</span>
+        <span class="tl-sub">Zéro échappement · freinage régénératif · silencieux</span>
       </div>
     </div>
 
@@ -368,7 +334,7 @@
       <div class="tl-year">2030</div>
       <div class="tl-text">
         <strong>9 000 → 4 000 tCO2e</strong> sur la flotte
-        <span class="tl-sub">Équivalent à effacer l'empreinte carbone annuelle de 500 Français</span>
+        <span class="tl-sub">500 Français dont l'empreinte annuelle disparaît : décision déjà prise</span>
       </div>
     </div>
 
@@ -382,6 +348,83 @@
 
   </div>
 
+  <!-- Barres échappement -->
+  <div class="section-title">📊 Émissions à l'échappement par motorisation</div>
+  <div class="bar-block">
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span>🚌 Diesel (référence Euro V)</span>
+        <span>100%</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bar-diesel">référence</div></div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span>🔋 Hybride</span>
+        <span>−65% particules</span>
+      </div>
+      <div class="bar-track"><div class="bar-fill bar-hybride">33%</div></div>
+    </div>
+
+    <div class="bar-row">
+      <div class="bar-header">
+        <span>⚡ Électrique</span>
+        <span style="color:#26C6DA; font-weight:900;">−100%</span>
+      </div>
+      <div class="bar-track"><div class="bar-zero">0 : zéro émission à l'échappement</div></div>
+    </div>
+
+    <div class="bar-note">Source : Keolis : données flotte urbaine · référence Euro V</div>
+	<div class="nuance-block">
+  <div class="nuance-title">🚗 Bus vs voiture : l'écart CO2 par personne</div>
+  <p>Même en bus thermique, le bilan CO2 par passager est bien meilleur qu'en voiture solo : <strong>113g CO2/passager/km en bus</strong> contre <strong>218g en voiture seule</strong> : soit presque deux fois moins. Source : ADEME.</p>
+  <p>Et avec l'électrification de la flotte DiviaMobilités, ce chiffre tend vers zéro d'ici 2032.</p>
+</div>
+  </div>
+
+  <!-- Bonus santé : freins/pneus -->
+  <div class="freins-block">
+ <div class="freins-title">💸 Vos pneus et vos freins : de l'argent qui s'envole et que vous respirez</div>
+<p>Chaque freinage, chaque virage use vos pneus et vos plaquettes. C'est de l'argent qui part : et des particules que vous et vos voisins respirez. Sur un bus ou une voiture moderne, <strong>90 à 97% des particules fines ne viennent pas du moteur</strong> : elles viennent des freins, des pneus et de la route.</p>
+<p>Si votre voiture reste au garage : zéro usure, zéro coût, zéro particule de votre côté.</p>
+
+    <div class="freins-compare">
+      <div class="freins-card voiture">
+        <div class="fc-val">3–12 mg/km</div>
+        <div class="fc-label">Voiture<br>freins PM10 airborne</div>
+      </div>
+      <div class="freins-card bus">
+        <div class="fc-val">~110 mg/km</div>
+        <div class="fc-label">Bus urbain<br>freins usure totale</div>
+      </div>
+    </div>
+
+    <p style="margin-top:0.7rem;">Et le bus électrique va plus loin : le freinage régénératif réduit les émissions de freins de <strong>64 à 95%</strong> (Hagino et al., 2019 : EEA 2023). Sur flottes réelles, les bus électriques émettent systématiquement moins de particules totales que les bus diesel Euro VI (Ropkins et al., 2023).</p>
+  </div>
+
+  <!-- Santé -->
+  <div class="sante-block">
+    <div class="sante-title">🏥 Pourquoi les particules fines comptent pour votre santé</div>
+
+    <div class="sante-row">
+      <span class="sr-icon">🫁</span>
+      <div>
+        <strong>Les PM2.5 entrent dans la circulation sanguine</strong><br>
+        Ces particules de moins de 2,5 microns franchissent les défenses naturelles des voies respiratoires et passent dans le sang via les alvéoles pulmonaires.
+      </div>
+    </div>
+
+    <div class="sante-row">
+      <span class="sr-icon">❤️</span>
+      <div>
+        <strong>Maladies cardiovasculaires et respiratoires</strong><br>
+        Exposition chronique associée à l'asthme, aux bronchites, aux arythmies et aux infarctus. L'OCDE estime à plus de 400 000 décès annuels liés aux PM2.5 en Europe.
+      </div>
+    </div>
+  </div>
+
   <!-- Invitation navettes -->
   <div class="invitation">
     🎧 <strong>Vous voulez entendre la différence ?</strong><br>
@@ -389,39 +432,57 @@
     <span style="font-size:0.85rem; opacity:0.7;">Montez dedans : le silence fait partie de l'expérience.</span>
   </div>
 
+  <!-- Appel à l'action -->
+  <div class="raison-block">
+    <div class="raison-title">🚌 La part des Dijonnais</div>
+    <p>Dijon Métropole a pris sa décision. Les 500 Français équivalents effacés d'ici 2030, c'est acquis.</p>
+    <p>Mais un bus roule avec ou sans vous. Si vous laissez votre voiture au garage et montez dans un bus : <strong>votre voiture n'émet rien ce jour-là</strong>. Ni freins, ni pneus, ni échappement.</p>
+    <p><strong>Si les Dijonnais font ce choix en nombre, le potentiel est colossal.</strong> Plusieurs milliers d'équivalents Français supplémentaires : pas par une décision institutionnelle, mais par des milliers de petits choix quotidiens.</p>
+  </div>
+
   <!-- Takeaway -->
   <div class="takeaway">
-    <strong>💡 À retenir :</strong> Le bus électrique est la seule motorisation à zéro émission d'échappement <em>et</em> à particules de freins réduites grâce au freinage régénératif. À Dijon, la transition est en cours : 2032, c'est dans 7 ans.
+    <strong>💡 À retenir :</strong> DiviaMobilités décarbonne sa flotte : 500 Français effacés d'ici 2030, c'est déjà décidé. Mais la vraie puissance, c'est quand les habitants montent dans ces bus. Chaque trajet en TC, c'est une voiture au garage : zéro émission de votre côté, gain net immédiat. Le potentiel collectif est sans commune mesure avec ce qu'une flotte seule peut faire.
   </div>
 
   <!-- Sources -->
   <div class="sources">
     <strong>Sources :</strong>
-    Keolis : données émissions flotte urbaine ·
-    Ropkins et al. (2023), <em>Sustainability</em> 15(2):1522 : particules totales bus Euro VI vs électrique ·
-    OCDE (2020) : pollution particules freins et pneus ·
-    CITEPA : freinage régénératif et émissions hors échappement
+    Keolis : données émissions flotte urbaine (référence Euro V) ·
+    EEA/EMEP Air Pollutant Emission Inventory Guidebook 2023, section 1.A.3.b.vi : freins voiture : 3–12 mg/km PM10 (cycle WLTP-Brake, Hagino et al. 2019) · bus urbain : ~110 mg/km usure totale (Westerlund 2001) ·
+    Ropkins et al. (2023), Sustainability 15(2):1522 : particules totales bus diesel vs électrique ·
+    Hagino et al. (2019), Stanard et al. (2020) dans EEA 2023 : réduction freins freinage régénératif (64–95%) ·
+    OCDE (2020) : mortalité PM2.5 Europe ·
+    UTP : taux d'occupation moyen bus urbains France (~20 passagers)
   </div>
 
-  <!-- Bouton expandable -->
+  <!-- Expandable -->
   <button class="btn-more" onclick="toggleDetail(this)">
     💬 Réponses aux questions fréquentes <span>▼</span>
   </button>
 
-  <!-- Panneau détail -->
   <div class="detail-panel">
     <div class="detail-inner">
       <h4>Pour aller plus loin</h4>
 
-
       <div class="objection">
-        <div class="q">« Et les pneus, ils polluent autant non ? »</div>
-        <div class="r">Oui, les pneus génèrent des particules quel que soit le moteur. Mais le gain sur les freins grâce à la régénération est réel et mesuré. Le bilan total particules reste favorable à l'électrique selon les études sur flottes réelles.</div>
+        <div class="q">« Les bus diesel actuels sont mauvais pour la santé. »</div>
+        <div class="r">Pas comparés à 20 voitures. Même un bus diesel émet moins de particules par passager transporté dès 10 personnes à bord. Et 75% de la flotte DiviaMobilités est déjà hybride aujourd'hui.</div>
       </div>
 
       <div class="objection">
-        <div class="q">« 2032 c'est loin. »</div>
-        <div class="r">45 bus électriques arrivent dès 2029 : un tiers de la flotte en moins de 4 ans. C'est un programme de renouvellement rapide.</div>
+        <div class="q">« Le bus électrique pèse plus lourd, donc ses pneus s'usent plus. »</div>
+        <div class="r">C'est vrai : environ 7 à 10% de plus selon l'EEA 2023. Mais le freinage régénératif compense largement sur les freins, et le bilan total particules reste favorable sur flottes réelles (Ropkins et al., 2023).</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« Et si le bus est presque vide ? »</div>
+        <div class="r">Le bus roule quoi qu'il arrive. Votre voiture, elle, n'émet que si vous la prenez. Monter dans un bus vide reste un gain net : vous supprimez les émissions de votre voiture sans en ajouter au bus.</div>
+      </div>
+
+      <div class="objection">
+        <div class="q">« 2032, c'est loin. »</div>
+        <div class="r">45 bus électriques arrivent dès 2029 : et 75% de la flotte est déjà hybride aujourd'hui. Le changement est en cours, pas à venir.</div>
       </div>
 
     </div>
