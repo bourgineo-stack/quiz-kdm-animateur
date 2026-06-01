@@ -508,7 +508,7 @@ function calculate(km, btn) {
   document.getElementById('res-thermique').textContent = thermique.toLocaleString('fr-FR') + ' €';
   document.getElementById('res-elec').textContent      = elec.toLocaleString('fr-FR') + ' €';
 	const economie = thermique - elec;
-  document.getElementById('kdm-badge').textContent = `⚡ Recharge électrique à 0,15 €/kWh — économie estimée : ${economie.toLocaleString('fr-FR')} € / an vs thermique`;
+  document.getElementById('kdm-badge').textContent = `⚡ Recharge électrique à 0,15 €/kWh -> économie estimée : ${economie.toLocaleString('fr-FR')} € / an vs thermique`;
   const result = document.getElementById('calc-result');
   result.classList.remove('visible');
   void result.offsetWidth;
