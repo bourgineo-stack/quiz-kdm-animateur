@@ -101,7 +101,7 @@ function getQuizState(referenceTime) {
     // En mode loop : position dans le bloc courant + compteur absolu de questions
     // La période est blockDuration, le compteur absolu ne reboucle PAS sur nQ mais sur blockSize
     let position, absQOffset;
-    if (SETTINGS.mode === 'loop' && blockSize > 0) {
+    if (blockSize > 0) {
         // Combien de blocs complets écoulés ?
         const totalBlocs = Math.floor(Math.max(0, adjustedElapsed) / blockDuration);
         absQOffset = totalBlocs * blockSize; // questions absolues avant ce bloc
