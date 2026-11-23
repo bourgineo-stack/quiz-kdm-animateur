@@ -159,6 +159,8 @@ function getQuizState(referenceTime) {
  * Tour 1 = premier passage, Tour 2 = deuxième passage, etc.
  */
 function getCurrentTour(referenceTime) {
+    // Mode atelier : un seul passage, le tour vaut toujours 1
+    if (SETTINGS.mode === 'session') return 1;
     const now = Date.now();
     const elapsed = (now - referenceTime) / 1000;
 
